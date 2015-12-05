@@ -1,0 +1,68 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/data/jpa
+     	http://www.springframework.org/schema/data/jpa/spring-jpa-1.8.xsd
+     	http://www.springframework.org/schema/mvc 
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+     	http://www.springframework.org/schema/data/repository 
+     	http://www.springframework.org/schema/data/repository/spring-repository-1.8.xsd">
+ 
+	<context:component-scan base-package="cz.hanusova.fingerprintgame" />
+	<jpa:repositories base-package="cz.hanusova.fingerprintgame.repository" />
+	<mvc:annotation-driven />
+	
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:database.properties</value>
+				<value>classpath:application.properties</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+		<property name="prefix" value="/pages/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+ 
+	<mvc:resources mapping="/resources/**" location="/resources/" />
+	 
+	
+	<bean name="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	    <property name="driverClassName" value="${jdbc.driver}" />
+	    <property name="url" value="${jdbc.url}" />
+	    <property name="username" value="${jdbc.username}" />
+	    <property name="password" value="${jdbc.password}" />
+	</bean>
+	<bean class="org.springframework.orm.jpa.JpaTransactionManager"	id="transactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
+		id="entityManagerFactory">
+		<property name="persistenceUnitName" value="persistenceUnit" />
+		<property name="dataSource" ref="dataSource" />
+		<property name="jpaPropertyMap">
+			<map>
+<!-- 				<entry key="javax.persistence.validation.factory" value-ref="jpaValidator" /> -->
+				<entry key="hibernate.dialect" value="${hibernate.dialect}" />
+<!-- 				<entry key="net.sf.ehcache.configurationResourceName" value="cache/ehcache-hibernate.xml" /> -->
+<!-- 				<entry key="hibernate.cache.region.factory_class" value="org.hibernate.cache.ehcache.EhCacheRegionFactory" /> -->
+<!-- 				<entry key="hibernate.cache.use_second_level_cache" value="true" /> -->
+<!-- 				<entry key="hibernate.cache.use_query_cache" value="true" /> -->
+<!-- 				<entry key="hibernate.hbm2ddl.auto" value="${hibernate.hbm2ddl.auto}"/> -->
+<!-- 				<entry key="hibernate.hbm2ddl.import_files" value="${hibernate.hbm2ddl.import_files}"/> -->
+			</map>
+		</property>
+	</bean>
+ 
+</beans>
