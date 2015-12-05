@@ -15,10 +15,7 @@
      	http://www.springframework.org/schema/data/repository 
      	http://www.springframework.org/schema/data/repository/spring-repository-1.8.xsd">
  
-	<context:component-scan base-package="cz.hanusova.fingerprintgame" />
 	<jpa:repositories base-package="cz.hanusova.fingerprintgame.repository" />
-	<mvc:annotation-driven />
-	
 	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
 			<list>
@@ -27,15 +24,6 @@
 			</list>
 		</property>
 	</bean>
-	
-	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
-		<property name="prefix" value="/pages/" />
-		<property name="suffix" value=".jsp" />
-	</bean>
- 
-	<mvc:resources mapping="/resources/**" location="/resources/" />
-	 
 	
 	<bean name="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 	    <property name="driverClassName" value="${jdbc.driver}" />
