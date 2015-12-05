@@ -11,13 +11,35 @@
         http://www.springframework.org/schema/context/spring-context.xsd ">
  
 	<context:component-scan base-package="cz.hanusova.fingerprintgame" />
-	<mvc:annotation-driven />
-
-	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
-		<property name="prefix" value="/pages/" />
-		<property name="suffix" value=".jsp" />
+	<mvc:annotation-driven>
+	  <mvc:message-converters register-defaults="true">
+	    <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+	      <property name="supportedMediaTypes" value = "text/plain;charset=UTF-8" />
+	    </bean>
+	  </mvc:message-converters>
+	</mvc:annotation-driven>
+	
+	<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+		<constructor-arg value="UTF-8"/>
 	</bean>
+
+	<bean id="templateResolver"
+        class="org.thymeleaf.templateresolver.ServletContextTemplateResolver">
+	    <property name="prefix" value="/templates/" />
+	    <property name="suffix" value=".html" />
+	    <property name="characterEncoding" value="UTF-8" />
+	    <property name="templateMode" value="HTML5" />
+	  </bean>
+	    
+	  <bean id="templateEngine"
+	        class="org.thymeleaf.spring4.SpringTemplateEngine">
+	    <property name="templateResolver" ref="templateResolver" />
+	  </bean>
+	   
+	  <bean class="org.thymeleaf.spring4.view.ThymeleafViewResolver">
+	    <property name="templateEngine" ref="templateEngine" />
+	    <property name="characterEncoding" value="UTF-8"/>
+	  </bean>   
  
 	<mvc:resources mapping="/resources/**" location="/resources/" />
 	 
