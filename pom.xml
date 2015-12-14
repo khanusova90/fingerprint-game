@@ -11,8 +11,9 @@
   <properties>
   	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   	<spring.version>4.2.3.RELEASE</spring.version>
+  	<spring-sec.version>4.0.3.RELEASE</spring-sec.version>
   	<spring.data>1.9.0.RELEASE</spring.data>
-  	<spring.data.commons>1.4.1.RELEASE</spring.data.commons>
+  	<spring.data.commons>1.11.1.RELEASE</spring.data.commons>
   	<hibernate.version>5.0.4.Final</hibernate.version>
   	<liquibase.version>3.4.2</liquibase.version>
   	<mysql.version>5.1.37</mysql.version>
@@ -74,7 +75,22 @@
 	<dependency>
 		<groupId>org.springframework.data</groupId>
 		<artifactId>spring-data-commons</artifactId>
-		<version>1.11.1.RELEASE</version>
+		<version>${spring.data.commons}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework.security</groupId>
+		<artifactId>spring-security-core</artifactId>
+		<version>${spring-sec.version}</version>
+	</dependency>
+	<dependency>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>spring-security-web</artifactId>
+        <version>${spring-sec.version}</version>
+    </dependency>
+    <dependency>
+		<groupId>org.springframework.security</groupId>
+		<artifactId>spring-security-config</artifactId>
+		<version>${spring-sec.version}</version>
 	</dependency>
 
 	<!-- Thymeleaf -->
@@ -87,6 +103,11 @@
 		<groupId>org.thymeleaf</groupId>
 		<artifactId>thymeleaf</artifactId>
 		<version>${thymeleaf.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.thymeleaf.extras</groupId>
+		<artifactId>thymeleaf-extras-springsecurity4</artifactId>
+		<version>2.1.2.RELEASE</version>
 	</dependency>
 	
 	

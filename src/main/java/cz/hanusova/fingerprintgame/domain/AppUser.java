@@ -22,6 +22,8 @@ public class AppUser {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long idUser;
 	private String username;
+	private String stagLogin;
+	private String password;
 
 	@OneToMany(cascade = { CascadeType.ALL })
 	private List<Inventory> inventory;
@@ -48,6 +50,22 @@ public class AppUser {
 
 	public void setInventory(List<Inventory> inventory) {
 		this.inventory = inventory;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getStagLogin() {
+		return stagLogin;
+	}
+
+	public void setStagLogin(String stagLogin) {
+		this.stagLogin = stagLogin;
 	}
 
 }

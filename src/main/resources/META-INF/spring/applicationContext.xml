@@ -34,6 +34,29 @@
 	    <property name="defaultEncoding" value="UTF-8"/>
 	</bean>
 	
+	<bean id="templateResolver"
+        class="org.thymeleaf.templateresolver.ServletContextTemplateResolver">
+	    <property name="prefix" value="/templates/" />
+	    <property name="suffix" value=".html" />
+	    <property name="characterEncoding" value="UTF-8" />
+	    <property name="templateMode" value="HTML5" />
+	</bean>
+	
+	<bean id="templateEngine"
+	        class="org.thymeleaf.spring4.SpringTemplateEngine">
+	    <property name="templateResolver" ref="templateResolver" />
+	    <property name="additionalDialects">
+	        <set>
+	          <bean class="org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect"/>
+	        </set>
+      </property>
+	  </bean>
+	   
+	  <bean class="org.thymeleaf.spring4.view.ThymeleafViewResolver">
+	    <property name="templateEngine" ref="templateEngine" />
+	    <property name="characterEncoding" value="UTF-8"/>
+	  </bean>
+	
 	<bean name="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 	    <property name="driverClassName" value="${jdbc.driver}" />
 	    <property name="url" value="${jdbc.url}" />

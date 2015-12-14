@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.springframework.org/security/tags">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<link rel="stylesheet" href="resources/bootstrap/css/bootstrap.min.css"/>
+	<link rel="stylesheet" href="resources/bootstrap/css/bootstrap-theme.min.css"/>
+	<link rel="stylesheet" href="resources/style.css" />
+	<script src="resources/bootstrap/js/bootstrap.min.js"></script>
+    <title th:text="#{login.header}">Přihlášení</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+</head>
+<body>
+	<div class="container col-xs-3 col-centered login">
+		<h1 th:text="#{login.header}">Přihlášení</h1>
+		<p th:if="${error}" th:text="#{login.error}">Špatně zadané uživatelské jméno nebo heslo</p>
+		<p th:if="${logout}" th:text="#{login.logout}">Odhlášení z aplikace proběhlo úspěšně</p>
+
+		<form th:action="@{/j_spring_security_check}" method="post">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="form-group">
+                        <label for="username" th:text="#{login.username}" class="sr-only">Uživatelské jméno</label>
+            	        <input th:placeholder="#{login.username}" name="username" id="username" class="form-control" required="required" autofocus="autofocus" />
+            	    </div>
+            	</div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="form-group">
+                        <label for="password" th:text="#{login.password}" class="sr-only">Heslo</label>
+            	        <input th:placeholder="#{login.password}" type="password" name="password" id="password" class="form-control" required="required" />
+            	    </div>
+            	</div>
+            </div>
+            <div class="row">
+                <button type="submit" class="btn btn-primary">
+            	    <span th:text="#{login.login}"></span>
+                </button>
+                <button type="button" class="btn btn-default pull-right">
+                	<span th:text="#{login.register}"></span>
+                </button>
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+							
+    	    </div>
+	    </form>
+	</div>
+</body>
+</html>
+
+
+
+								
