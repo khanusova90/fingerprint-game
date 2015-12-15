@@ -1,70 +1,33 @@
-<beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:sec="http://www.springframework.org/schema/security"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans 
-	http://www.springframework.org/schema/beans/spring-beans-4.2.xsd   
-	http://www.springframework.org/schema/security 
-	http://www.springframework.org/schema/security/spring-security-4.0.xsd
-	http://www.springframework.org/schema/cache 
-	http://www.springframework.org/schema/cache/spring-cache.xsd">
- 
-	<sec:global-method-security  secured-annotations="enabled" pre-post-annotations="enabled" />
-	
-	<sec:http pattern="/login*" security="none" />
-	<sec:http pattern="/resources/**" security="none" />
-	
-	<sec:http auto-config="true">
-		<sec:intercept-url pattern="/administration/**" access="hasRole('ROLE_ADMIN')" />
-		<sec:intercept-url pattern="/**" access="hasRole('ROLE_USER')" />
-		<sec:form-login
-			login-page="/login.html"
-			default-target-url="/overview.html"
-			always-use-default-target="true"
-			authentication-failure-url="/login-error.html"
-			username-parameter="username"
-			password-parameter="password"/>
-		<sec:logout 
-			logout-success-url="/login-logout.html"
-			invalidate-session="true"/>
-		<sec:access-denied-handler
-			error-page="/login-denied"/>
-	</sec:http>
-	
-	<sec:authentication-manager alias="authenticationManager">
-		<sec:authentication-provider>
-			<sec:user-service>
-				<sec:user name="admin" password="123456" authorities="ROLE_USER, ROLE_ADMIN"/>
-			</sec:user-service>
-		</sec:authentication-provider>
-	</sec:authentication-manager>
-		
-<!-- 	<sec:authentication-manager alias="authenticationManager"> -->
-<!-- 		<sec:authentication-provider ref="userTokenService" /> -->
-<!-- 		<sec:authentication-provider ref="authenticationProvider" /> -->
-<!-- 	</sec:authentication-manager> -->
-		
-<!-- 		<bean id="userProvider" class="cz.generali.integration.czgusrmng.client.user.impl.CzgusrmngUserProvider"> -->
-<!-- 			<property name="czgusrmngClient"> -->
-<!-- 				<bean id="czgusrmngClient" class="cz.generali.integration.czgusrmng.client.CzgusrmngClientFactoryBean"> -->
-<!-- 					<property name="clientFactory"> -->
-<!-- 						<bean id="czgusrmngClientFactory" class="cz.generali.integration.czgusrmng.client.DefaultCzgusrmngClientFactory"> -->
-<!-- 							<property name="customizingClientContext" value="classpath:META-INF/spring/informa-clients/czgusrmng-client-custom.xml" /> -->
-<!-- 						</bean> -->
-<!-- 					</property> -->
-<!-- 				</bean> -->
-<!-- 			</property> -->
-<!-- 		</bean> -->
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+			 xmlns:beans="http://www.springframework.org/schema/beans"
+			 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			 xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/security
+	http://www.springframework.org/schema/security/spring-security-4.0.xsd">
 
-<!-- 		<bean id="userTokenService" class="cz.generali.integration.czgusrmng.client.security.CzgusrmngTokenAuthenticationProvider"> -->
-<!-- 			<property name="userProvider" ref="userProvider" /> -->
-<!-- 			<property name="technicalPassword" value="${czgusrmng.token.client.password}" /> -->
-<!-- 			<property name="technicalUser" value="${czgusrmng.token.client.msguid}" /> -->
-<!-- 			<property name="application" value="${pohledavky.czgusrmng.appName}" /> -->
-<!-- 		</bean> -->
-		
-<!-- 		<bean id="authenticationProvider" class="cz.generali.integration.czgusrmng.client.security.CzgusrmngAuthenticationProvider"> -->
-<!-- 			<property name="userProvider" ref="userProvider" /> -->
-<!-- 		</bean> -->
-	
- 
-</beans>
+	<http pattern="/resources/**" security="none" />
+
+	<http auto-config="true" use-expressions="true">
+		<intercept-url pattern="/administration/**" access="hasAnyRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/overview" access="hasAnyRole('ROLE_USER')" />
+		<access-denied-handler error-page="/login-denied"/>
+		<form-login login-page="/login"
+					login-processing-url="/loginProcess"
+					default-target-url="/overview/"
+					authentication-failure-url="/login-error"/>
+		<logout invalidate-session="true"
+				logout-url="/logoutProcess"
+				logout-success-url="/login-logout"/>
+	</http>
+
+	<authentication-manager>
+		<authentication-provider>
+			<user-service>
+				<user name="admin" password="123456" authorities="ROLE_ADMIN"/>
+				<user name="user" password="123456" authorities="ROLE_USER"/>
+			</user-service>
+		</authentication-provider>
+	</authentication-manager>
+	 
+</beans:beans>

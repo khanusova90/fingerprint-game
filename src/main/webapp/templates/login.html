@@ -1,23 +1,29 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.springframework.org/security/tags">
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-	<link rel="stylesheet" href="resources/bootstrap/css/bootstrap.min.css"/>
-	<link rel="stylesheet" href="resources/bootstrap/css/bootstrap-theme.min.css"/>
-	<link rel="stylesheet" href="resources/style.css" />
-	<script src="resources/bootstrap/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="../resources/bootstrap/css/bootstrap.min.css"
+		th:href="@{/resources/bootstrap/css/bootstrap.min.css}"/>
+	<link rel="stylesheet" href="../resources/bootstrap/css/bootstrap-theme.min.css"
+		  th:href="@{/resources/bootstrap/css/bootstrap-theme.min.css}"/>
+	<link rel="stylesheet" href="../resources/style.css"
+		  th:href="@{/resources/style.css}"/>
+
+	<script src="../resources/bootstrap/js/bootstrap.min.js"
+			th:src="@{/resources/bootstrap/js/bootstrap.min.js}"></script>
+
     <title th:text="#{login.header}">Přihlášení</title>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
 </head>
 <body>
 	<div class="container col-xs-3 col-centered login">
 		<h1 th:text="#{login.header}">Přihlášení</h1>
-		<p th:if="${error}" th:text="#{login.error}">Špatně zadané uživatelské jméno nebo heslo</p>
+		<p th:if="${loginError}" th:text="#{login.error}">Špatně zadané uživatelské jméno nebo heslo</p>
 		<p th:if="${logout}" th:text="#{login.logout}">Odhlášení z aplikace proběhlo úspěšně</p>
+		<p th:if="${denied}" th:text="#{login.denied}">Přístup odepřen</p>
 
-		<form th:action="@{/j_spring_security_check}" method="post">
+		<form th:action="@{/loginProcess}" method="post">
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-12">
                     <div class="form-group">
@@ -36,10 +42,10 @@
             </div>
             <div class="row">
                 <button type="submit" class="btn btn-primary">
-            	    <span th:text="#{login.login}"></span>
+            	    <span th:text="#{login.login}">Přihlásit</span>
                 </button>
                 <button type="button" class="btn btn-default pull-right">
-                	<span th:text="#{login.register}"></span>
+                	<span th:text="#{login.register}">Registrovat</span>
                 </button>
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 							

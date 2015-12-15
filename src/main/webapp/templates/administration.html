@@ -3,13 +3,20 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"/>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css"/>
-	<script lang="javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js" ></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css"/>
+    <script lang="javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
     <title>Administrace</title>
 </head>
 <body>
-	<h1 th:text="${header}">Administrace hry 2</h1>
-	<h2 th:text="#{administration.list}">Seznam hráčů</h2>
+<h1 th:text="${header}">Administrace hry 2</h1>
+
+<h2 th:text="#{administration.list}">Seznam hráčů</h2>
+
+<form th:action="@{/logoutProcess}" method="post">
+    <button type="submit" class="btn btn-primary">
+        <span th:text="#{login.logout}">odhlasit</span>
+    </button>
+</form>
 
 </body>
 </html>
