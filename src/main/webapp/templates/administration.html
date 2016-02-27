@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<link rel="stylesheet" href="/resources/bootstrap/css/bootstrap.min.css"
+		th:href="@{/resources/bootstrap/css/bootstrap.min.css}"/>
+	<link rel="stylesheet" href="/resources/bootstrap/css/bootstrap-theme.min.css"
+		  th:href="@{/resources/bootstrap/css/bootstrap-theme.min.css}"/>
+	<link rel="stylesheet" href="/resources/style.css"
+		  th:href="@{/resources/style.css}"/>
+	<script src="/resources/js/drawing.js" th:src="@{/resources/js/drawing.js}"></script>
+
+    <title th:text="#{administration.header}">Administrace</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+</head>
+<body>
+	<div class="container">
+		<h1 th:text="#{administration.header}">Administrace</h1>
+		
+		<div class="row">
+			<div class="col-sm-3 col-sm-offset-1">
+				<h2 th:text="#{administration.maps}">Mapy</h2>
+				<ul class="list-unstyled">
+					<li>
+						<a href="/fingerprint-game/administration/maps?floor=1" th:text="#{overview.maps.1}">1. patro</a>
+					</li>
+					<li>
+						<a href="/fingerprint-game/administration/maps?floor=2" th:text="#{overview.maps.2}">2. patro</a>
+					</li>
+					<li>
+						<a href="/fingerprint-game/administration/maps?floor=3" th:text="#{overview.maps.3}">3. patro</a>
+					</li>
+					<li>
+						<a href="/fingerprint-game/administration/maps?floor=4" th:text="#{overview.maps.4}">4. patro</a>
+					</li>
+				</ul>
+				
+				<h2 th:text="#{administration.materials.add}">Přidat suroviny</h2>
+				<select name="material" class="form-control" style="width: 50%;">
+					<option th:each="material : ${T(cz.hanusova.fingerprintgame.domain.Material).values()}" value="${material}" th:text="#{${material.key}}"></option>
+				</select>
+			</div>
+			<div class="col-sm-8">
+				<h2 th:text="#{overview.floor.map(${floor})}">Mapa vybraného patra</h2>
+				<img src="../resources/img/J1NP.jpg" th:src="@{${imgsrc}}" alt="Mapa patra"/>
+				<canvas id="map"></canvas>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
