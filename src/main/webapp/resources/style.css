@@ -24,8 +24,17 @@ h1{
 	margin-bottom: 20px;
 }
 
-#map{
-	width: 500px;
-	height: 500px;
-	border:1px ridge black;
+.container:after {
+  content:"";
+  display:block;
+  clear:both;
 }
+
+.header{
+	margin-left: 50px;
+}
+
+body{
+	padding-top: 100px;
+}
+

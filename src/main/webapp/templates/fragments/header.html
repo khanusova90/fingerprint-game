@@ -2,44 +2,36 @@
 <html lang="cs" xml:lang="cs" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.w3.org/1999/xhtml">
 
-<head>
+<head th:fragment="head">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<link rel="stylesheet" href="../resources/bootstrap/css/bootstrap.min.css"
-		th:href="@{resources/bootstrap/css/bootstrap.min.css}"/>
+		th:href="@{/resources/bootstrap/css/bootstrap.min.css}"/>
 	<link rel="stylesheet" href="../resources/bootstrap/css/bootstrap-theme.min.css"
-		  th:href="@{resources/bootstrap/css/bootstrap-theme.min.css}"/>
+		  th:href="@{/resources/bootstrap/css/bootstrap-theme.min.css}"/>
 	<link rel="stylesheet" href="../resources/style.css"
-		  th:href="@{resources/style.css}"/>
+		  th:href="@{/resources/style.css}"/>
 	<script src="../resources/bootstrap/js/bootstrap.min.js"
-			th:src="@{resources/bootstrap/js/bootstrap.min.js}"></script>
-
-    <title th:text="#{login.header}">Přihlášení</title>
+			th:src="@{/resources/bootstrap/js/bootstrap.min.js}"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
 </head>
-<th:block th:fragment="header">
+<th:block th:fragment="header(title)">
 	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
         <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="home.html" th:href="@{/home}"><img src="/resources/img/logo.png" th:src="@{/resources/img/logo.png}" /></a>
+            <div class="navbar-header header">
+            	<h1 th:text="${title}">Nadpis</h1>
             </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <div>
                 <ul class="nav navbar-nav navbar-right RobotoBoldUP">
-                    <li sec:authorize="isAnonymous()">
-                        <a th:href="@{/login}"><i class="fa fa-user"></i>&nbsp;<span th:text="#{login}"></span></a>
-                    </li>
+                	<li sec:authorize="hasRole('ROLE_ADMIN')">
+						<a th:href="@{/administration}" th:text="#{administration.header}">Administrace</a>                	
+                	</li>
                     <li sec:authorize="isAuthenticated()">
-                        <a th:href="@{/logoutProcess}"><i class="fa fa-times"></i>&nbsp;<span th:text="#{logout}"></span></a>
+                        <a th:href="@{/logoutProcess}" th:text="#{login.logout}">Odhlásit</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 </th:block>
+</html>

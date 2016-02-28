@@ -1,24 +1,12 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
-<head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-	<link rel="stylesheet" href="/resources/bootstrap/css/bootstrap.min.css"
-		th:href="@{/resources/bootstrap/css/bootstrap.min.css}"/>
-	<link rel="stylesheet" href="/resources/bootstrap/css/bootstrap-theme.min.css"
-		  th:href="@{/resources/bootstrap/css/bootstrap-theme.min.css}"/>
-	<link rel="stylesheet" href="/resources/style.css"
-		  th:href="@{/resources/style.css}"/>
-	<script src="/resources/bootstrap/js/bootstrap.min.js"
-			th:src="@{/resources/bootstrap/js/bootstrap.min.js}"></script>
-
+<head th:include="fragments/header :: head">
     <title th:text="#{overview.header}">Přehled</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
 </head>
 <body>
 	<div class="container">
-		<h1 th:text="#{overview.header}">Přehled</h1>
-		
+		<div th:include="fragments/header :: header(#{overview.header})"></div>
 		<div class="row">
 			<div class="col-sm-3 col-sm-offset-1">
 				<h2 th:text="#{overview.maps}">Mapy</h2>
