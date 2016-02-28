@@ -1,23 +1,28 @@
-var canvas, context;
+var canvas, context, offsetX, offsetY, circles;
 
 function drawMap(){
 	canvas = document.getElementById("map");
-	ch = canvas.getAttribute("height");
-	cw = canvas.getAttribute("width");
-	
 	context = canvas.getContext("2d");
-	img = document.getElementById("imgsrc");
-	ih = img.getAttribute("height");
-	iw = img.getAttribute("width");
+	var img = document.getElementById("imgsrc");
 	
-//	context.drawImage(img, 0, 0, cw, ch, 0, 0, iw, ih);
 	context.drawImage(img, 0, 0);
+	draw();
+};
+
+function draw(){
+	canvas.onclick = function(e){ 
+	    x = e.pageX - canvas.offsetParent.offsetLeft - canvas.offsetLeft;
+		y = e.pageY - canvas.offsetParent.offsetTop - canvas.offsetTop;
+	    
+		drawCircle(x,y);
+	};
 	
-//	baseImage = new Image(500, 500);
-//	baseImage.src = "resources/img/J1NP.jpg";
-//	baseImage.onload = function(){
-//		context.drawImage(baseImage, 500, 500);
-//	};
+	function drawCircle(x, y){
+		context.beginPath();
+		context.arc(x, y, 10, 0, 2*Math.PI);
+		context.fillStyle = "#FF0000";
+		context.fill();
+	};
 };
 
 //window.onload = function () {
