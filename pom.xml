@@ -31,6 +31,8 @@
   	<slf4j.version>1.7.13</slf4j.version>
   	<hibernate.version>5.0.7.Final</hibernate.version>
   	<thymeleaf.version>2.1.4.RELEASE</thymeleaf.version>
+  	<gson.version>2.6.2</gson.version>
+  	<json.version>20160212</json.version>
   </properties>
   
   <dependencies>
@@ -122,6 +124,19 @@
 		<artifactId>thymeleaf-extras-springsecurity4</artifactId>
 		<version>2.1.2.RELEASE</version>
 	</dependency>
+	
+	<!-- J S O N -->
+	<dependency>
+		<groupId>org.json</groupId>
+		<artifactId>json</artifactId>
+		<version>${json.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>com.google.code.gson</groupId>
+		<artifactId>gson</artifactId>
+		<version>${gson.version}</version>
+	</dependency>
+	
 	
 <!-- D A T A B A S E -->
 	<dependency>

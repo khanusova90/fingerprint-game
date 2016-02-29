@@ -1,12 +1,19 @@
-var canvas, context, offsetX, offsetY, circles;
+var canvas, context, material, offsetX, offsetY, circles;
 
 function drawMap(){
+	circles = [];
 	canvas = document.getElementById("map");
 	context = canvas.getContext("2d");
 	var img = document.getElementById("imgsrc");
 	
 	context.drawImage(img, 0, 0);
+	setMaterial();
 	draw();
+};
+
+function setMaterial(){
+	select = document.getElementById("material");
+	material = select.options[select.selectedIndex].value;
 };
 
 function draw(){
@@ -15,61 +22,48 @@ function draw(){
 		y = e.pageY - canvas.offsetParent.offsetTop - canvas.offsetTop;
 	    
 		drawCircle(x,y);
+		circles.push({"x": x, "y": y, "material": material});
 	};
 	
 	function drawCircle(x, y){
 		context.beginPath();
 		context.arc(x, y, 10, 0, 2*Math.PI);
-		context.fillStyle = "#FF0000";
+		
+		var colour;
+		switch(material){
+		case "GOLD":
+			colour = "#EAD00B";
+			break;
+		case "FOOD":
+			colour = "#EA3B0B";
+			break;
+		case "WOOD":
+			colour = "#90582C";
+			break;
+		case "STONE":
+			colour = "#848484";
+			break;
+		default:
+			colour = "#7C45BF";
+		}
+		
+		context.fillStyle = colour;
 		context.fill();
 	};
 };
 
-//window.onload = function () {
-//	var map = document.getElementById("map");
-//	map.setAttribute('height', 500);
-//	map.setAttribute('width', 500);
-//
-//	map.onclick = function(e){
-//		var x = e.pageX - this.offsetLeft;
-//		var y = e-pageY - this.offsetTop;
-//		var ctx = map.getContext("2d");
-//		drawCircle(x, y, ctx);
-//	}
-//}
-//
-//function drawCircle(x, y, ctx){
-//	ctx.fillStyle = "black";
-//	ctx.beginPath();
-//	ctx.moveTo(x,y);
-//	ctx.arc(x, y, 5, 0, Math.PI * 2, false);
-//	ctx.fill();
-//}
-
-//jQuery(document).ready(function() {
-//  $('#map').attr('height', $('#map').css('height'));
-//  $('#map').attr('width', $('#map').css('width'));
-//
-//  $("#map").click(function(e) {
-//
-//    var x = e.clientX - this.offsetLeft - this.scrollLeft;
-//    var y = e.clientY - this.offsetTop - this.scrollTop;
-////	  var x = e.pageX;
-////	  var y = e.pageY;
-//    
-//    //var pole = [];
-//    //pole.push[{
-//
-//    var ctx = this.getContext("2d");
-//    ctx.beginPath();
-//    ctx.arc(x, y, 10, 0, 2 * Math.PI);
-//    ctx.stroke();
-//    
-//    //json object vratit
-//    //musi se jmenovat stejne
-//  });
-//  
-//  //na kliknuti na odkaz mapy zobrazit konkretni patro 
-//  
-//  //podivat se na metodu drawImage()
-//})
+function save(){
+//	document.getElementById("circles").value = circles;
+	$.ajax({
+		headers: { 
+	        'Accept': 'application/json',
+	        'Content-Type': 'application/json' 
+	    },
+		  method: "POST",
+		  url: "./save",
+		  dataType: "JSON",
+		  data: JSON.stringify(circles)
+	});
+	
+	document.getElementById("info").value = "Suroviny byly uloženy";
+};

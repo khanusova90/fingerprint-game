@@ -28,9 +28,14 @@
 				</ul>
 				
 				<h2 th:text="#{administration.materials.add}">Přidat suroviny</h2>
-				<select name="material" class="form-control" style="width: 50%;">
-					<option th:each="material : ${T(cz.hanusova.fingerprintgame.model.Material).values()}" value="${material}" th:text="#{${material.key}}"></option>
-				</select>
+				<select id="material" class="form-control" style="width: 50%;" onchange="setMaterial()">
+					<option th:each="material : ${T(cz.hanusova.fingerprintgame.model.Material).values()}" 
+						th:value="${material}" th:text="#{${material.key}}" onchange="setMaterial()"></option>
+				</select> <br/>
+				
+				<button type="button" onclick="save()" th:text="#{save}">Uložit</button>
+				<input type="text" id="info"></input>
+				
 			</div>
 			<div class="col-sm-8">
 				<h2 th:text="#{overview.floor.map(${floor})}">Mapa vybraného patra</h2>

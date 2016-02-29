@@ -23,11 +23,11 @@
             </div>
             <div>
                 <ul class="nav navbar-nav navbar-right RobotoBoldUP">
-                	<li sec:authorize="hasRole('ROLE_ADMIN')">
-						<a th:href="@{/administration}" th:text="#{administration.header}">Administrace</a>                	
+                	<li sec:authorize="hasRole('ROLE_ADMIN')" th:if="${title} != #{administration.header}">
+						<a th:href="@{/administration}" th:text="#{administration.header}">Administrace</a>  
                 	</li>
                     <li sec:authorize="isAuthenticated()">
-                        <a th:href="@{/logoutProcess}" th:text="#{login.logout}">Odhlásit</a>
+                        <a th:href="@{/logoutProcess}" th:text="#{logout}">Odhlásit</a>
                     </li>
                 </ul>
             </div>

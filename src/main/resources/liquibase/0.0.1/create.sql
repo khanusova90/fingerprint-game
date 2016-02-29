@@ -9,7 +9,7 @@ drop table if exists resources;
 create table APP_USER(
 	ID_USER bigint(19) not null auto_increment,
 	USERNAME varchar(255) not null,
-	STAGNAME varchar(255) not null,
+	STAGNAME varchar(255),
 	PASSWORD varchar(255) not null,
 	primary key (ID_USER)
 );
@@ -29,7 +29,7 @@ create table PLACE(
 );
 create table RESOURCES(
 	ID_RESOURCES bigint(19) not null auto_increment,
-	ID_PLACE bigint(19) not null,
+	ID_PLACE bigint(19),
 	MATERIAL varchar(255) not null,
 	primary key(ID_RESOURCES),
 	constraint fk_resources_place foreign key fk_resources_place(ID_PLACE) references PLACE(ID_PLACE)
@@ -46,3 +46,7 @@ create table USER_ROLE(
 	primary key(ID_USER_ROLE),
 	constraint fk_user_roles foreign key fk_user_roles(ID_USER) references APP_USER(ID_USER)
 );
+
+--changeset hanuska1:create-3
+alter table RESOURCES add X_COORD int not null;
+alter table RESOURCES add Y_COORD int not null;

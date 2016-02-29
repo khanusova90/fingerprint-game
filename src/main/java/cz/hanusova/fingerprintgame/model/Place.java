@@ -24,8 +24,6 @@ public class Place {
 	@Column(name = "ID_PLACE")
 	private Long idPlace;
 
-	// TODO:souradnice
-
 	/**
 	 * Kod mista
 	 */
@@ -40,7 +38,7 @@ public class Place {
 	 * Zdroje, ktere jsou k dispozici na danem miste
 	 */
 	@OneToMany
-	private List<Resources> resources;
+	private List<Resource> resource;
 
 	public Long getIdPlace() {
 		return idPlace;
@@ -66,12 +64,12 @@ public class Place {
 		this.description = description;
 	}
 
-	public List<Resources> getResources() {
-		return resources;
+	public List<Resource> getResource() {
+		return resource;
 	}
 
-	public void setResources(List<Resources> resources) {
-		this.resources = resources;
+	public void setResource(List<Resource> resource) {
+		this.resource = resource;
 	}
 
 }
