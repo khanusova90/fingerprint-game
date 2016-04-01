@@ -96,5 +96,20 @@ public class UserServiceImpl implements UserService {
 		Set<Inventory> result = inventoryRepository.findInventoryByUser_Username(username);
 		return result;
 	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public AppUser getUserByName(String username){
+		AppUser user =  userRepository.findByUsername(username);
+		return user;
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public AppUser getUserByUsernameWithRoles(String username){
+		AppUser user = userRepository.findByUsernameFetch(username);
+		return user;
+	}
+	
 
 }

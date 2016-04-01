@@ -24,4 +24,20 @@ public interface UserService {
 	 */
 	public Set<Inventory> getUserInventory();
 
+	/**
+	 * Finds user by given username
+	 * 
+	 * @param username
+	 * @return {@link AppUser}
+	 */
+	public AppUser getUserByName(String username);
+
+	/**
+	 * Finds user by given username fetch joined with his roles
+	 * 
+	 * @param username
+	 * @return {@link AppUser}
+	 */
+	public AppUser getUserByUsernameWithRoles(String username);
+
 }
