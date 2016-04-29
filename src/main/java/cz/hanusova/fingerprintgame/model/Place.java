@@ -37,8 +37,10 @@ public class Place {
 	/**
 	 * Zdroje, ktere jsou k dispozici na danem miste
 	 */
-	@OneToMany
-	private List<Resource> resource;
+//	@JsonIgnore
+//	@Expose(serialize=false, deserialize=false)
+	@OneToMany(mappedBy="place")
+	private List<Resource> resources;
 
 	public Long getIdPlace() {
 		return idPlace;
@@ -64,12 +66,12 @@ public class Place {
 		this.description = description;
 	}
 
-	public List<Resource> getResource() {
-		return resource;
+	public List<Resource> getResources() {
+		return resources;
 	}
 
-	public void setResource(List<Resource> resource) {
-		this.resource = resource;
+	public void setResources(List<Resource> resources) {
+		this.resources = resources;
 	}
 
 }
