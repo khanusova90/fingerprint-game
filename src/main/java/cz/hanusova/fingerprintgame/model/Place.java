@@ -28,6 +28,11 @@ public class Place {
 	 * Kod mista
 	 */
 	private String code;
+	
+	/**
+	 * Nazev mista
+	 */
+	private String name;
 
 	/**
 	 * Popis mista

@@ -50,3 +50,6 @@ create table USER_ROLE(
 --changeset hanuska1:create-3
 alter table RESOURCES add X_COORD int not null;
 alter table RESOURCES add Y_COORD int not null;
+
+--changeset hanuska1:create-4
+alter table PLACE add name varchar(50) not null;
