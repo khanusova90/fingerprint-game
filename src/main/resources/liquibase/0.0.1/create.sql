@@ -53,3 +53,35 @@ alter table RESOURCES add Y_COORD int not null;
 
 --changeset hanuska1:create-4
 alter table PLACE add name varchar(50) not null;
+
+--changeset hanuska1:create-5
+create table C_PLACE_TYPE(
+	ID_PLACE_TYPE bigint(19) not null auto_increment,
+	PLACE_TYPE varchar(255) not null,
+	DESCRIPTION varchar(255) not null,
+	IMG_URL varchar(255),
+	primary key(ID_PLACE_TYPE)
+)
+
+create table PLACE_PLACE_TYPE(
+	ID_PLACE_PLACE_TYPE bigint(19) not null auto_increment,
+	ID_PLACE bigint(19) not null,
+	ID_PLACE_TYPE bigint(19) not null,
+	primary key(ID_PLACE_PLACE_TYPE),
+	constraint fk_place foreign key fk_place(ID_PLACE) references PLACE(ID_PLACE),
+	constraint fk_place_type foreign key fk_place_type(ID_PLACE_TYPE) references C_PLACE_TYPE(ID_PLACE_TYPE)
+	
+create table C_ACTIVITY (
+	ID_ACTIVITY bigint(19) not null auto_increment,
+	NAME varchar(255) not null,
+	primary key (ID_ACTIVITY)
+);
+
+create table PLACE_TYPE_ACTIVITY (
+	ID_PLACE_TYPE_ACTIVITY bigint(19) not null auto_increment,
+	ID_PLACE_TYPE bigint(19) not null,
+	ID_ACTIVITY bigint(19) not null,
+	primary key (ID_PLACE_TYPE_ACTIVITY),
+	constraint fk_type foreign key fk_type(ID_PLACE_TYPE) references C_PLACE_TYPE(ID_PLACE_TYPE),
+	constraint fk_activity foreign key fk_activity(ID_ACTIVITY) references C_ACTIVITY(ID_ACTIVITY)
+);
