@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -25,28 +26,37 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "APP_USER")
 public class AppUser {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID_USER")
 	private Long idUser;
-	
-	@Column(name="USERNAME")
+
+	@Column(name = "USERNAME")
 	private String username;
 
 	@Column(name = "STAGNAME", nullable = true)
 	private String stagname;
-	
-	@Column(name="PASSWORD")
+
+	@Column(name = "PASSWORD")
 	private String password;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.EAGER)
+	@JoinColumn(name = "ID_USER")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Set<Inventory> inventory = new HashSet<>();
 
 	@ElementCollection
 	@CollectionTable(name = "USER_ROLE", joinColumns = { @JoinColumn(name = "ID_USER") })
 	@Column(name = "ROLE")
 	private Set<String> userRoles = new HashSet<>();
+
+	@JoinColumn(name = "ID_USER")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private Set<UserActivity> activities = new HashSet<>();
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "ID_CHARACTER")
+	private Character character;
 
 	public Long getIdUser() {
 		return idUser;
@@ -86,5 +96,21 @@ public class AppUser {
 
 	public Set<String> getUserRoles() {
 		return userRoles;
+	}
+
+	public Set<UserActivity> getActivities() {
+		return activities;
+	}
+
+	public void setActivities(Set<UserActivity> activities) {
+		this.activities = activities;
+	}
+
+	public Character getCharacter() {
+		return character;
+	}
+
+	public void setCharacter(Character character) {
+		this.character = character;
 	}
 }

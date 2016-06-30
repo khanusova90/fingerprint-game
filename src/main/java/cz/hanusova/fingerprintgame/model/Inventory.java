@@ -4,12 +4,9 @@ import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 /**
  * Trida reprezentujici inventar uzivatele. Ke kazdemu typu zdroje ma ulozene
@@ -26,14 +23,15 @@ public class Inventory {
 	@Column(name = "ID_INVENTORY")
 	private Long idInventory;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ID_USER")
-	private AppUser user;
+	// @ManyToOne(fetch = FetchType.LAZY)
+	// @JoinColumn(name = "ID_USER")
+	// private AppUser user;
+
 	private Material material;
 	private BigDecimal amount;
 
 	public Inventory(AppUser user, Material material, BigDecimal amount) {
-		this.user = user;
+		// this.user = user;
 		this.material = material;
 		this.amount = amount;
 	}
@@ -49,13 +47,13 @@ public class Inventory {
 		this.idInventory = idInventory;
 	}
 
-	public AppUser getUser() {
-		return user;
-	}
-
-	public void setUser(AppUser user) {
-		this.user = user;
-	}
+	// public AppUser getUser() {
+	// return user;
+	// }
+	//
+	// public void setUser(AppUser user) {
+	// this.user = user;
+	// }
 
 	public Material getMaterial() {
 		return material;

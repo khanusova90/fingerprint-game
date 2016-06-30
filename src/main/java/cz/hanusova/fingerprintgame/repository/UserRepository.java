@@ -9,8 +9,8 @@ import cz.hanusova.fingerprintgame.model.AppUser;
 public interface UserRepository extends JpaRepository<AppUser, Long> {
 
 	public AppUser findByUsername(String username);
-	
+
 	@Query("select u from AppUser u left join fetch u.userRoles ur where u.username = :username")
-	public AppUser findByUsernameFetch(@Param("username")String username);
+	public AppUser findByUsernameFetch(@Param("username") String username);
 
 }

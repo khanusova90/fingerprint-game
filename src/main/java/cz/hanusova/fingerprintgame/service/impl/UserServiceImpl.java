@@ -76,6 +76,7 @@ public class UserServiceImpl implements UserService {
 	 *            {@link AppUser} novy uzivatel
 	 */
 	private void createInventory(AppUser user) {
+		// TODO: volat konstruktor bez uzivatele
 		Inventory gold = new Inventory(user, Material.GOLD, new BigDecimal(goldAmount));
 		Inventory food = new Inventory(user, Material.FOOD, new BigDecimal(foodAmount));
 		Inventory wood = new Inventory(user, Material.WOOD, new BigDecimal(woodAmount));
@@ -93,23 +94,23 @@ public class UserServiceImpl implements UserService {
 	@Transactional(readOnly = true)
 	public Set<Inventory> getUserInventory() {
 		String username = UserUtils.getActualUsername();
-		Set<Inventory> result = inventoryRepository.findInventoryByUser_Username(username);
+		AppUser user = userRepository.findByUsername(username);
+		Set<Inventory> result = user.getInventory();
 		return result;
 	}
-	
+
 	@Override
 	@Transactional(readOnly = true)
-	public AppUser getUserByName(String username){
-		AppUser user =  userRepository.findByUsername(username);
+	public AppUser getUserByName(String username) {
+		AppUser user = userRepository.findByUsername(username);
 		return user;
 	}
-	
+
 	@Override
 	@Transactional(readOnly = true)
-	public AppUser getUserByUsernameWithRoles(String username){
+	public AppUser getUserByUsernameWithRoles(String username) {
 		AppUser user = userRepository.findByUsernameFetch(username);
 		return user;
 	}
-	
 
 }

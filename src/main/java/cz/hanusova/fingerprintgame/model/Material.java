@@ -4,7 +4,7 @@ import cz.hanusova.fingerprintgame.utils.EnumTranslator;
 
 public enum Material {
 
-	GOLD("GOLD"), FOOD("FOOD"), WOOD("WOOD"), STONE("STONE");
+	GOLD("GOLD"), FOOD("FOOD"), WOOD("WOOD"), STONE("STONE"), WORKER("WORKER");
 
 	private String name;
 
