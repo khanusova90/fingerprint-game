@@ -30,8 +30,7 @@ public class Inventory {
 	private Material material;
 	private BigDecimal amount;
 
-	public Inventory(AppUser user, Material material, BigDecimal amount) {
-		// this.user = user;
+	public Inventory(Material material, BigDecimal amount) {
 		this.material = material;
 		this.amount = amount;
 	}

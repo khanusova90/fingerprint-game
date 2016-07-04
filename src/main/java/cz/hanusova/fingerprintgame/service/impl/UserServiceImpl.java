@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cz.hanusova.fingerprintgame.model.AppUser;
+import cz.hanusova.fingerprintgame.model.Character;
 import cz.hanusova.fingerprintgame.model.Inventory;
 import cz.hanusova.fingerprintgame.model.Material;
 import cz.hanusova.fingerprintgame.model.Role;
@@ -44,6 +45,9 @@ public class UserServiceImpl implements UserService {
 	@Value("${app.default.stone}")
 	private String stoneAmount;
 
+	@Value("${app.default.worker}")
+	private String workerAmount;
+
 	private PasswordEncoder encoder;
 
 	public UserServiceImpl() {
@@ -60,6 +64,7 @@ public class UserServiceImpl implements UserService {
 			String encPass = encoder.encode(user.getPassword());
 			user.setPassword(encPass);
 			user.getUserRoles().add(Role.ROLE_USER.toString());
+			user.setCharacter(new Character());
 			createInventory(user);
 			userRepository.save(user);
 			return true;
@@ -77,15 +82,17 @@ public class UserServiceImpl implements UserService {
 	 */
 	private void createInventory(AppUser user) {
 		// TODO: volat konstruktor bez uzivatele
-		Inventory gold = new Inventory(user, Material.GOLD, new BigDecimal(goldAmount));
-		Inventory food = new Inventory(user, Material.FOOD, new BigDecimal(foodAmount));
-		Inventory wood = new Inventory(user, Material.WOOD, new BigDecimal(woodAmount));
-		Inventory stone = new Inventory(user, Material.STONE, new BigDecimal(stoneAmount));
+		Inventory gold = new Inventory(Material.GOLD, new BigDecimal(goldAmount));
+		Inventory food = new Inventory(Material.FOOD, new BigDecimal(foodAmount));
+		Inventory wood = new Inventory(Material.WOOD, new BigDecimal(woodAmount));
+		Inventory stone = new Inventory(Material.STONE, new BigDecimal(stoneAmount));
+		Inventory workers = new Inventory(Material.WORKER, new BigDecimal(workerAmount));
 
 		user.getInventory().add(gold);
 		user.getInventory().add(food);
 		user.getInventory().add(wood);
 		user.getInventory().add(stone);
+		user.getInventory().add(workers);
 
 		userRepository.save(user);
 	}
