@@ -37,7 +37,7 @@ public class Place {
 	private String name;
 
 	/**
-	 * Typ místa
+	 * Typ mista
 	 */
 	@ManyToOne
 	@JoinColumn(name = "ID_PLACE_TYPE")

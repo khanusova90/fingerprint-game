@@ -21,7 +21,6 @@ public class UserActivity {
 	private Long idUserActivity;
 	// private AppUser appUser;
 
-	// TODO: foreign
 	@ManyToOne
 	@JoinColumn(name = "ID_ACTIVITY")
 	private Activity activity;
@@ -30,7 +29,7 @@ public class UserActivity {
 	private Date startTime;
 
 	@Column(name = "MATERIAL_USED")
-	private String materialUsed;
+	private Material materialUsed;
 
 	@Column(name = "MATERIAL_AMOUNT")
 	private Float materialAmount;
@@ -67,11 +66,11 @@ public class UserActivity {
 		this.startTime = startTime;
 	}
 
-	public String getMaterialUsed() {
+	public Material getMaterialUsed() {
 		return materialUsed;
 	}
 
-	public void setMaterialUsed(String materialUsed) {
+	public void setMaterialUsed(Material materialUsed) {
 		this.materialUsed = materialUsed;
 	}
 

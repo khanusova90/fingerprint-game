@@ -13,6 +13,7 @@ import cz.hanusova.fingerprintgame.model.AppUser;
 import cz.hanusova.fingerprintgame.model.Place;
 import cz.hanusova.fingerprintgame.model.UserActivity;
 import cz.hanusova.fingerprintgame.repository.PlaceRepository;
+import cz.hanusova.fingerprintgame.repository.UserActivityRepository;
 import cz.hanusova.fingerprintgame.repository.UserRepository;
 import cz.hanusova.fingerprintgame.service.PlaceService;
 
@@ -26,8 +27,8 @@ public class PlaceServiceImpl implements PlaceService {
 	@Autowired
 	private UserRepository userRepository;
 
-	// @Autowired
-	// private UserActivityRepository userActivityRepository;
+	@Autowired
+	private UserActivityRepository userActivityRepository;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -48,8 +49,7 @@ public class PlaceServiceImpl implements PlaceService {
 		// TODO: pokud je potreba nejaky material, tak ho pridat
 		user.getActivities().add(userActivity);
 		userRepository.save(user);
-
-		// userActivityRepository.save(userActivity);
+		userActivityRepository.save(userActivity);
 	}
 
 }

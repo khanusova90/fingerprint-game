@@ -19,10 +19,10 @@
 		</developer>
 	</developers>
 	
-	<scm>
-		<developerConnection>scm:git:https://github.com/khanusova90/fingerprint-game</developerConnection>
-	  <tag>fingerprint-game-0.0.1</tag>
-  </scm>
+<!-- 	<scm> -->
+<!-- 		<developerConnection>scm:git:https://github.com/khanusova90/fingerprint-game</developerConnection> -->
+<!-- 	  <tag>fingerprint-game-0.0.1</tag> -->
+<!--   </scm> -->
   
   <properties>
   	<spring.version>4.2.3.RELEASE</spring.version>
@@ -209,14 +209,6 @@
 			</includes>
 			<filtering>true</filtering>
 		</resource>
-		<resource>
-			<directory>src/main/config</directory>
-			<includes>
-				<include>**/*.xml</include>
-				<include>**/*.properties</include>
-			</includes>
-			<filtering>true</filtering>
-		</resource>
 	</resources>
     
     <plugins>
@@ -261,4 +253,55 @@
 		</plugin>
 	</plugins>
   </build>
+  
+  <profiles>
+  	<profile>
+  		<id>local</id>
+  		<activation>
+  			<activeByDefault>true</activeByDefault>
+  		</activation>
+  		<build>
+  			<resources>
+  				<resource>
+					<directory>src/main/config/local</directory>
+					<includes>
+						<include>**/*.xml</include>
+						<include>**/*.properties</include>
+					</includes>
+					<filtering>true</filtering>
+				</resource>
+  			</resources>
+  		</build>
+  	</profile>
+  	<profile>
+  		<id>test</id>
+  		<build>
+  			<resources>
+  				<resource>
+					<directory>src/main/config/test</directory>
+					<includes>
+						<include>**/*.xml</include>
+						<include>**/*.properties</include>
+					</includes>
+					<filtering>true</filtering>
+				</resource>
+  			</resources>
+  		</build>
+  	</profile>
+  	<profile>
+  		<id>production</id>
+  		<build>
+  			<resources>
+  				<resource>
+					<directory>src/main/config/production</directory>
+					<includes>
+						<include>**/*.xml</include>
+						<include>**/*.properties</include>
+					</includes>
+					<filtering>true</filtering>
+				</resource>
+  			</resources>
+  		</build>
+  	</profile>
+  </profiles>
 </project>

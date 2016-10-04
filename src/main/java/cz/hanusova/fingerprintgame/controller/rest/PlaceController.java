@@ -18,9 +18,9 @@ public class PlaceController {
 	private PlaceService placeService;
 
 	@RequestMapping("/addActivity")
-	public void startActivity(@RequestParam("username") String username, @RequestBody Place place,
-			@RequestBody Activity activity) {
+	public void startActivity(@RequestParam("username") String username, @RequestBody Place place) {
 		// TODO: uzivatele ziskat z autentizace
+		Activity activity = place.getPlaceType().getActivity();
 		placeService.startActivity(username, place, activity);
 	}
 

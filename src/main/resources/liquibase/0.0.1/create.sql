@@ -92,4 +92,13 @@ CREATE TABLE USER_ACTIVITY(
     REFERENCES c_activity (ID_ACTIVITY)
 );
 
---rollback drop table if exists USER_CHARACTER; drop table if exists APP_USER; drop table if exists INVENTORY; drop table if exists PLACE; drop table if exists RESOURCES; drop table if exists USER_ROLE; drop table if exists C_PLACE_TYPE; drop table if exists PLACE_PLACE_TYPE; drop table if exists C_ACTIVITY; drop table if exists PLACE_TYPE_ACTIVITY; drop table if exists USER_ACTIVITY;
+--rollback drop table if exists INVENTORY;  drop table if exists RESOURCES; drop table if exists USER_ROLE; drop table if exists PLACE_PLACE_TYPE; drop table if exists PLACE_TYPE_ACTIVITY; drop table if exists C_PLACE_TYPE; drop table if exists USER_ACTIVITY; drop table if exists C_ACTIVITY; drop table if exists PLACE; drop table if exists APP_USER; drop table if exists USER_CHARACTER;
+
+--changeset hanuska1:create-2
+alter table place add FLOOR int;
+alter table place add ID_PLACE_TYPE bigint(19);
+alter table place add constraint fk_place_place_type foreign key fk_place_place_type (id_place_type) references c_place_type(id_place_type);
+alter table place add X_COORD int;
+alter table place add Y_COORD int;
+
+

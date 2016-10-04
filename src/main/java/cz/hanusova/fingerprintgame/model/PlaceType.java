@@ -1,18 +1,12 @@
 package cz.hanusova.fingerprintgame.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -33,10 +27,15 @@ public class PlaceType {
 	@Column(name = "IMG_URL")
 	private String imgUrl;
 
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinTable(name = "PLACE_TYPE_ACTIVITY", joinColumns = {
-			@JoinColumn(name = "ID_PLACE_TYPE") }, inverseJoinColumns = { @JoinColumn(name = "ID_ACTIVITY") })
-	private List<Activity> activities = new ArrayList<>();
+	// @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	// @JoinTable(name = "PLACE_TYPE_ACTIVITY", joinColumns = {
+	// @JoinColumn(name = "ID_PLACE_TYPE") }, inverseJoinColumns = {
+	// @JoinColumn(name = "ID_ACTIVITY") })
+	// private List<Activity> activities = new ArrayList<>();
+
+	@ManyToOne
+	@JoinColumn(name = "ID_ACTIVITY")
+	private Activity activity;
 
 	public String getDescription() {
 		return description;
@@ -62,13 +61,13 @@ public class PlaceType {
 		this.placeType = placeType;
 	}
 
-	public List<Activity> getActivities() {
-		return activities;
-	}
-
-	public void setActivities(List<Activity> activities) {
-		this.activities = activities;
-	}
+	// public List<Activity> getActivities() {
+	// return activities;
+	// }
+	//
+	// public void setActivities(List<Activity> activities) {
+	// this.activities = activities;
+	// }
 
 	public String getImgUrl() {
 		return imgUrl;
@@ -76,6 +75,14 @@ public class PlaceType {
 
 	public void setImgUrl(String imgUrl) {
 		this.imgUrl = imgUrl;
+	}
+
+	public Activity getActivity() {
+		return activity;
+	}
+
+	public void setActivity(Activity activity) {
+		this.activity = activity;
 	}
 
 }
