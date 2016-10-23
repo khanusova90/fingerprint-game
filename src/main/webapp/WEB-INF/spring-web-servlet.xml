@@ -24,7 +24,8 @@
     </mvc:annotation-driven>
 
 	<mvc:resources mapping="/resources/**" location="/resources/" />
-	<mvc:resources mapping="/disk-resources/**" location="file:///C:/beacon/fingerprint-game"/>
+<!-- 	<mvc:resources mapping="/disk-resources/**" location="file:///C:/beacon/fingerprint-game"/> -->
+	<mvc:resources mapping="/disk-resources/**" location="file:///C:/Development/icons/"/>
 
 	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
 		<property name="basenames">
