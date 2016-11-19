@@ -1,24 +1,60 @@
 package cz.hanusova.fingerprintgame.model;
 
-import cz.hanusova.fingerprintgame.utils.EnumTranslator;
+import java.io.Serializable;
 
-public enum Material {
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 
-	GOLD("GOLD"), FOOD("FOOD"), WOOD("WOOD"), STONE("STONE"), WORKER("WORKER");
+/**
+ * Class representing materials available in game
+ * 
+ * @author khanusova
+ *
+ */
+@Entity
+public class Material implements Serializable {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long idMaterial;
+
+	/**
+	 * Name of the material
+	 */
+	@NotNull
 	private String name;
 
-	private Material(String name) {
+	/**
+	 * @return the idMaterial
+	 */
+	public Long getIdMaterial() {
+		return idMaterial;
+	}
+
+	/**
+	 * @param idMaterial
+	 *            the idMaterial to set
+	 */
+	public void setIdMaterial(Long idMaterial) {
+		this.idMaterial = idMaterial;
+	}
+
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * @param name
+	 *            the name to set
+	 */
+	public void setName(String name) {
 		this.name = name;
-	}
-
-	@Override
-	public String toString() {
-		return this.name;
-	}
-
-	public String getKey() {
-		return EnumTranslator.getMessageKey(this);
 	}
 
 }

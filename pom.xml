@@ -217,7 +217,7 @@
 			<artifactId>liquibase-maven-plugin</artifactId>
 			<version>${liquibase.version}</version>
 			<configuration>                  
-			  <propertyFile>src/main/config/liquibase.properties</propertyFile>
+			  <propertyFile>src/main/config/${build.profile.id}/liquibase.properties</propertyFile>
 		   </configuration>  
 			<executions>
 				<execution>
@@ -272,6 +272,9 @@
 				</resource>
   			</resources>
   		</build>
+  		<properties>
+  			<build.profile.id>local</build.profile.id>
+  		</properties>
   	</profile>
   	<profile>
   		<id>test</id>
@@ -287,6 +290,9 @@
 				</resource>
   			</resources>
   		</build>
+  		<properties>
+  			<build.profile.id>test</build.profile.id>
+  		</properties>
   	</profile>
   	<profile>
   		<id>production</id>
@@ -302,6 +308,9 @@
 				</resource>
   			</resources>
   		</build>
+  		<properties>
+  			<build.profile.id>production</build.profile.id>
+  		</properties>
   	</profile>
   </profiles>
 </project>

@@ -1,7 +1,5 @@
 package cz.hanusova.fingerprintgame.model;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,7 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
 
 /**
  * Trida reprezentujici nejake misto ve hre. Na miste jsou k dispozici zdroje
@@ -29,6 +27,7 @@ public class Place {
 	/**
 	 * Kod mista
 	 */
+	@NotNull
 	private String code;
 
 	/**
@@ -41,6 +40,7 @@ public class Place {
 	 */
 	@ManyToOne
 	@JoinColumn(name = "ID_PLACE_TYPE")
+	@NotNull
 	private PlaceType placeType;
 
 	/**
@@ -63,8 +63,8 @@ public class Place {
 	/**
 	 * Zdroje, ktere jsou k dispozici na danem miste
 	 */
-	@OneToMany(mappedBy = "place")
-	private List<Resource> resources;
+	// @OneToMany(mappedBy = "place")
+	// private List<Resource> resources;
 
 	public Long getIdPlace() {
 		return idPlace;
@@ -82,21 +82,13 @@ public class Place {
 		this.code = code;
 	}
 
-	// public String getDescription() {
-	// return description;
+	// public List<Resource> getResources() {
+	// return resources;
 	// }
 	//
-	// public void setDescription(String description) {
-	// this.description = description;
+	// public void setResources(List<Resource> resources) {
+	// this.resources = resources;
 	// }
-
-	public List<Resource> getResources() {
-		return resources;
-	}
-
-	public void setResources(List<Resource> resources) {
-		this.resources = resources;
-	}
 
 	public String getName() {
 		return name;

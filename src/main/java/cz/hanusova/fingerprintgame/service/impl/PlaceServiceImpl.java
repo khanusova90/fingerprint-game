@@ -43,7 +43,7 @@ public class PlaceServiceImpl implements PlaceService {
 
 		AppUser user = userRepository.findByUsername(username);
 		UserActivity userActivity = new UserActivity();
-		userActivity.setActivity(activity);
+		// userActivity.setActivity(activity);
 		// userActivity.setAppUser(user);
 		userActivity.setStartTime(new Date());
 		// TODO: pokud je potreba nejaky material, tak ho pridat

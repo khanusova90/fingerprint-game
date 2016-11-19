@@ -1,14 +1,13 @@
 package cz.hanusova.fingerprintgame.model;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
-@Entity
-@Table(name = "C_ACTIVITY")
+@Deprecated
+// @Entity
+// @Table(name = "C_ACTIVITY")
 public class Activity {
 
 	@Id
@@ -16,7 +15,7 @@ public class Activity {
 	@Column(name = "ID_ACTIVITY")
 	private Long idActivity;
 	private String name;
-	private Material material;
+	private MaterialEnum material;
 
 	public Long getIdActivity() {
 		return idActivity;
@@ -34,11 +33,11 @@ public class Activity {
 		this.name = name;
 	}
 
-	public Material getMaterial() {
+	public MaterialEnum getMaterial() {
 		return material;
 	}
 
-	public void setMaterial(Material material) {
+	public void setMaterial(MaterialEnum material) {
 		this.material = material;
 	}
 

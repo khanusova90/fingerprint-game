@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "USER_CHARACTER")
@@ -16,13 +17,16 @@ public class Character {
 	@Column(name = "ID_CHARACTER")
 	private Long idCharacter;
 
-	@Column
+	// @Column
+	@NotNull
 	private int charisma = 0;
 
-	@Column
+	// @Column
+	@NotNull
 	private int power = 0;
 
-	@Column
+	// @Column
+	@NotNull
 	private int xp = 0;
 
 	public Long getIdCharacter() {

@@ -15,9 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 import cz.hanusova.fingerprintgame.model.AppUser;
 import cz.hanusova.fingerprintgame.model.Character;
 import cz.hanusova.fingerprintgame.model.Inventory;
-import cz.hanusova.fingerprintgame.model.Material;
-import cz.hanusova.fingerprintgame.model.Role;
 import cz.hanusova.fingerprintgame.repository.InventoryRepository;
+import cz.hanusova.fingerprintgame.repository.MaterialRepository;
+import cz.hanusova.fingerprintgame.repository.RoleRepository;
 import cz.hanusova.fingerprintgame.repository.UserRepository;
 import cz.hanusova.fingerprintgame.service.UserService;
 import cz.hanusova.fingerprintgame.utils.UserUtils;
@@ -29,6 +29,12 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private RoleRepository roleRepository;
+
+	@Autowired
+	private MaterialRepository materialRepository;
 
 	@Autowired
 	private InventoryRepository inventoryRepository;
@@ -63,7 +69,8 @@ public class UserServiceImpl implements UserService {
 			logger.info("Saving new user: " + user.getUsername());
 			String encPass = encoder.encode(user.getPassword());
 			user.setPassword(encPass);
-			user.getUserRoles().add(Role.ROLE_USER.toString());
+			user.getRoles().add(roleRepository.getUserRole());
+			// user.getUserRoles().add(Role.ROLE_USER.toString());
 			user.setCharacter(new Character());
 			createInventory(user);
 			userRepository.save(user);
@@ -81,12 +88,21 @@ public class UserServiceImpl implements UserService {
 	 *            {@link AppUser} novy uzivatel
 	 */
 	private void createInventory(AppUser user) {
-		// TODO: volat konstruktor bez uzivatele
-		Inventory gold = new Inventory(Material.GOLD, new BigDecimal(goldAmount));
-		Inventory food = new Inventory(Material.FOOD, new BigDecimal(foodAmount));
-		Inventory wood = new Inventory(Material.WOOD, new BigDecimal(woodAmount));
-		Inventory stone = new Inventory(Material.STONE, new BigDecimal(stoneAmount));
-		Inventory workers = new Inventory(Material.WORKER, new BigDecimal(workerAmount));
+		Inventory gold = new Inventory(materialRepository.findGold(), new BigDecimal(goldAmount));
+		Inventory food = new Inventory(materialRepository.findFood(), new BigDecimal(foodAmount));
+		Inventory wood = new Inventory(materialRepository.findWood(), new BigDecimal(woodAmount));
+		Inventory stone = new Inventory(materialRepository.findStone(), new BigDecimal(stoneAmount));
+		Inventory workers = new Inventory(materialRepository.findWorker(), new BigDecimal(workerAmount));
+		// Inventory gold = new Inventory(MaterialEnum.GOLD, new
+		// BigDecimal(goldAmount));
+		// Inventory food = new Inventory(MaterialEnum.FOOD, new
+		// BigDecimal(foodAmount));
+		// Inventory wood = new Inventory(MaterialEnum.WOOD, new
+		// BigDecimal(woodAmount));
+		// Inventory stone = new Inventory(MaterialEnum.STONE, new
+		// BigDecimal(stoneAmount));
+		// Inventory workers = new Inventory(MaterialEnum.WORKER, new
+		// BigDecimal(workerAmount));
 
 		user.getInventory().add(gold);
 		user.getInventory().add(food);

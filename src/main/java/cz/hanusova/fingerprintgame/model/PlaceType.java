@@ -2,15 +2,16 @@ package cz.hanusova.fingerprintgame.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "C_PLACE_TYPE")
+@Table(name = "PLACE_TYPE")
 public class PlaceType {
 
 	@Id
@@ -18,14 +19,18 @@ public class PlaceType {
 	@Column(name = "ID_PLACE_TYPE")
 	private Long idPlaceType;
 
-	@Column(name = "PLACE_TYPE")
+	// @Column(name = "PLACE_TYPE")
+	@NotNull
 	private String placeType;
 
-	@Column(name = "DESCRIPTION")
+	// @Column(name = "DESCRIPTION")
 	private String description;
 
-	@Column(name = "IMG_URL")
+	// @Column(name = "IMG_URL")
 	private String imgUrl;
+
+	@Enumerated(EnumType.STRING)
+	private ActivityEnum activity;
 
 	// @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	// @JoinTable(name = "PLACE_TYPE_ACTIVITY", joinColumns = {
@@ -33,9 +38,9 @@ public class PlaceType {
 	// @JoinColumn(name = "ID_ACTIVITY") })
 	// private List<Activity> activities = new ArrayList<>();
 
-	@ManyToOne
-	@JoinColumn(name = "ID_ACTIVITY")
-	private Activity activity;
+	// @ManyToOne
+	// @JoinColumn(name = "ID_ACTIVITY")
+	// private Activity activity;
 
 	public String getDescription() {
 		return description;
@@ -77,11 +82,26 @@ public class PlaceType {
 		this.imgUrl = imgUrl;
 	}
 
-	public Activity getActivity() {
+	// public Activity getActivity() {
+	// return activity;
+	// }
+	//
+	// public void setActivity(Activity activity) {
+	// this.activity = activity;
+	// }
+
+	/**
+	 * @return the activity
+	 */
+	public ActivityEnum getActivity() {
 		return activity;
 	}
 
-	public void setActivity(Activity activity) {
+	/**
+	 * @param activity
+	 *            the activity to set
+	 */
+	public void setActivity(ActivityEnum activity) {
 		this.activity = activity;
 	}
 

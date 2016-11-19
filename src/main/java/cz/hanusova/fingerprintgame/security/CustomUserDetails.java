@@ -9,25 +9,29 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import cz.hanusova.fingerprintgame.model.AppUser;
+import cz.hanusova.fingerprintgame.model.Role;
 
-class CustomUserDetails implements UserDetails{
-	
+class CustomUserDetails implements UserDetails {
+
 	private List<GrantedAuthority> authorities;
 	private String password;
 	private String username;
-	
+
 	public CustomUserDetails(AppUser user) {
 		this.username = user.getUsername();
 		this.password = user.getPassword();
 		this.authorities = getUserAuthorities(user);
 	}
-	
-	private List<GrantedAuthority> getUserAuthorities(AppUser user){
+
+	private List<GrantedAuthority> getUserAuthorities(AppUser user) {
 		List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
-        for (String role : user.getUserRoles()) {
-            grantedAuthorities.add(new SimpleGrantedAuthority(role));
-        }
-        return grantedAuthorities;
+		// for (String role : user.getUserRoles()) {
+		// grantedAuthorities.add(new SimpleGrantedAuthority(role));
+		// }
+		for (Role role : user.getRoles()) {
+			grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
+		}
+		return grantedAuthorities;
 	}
 
 	public Collection<? extends GrantedAuthority> getAuthorities() {

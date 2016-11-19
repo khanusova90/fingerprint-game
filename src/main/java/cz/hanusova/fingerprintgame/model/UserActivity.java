@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,21 +21,30 @@ public class UserActivity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID_USER_ACTIVITY")
 	private Long idUserActivity;
-	// private AppUser appUser;
+
+	@Enumerated(EnumType.STRING)
+	private ActivityEnum activity;
 
 	@ManyToOne
-	@JoinColumn(name = "ID_ACTIVITY")
-	private Activity activity;
+	@JoinColumn(name = "MATERIAL")
+	private Material material;
 
-	@Column(name = "START_TIME")
-	private Date startTime;
-
-	@Column(name = "MATERIAL_USED")
-	private Material materialUsed;
-
-	@Column(name = "MATERIAL_AMOUNT")
+	// @Column(name = "MATERIAL_AMOUNT")
 	private Float materialAmount;
 
+	// @ManyToOne
+	// @JoinColumn(name = "ID_ACTIVITY")
+	// private Activity activity;
+
+	// @Column(name = "START_TIME")
+	private Date startTime;
+
+	// @Column(name = "MATERIAL_USED")
+	// private MaterialEnum materialUsed;
+
+	/*
+	 * Getters and setters
+	 */
 	public Long getIdUserActivity() {
 		return idUserActivity;
 	}
@@ -42,21 +53,27 @@ public class UserActivity {
 		this.idUserActivity = idUserActivity;
 	}
 
-	// public AppUser getAppUser() {
-	// return appUser;
-	// }
-	//
-	// public void setAppUser(AppUser appUser) {
-	// this.appUser = appUser;
-	// }
-
-	public Activity getActivity() {
+	/**
+	 * @return the activity
+	 */
+	public ActivityEnum getActivity() {
 		return activity;
 	}
 
-	public void setActivity(Activity activity) {
+	/**
+	 * @param activity
+	 *            the activity to set
+	 */
+	public void setActivity(ActivityEnum activity) {
 		this.activity = activity;
 	}
+	// public Activity getActivity() {
+	// return activity;
+	// }
+	//
+	// public void setActivity(Activity activity) {
+	// this.activity = activity;
+	// }
 
 	public Date getStartTime() {
 		return startTime;
@@ -66,13 +83,13 @@ public class UserActivity {
 		this.startTime = startTime;
 	}
 
-	public Material getMaterialUsed() {
-		return materialUsed;
-	}
-
-	public void setMaterialUsed(Material materialUsed) {
-		this.materialUsed = materialUsed;
-	}
+	// public MaterialEnum getMaterialUsed() {
+	// return materialUsed;
+	// }
+	//
+	// public void setMaterialUsed(MaterialEnum materialUsed) {
+	// this.materialUsed = materialUsed;
+	// }
 
 	public Float getMaterialAmount() {
 		return materialAmount;

@@ -101,4 +101,11 @@ alter table place add constraint fk_place_place_type foreign key fk_place_place_
 alter table place add X_COORD int;
 alter table place add Y_COORD int;
 
+--changeset hanuska1:create-3
+create table material (
+	ID_MATERIAL bigint(19) not null auto_increment,
+    name varchar(255) not null,
+    primary key (ID_MATERIAL)
+);
+
 

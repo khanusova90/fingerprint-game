@@ -23,5 +23,4 @@ public class PlaceController {
 		Activity activity = place.getPlaceType().getActivity();
 		placeService.startActivity(username, place, activity);
 	}
-
 }
