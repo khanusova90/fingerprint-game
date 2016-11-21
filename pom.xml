@@ -218,6 +218,7 @@
 			<version>${liquibase.version}</version>
 			<configuration>                  
 			  <propertyFile>src/main/config/${build.profile.id}/liquibase.properties</propertyFile>
+<!-- 			  <logging>debug</logging> -->
 		   </configuration>  
 			<executions>
 				<execution>

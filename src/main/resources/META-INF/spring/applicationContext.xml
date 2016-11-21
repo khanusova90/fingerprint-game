@@ -46,6 +46,7 @@
 		<property name="persistenceUnitName" value="persistenceUnit" />
 		<property name="dataSource" ref="dataSource" />
 		<property name="jpaDialect" ref="jpaDialect" />
+		<property name="packagesToScan" value="cz.hanusova.fingerprintgame.model" />
 	</bean>
 	<bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.HibernateJpaDialect" />
 	

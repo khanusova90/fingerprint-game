@@ -1,56 +1,29 @@
-/**
- * 
- */
 package cz.hanusova.fingerprintgame.model;
 
-import java.io.Serializable;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
 /**
- * @author khanusova
+ * Uzivatelske role
+ * 
+ * <p>
+ * <b>ROLE_ADMIN</b> - administratorska prava, ma pristup vsude <br/>
+ * <b>ROLE_USER</b> - role urcena pro bezne uzivatele aplikace, nema pristup k
+ * nekterym strankam
+ * </p>
+ * 
+ * @author hanuska1
  *
  */
-@Entity
-public class Role implements Serializable {
+public enum Role {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idRole;
+	ROLE_ADMIN, ROLE_USER;
 
-	private String name;
-
-	/**
-	 * @return the idRole
-	 */
-	public Long getIdRole() {
-		return idRole;
-	}
-
-	/**
-	 * @param idRole
-	 *            the idRole to set
-	 */
-	public void setIdRole(Long idRole) {
-		this.idRole = idRole;
-	}
-
-	/**
-	 * @return the name
-	 */
-	public String getName() {
-		return name;
-	}
-
-	/**
-	 * @param name
-	 *            the name to set
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
-
+	// private String role;
+	//
+	// private Role(String role) {
+	// this.role = role;
+	// }
+	//
+	// @Override
+	// public String toString() {
+	// return role;
+	// }
 }

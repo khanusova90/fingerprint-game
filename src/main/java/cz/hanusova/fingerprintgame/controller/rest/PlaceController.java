@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import cz.hanusova.fingerprintgame.model.Activity;
 import cz.hanusova.fingerprintgame.model.Place;
 import cz.hanusova.fingerprintgame.service.PlaceService;
 
@@ -20,7 +19,7 @@ public class PlaceController {
 	@RequestMapping("/addActivity")
 	public void startActivity(@RequestParam("username") String username, @RequestBody Place place) {
 		// TODO: uzivatele ziskat z autentizace
-		Activity activity = place.getPlaceType().getActivity();
-		placeService.startActivity(username, place, activity);
+		// Activity activity = place.getPlaceType().getActivity();
+		// placeService.startActivity(username, place, activity);
 	}
 }

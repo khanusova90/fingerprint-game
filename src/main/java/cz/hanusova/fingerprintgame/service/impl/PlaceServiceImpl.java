@@ -33,7 +33,8 @@ public class PlaceServiceImpl implements PlaceService {
 	@Override
 	@Transactional(readOnly = true)
 	public Place getPlaceByCode(String code) {
-		return placeRepository.findFirstByCodeFetch(code);
+		return placeRepository.findFirstByCode(code);
+		// return placeRepository.findFirstByCodeFetch(code);
 	}
 
 	@Override

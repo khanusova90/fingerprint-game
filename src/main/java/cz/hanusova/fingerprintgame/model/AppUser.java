@@ -4,15 +4,17 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -60,23 +62,25 @@ public class AppUser {
 	// private String password;
 	//
 	@JoinColumn(name = "ID_USER")
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
 	private Set<Inventory> inventory = new HashSet<>();
-	//
-	// @ElementCollection
-	// @CollectionTable(name = "USER_ROLE", joinColumns = { @JoinColumn(name =
-	// "ID_USER") })
-	// @Column(name = "ROLE")
-	// private Set<String> userRoles = new HashSet<>();
-	//
+
+	@ElementCollection(targetClass = Role.class)
+	@CollectionTable(name = "USER_ROLE", joinColumns = { @JoinColumn(name = "ID_APP_USER") })
+	@Column(name = "ROLE")
+	@Enumerated(EnumType.STRING)
+	// private Set<String> roles = new HashSet<>();
+	private Set<Role> roles = new HashSet<>();
+
 	@JoinColumn(name = "ID_USER")
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Set<UserActivity> activities = new HashSet<>();
 
-	@ManyToMany
-	@JoinTable(name = "USER_ROLE", joinColumns = { @JoinColumn(name = "ID_APP_USER") }, inverseJoinColumns = {
-			@JoinColumn(name = "ID_ROLE") })
-	private Set<Role> roles;
+	// @ManyToMany
+	// @JoinTable(name = "USER_ROLE", joinColumns = { @JoinColumn(name =
+	// "ID_APP_USER") }, inverseJoinColumns = {
+	// @JoinColumn(name = "ID_ROLE") })
+	// private Set<Role> roles;
 
 	/*
 	 * Getters and setters
@@ -187,19 +191,34 @@ public class AppUser {
 	}
 
 	/**
-	 * @return the role
+	 * @return the roles
 	 */
 	public Set<Role> getRoles() {
 		return roles;
 	}
 
 	/**
-	 * @param role
-	 *            the role to set
+	 * @param roles
+	 *            the roles to set
 	 */
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
 	}
+
+	// /**
+	// * @return the roles
+	// */
+	// public Set<String> getRoles() {
+	// return roles;
+	// }
+	//
+	// /**
+	// * @param roles
+	// * the roles to set
+	// */
+	// public void setRoles(Set<String> roles) {
+	// this.roles = roles;
+	// }
 
 	//
 	// public Long getIdUser() {

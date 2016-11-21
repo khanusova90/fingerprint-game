@@ -1,16 +1,9 @@
 --liquibase formatted sql
 
---changeset hanuska1:create-tables
-drop table if exists material;
-drop table if exists place_type;
-drop table if exists app_user;
-drop table if exists user_character;
-drop table if exists inventory;
-drop table if exists place;
-drop table if exists user_activity;
-drop table if exists role;
+--changeset hanuska1:create-1
+SET SQL_SAFE_UPDATES=0;
 
-create table MATERIAL (
+create table MATERIAL(
 	ID_MATERIAL bigint(19) not null auto_increment,
     NAME varchar(255),
     primary key (ID_MATERIAL)
@@ -24,12 +17,7 @@ create table PLACE_TYPE(
 	primary key (ID_PLACE_TYPE)
 );
 
-create table ROLE(
-	ID_ROLE bigint(19) not null auto_increment,
-	NAME varchar (50),
-	primary key (ID_ROLE)
-);
-
+--changeset hanuska1:create-2
 create table USER_CHARACTER(
 	ID_CHARACTER bigint(19) not null auto_increment,
 	CHARISMA int,
@@ -44,7 +32,7 @@ create table APP_USER(
 	STAGNAME varchar(255),
 	PASSWORD varchar(255),
 	ID_CHARACTER bigint(19),
-	primary key (ID_USER),
+	primary key (ID_APP_USER),
 	constraint fk_character foreign key (ID_CHARACTER) references USER_CHARACTER(ID_CHARACTER)
 );
 
@@ -67,7 +55,7 @@ create table PLACE(
 	X_COORD int,
 	Y_COORD int,
 	ID_PLACE_TYPE bigint(19),
-	ID_MATERIAL,
+	ID_MATERIAL bigint(19),
 	primary key (ID_PLACE),
 	constraint fk_place_place_type foreign key fk_place_place_type(ID_PLACE_TYPE) references PLACE_TYPE(ID_PLACE_TYPE),
 	constraint fk_place_material foreign key fk_place_material (ID_MATERIAL) references MATERIAL(ID_MATERIAL)
@@ -88,10 +76,9 @@ create table USER_ACTIVITY(
 create table USER_ROLE(
 	ID_USER_ROLE bigint(19) not null auto_increment,
 	ID_APP_USER bigint (19),
-	ID_ROLE bigint (19),
+	ROLE varchar(255),
 	primary key (ID_USER_ROLE),
-	constraint fk_user_user_role foreign key fk_user_user_role (ID_APP_USER) references APP_USER(ID_APP_USER),
-	constraint fk_role_user_role foreign key fk_role_user_role (ID_ROLE) references ROLE(ID_ROLE)
+	constraint fk_user_user_role foreign key fk_user_user_role (ID_APP_USER) references APP_USER(ID_APP_USER)
 );
 
 --changeset hanuska1:insert-data
@@ -106,7 +93,4 @@ insert into place_type (place_type, img_url, activity) values
 	("Naleziště", null, "MINE"),
 	("Obchod", "money_icon.png", null),
 	("Tržiště", null, null);
-	
-insert into role (name) values
-	("ROLE_USER"),
-	("ROLE_ADMIN");
+

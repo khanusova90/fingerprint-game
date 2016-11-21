@@ -28,8 +28,11 @@ class CustomUserDetails implements UserDetails {
 		// for (String role : user.getUserRoles()) {
 		// grantedAuthorities.add(new SimpleGrantedAuthority(role));
 		// }
+		// for (Role role : user.getRoles()) {
+		// grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
+		// }
 		for (Role role : user.getRoles()) {
-			grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
+			grantedAuthorities.add(new SimpleGrantedAuthority(role.toString()));
 		}
 		return grantedAuthorities;
 	}
