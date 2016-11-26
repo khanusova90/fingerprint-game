@@ -41,7 +41,7 @@ public class AppUser {
 	@NotNull
 	private String password;
 
-	private String stagName;
+	private String stagname;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "ID_CHARACTER")
@@ -61,7 +61,7 @@ public class AppUser {
 	// @Column(name = "PASSWORD")
 	// private String password;
 	//
-	@JoinColumn(name = "ID_USER")
+	@JoinColumn(name = "ID_APP_USER")
 	@OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
 	private Set<Inventory> inventory = new HashSet<>();
 
@@ -72,7 +72,7 @@ public class AppUser {
 	// private Set<String> roles = new HashSet<>();
 	private Set<Role> roles = new HashSet<>();
 
-	@JoinColumn(name = "ID_USER")
+	@JoinColumn(name = "ID_APP_USER")
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Set<UserActivity> activities = new HashSet<>();
 
@@ -133,16 +133,16 @@ public class AppUser {
 	/**
 	 * @return the stagName
 	 */
-	public String getStagName() {
-		return stagName;
+	public String getStagname() {
+		return stagname;
 	}
 
 	/**
-	 * @param stagName
-	 *            the stagName to set
+	 * @param stagname
+	 *            the stagname to set
 	 */
-	public void setStagName(String stagName) {
-		this.stagName = stagName;
+	public void setStagname(String stagName) {
+		this.stagname = stagName;
 	}
 
 	/**

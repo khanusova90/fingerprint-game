@@ -26,17 +26,17 @@ public class UserActivity {
 	private ActivityEnum activity;
 
 	@ManyToOne
-	@JoinColumn(name = "MATERIAL")
+	@JoinColumn(name = "ID_MATERIAL")
 	private Material material;
 
-	// @Column(name = "MATERIAL_AMOUNT")
+	@Column(name = "MATERIAL_AMOUNT")
 	private Float materialAmount;
 
 	// @ManyToOne
 	// @JoinColumn(name = "ID_ACTIVITY")
 	// private Activity activity;
 
-	// @Column(name = "START_TIME")
+	@Column(name = "START_TIME")
 	private Date startTime;
 
 	// @Column(name = "MATERIAL_USED")
