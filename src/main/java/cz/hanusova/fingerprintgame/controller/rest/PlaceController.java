@@ -11,6 +11,7 @@ import cz.hanusova.fingerprintgame.service.PlaceService;
 
 @RestController
 @RequestMapping("/android/1.0/place")
+@Deprecated
 public class PlaceController {
 
 	@Autowired
