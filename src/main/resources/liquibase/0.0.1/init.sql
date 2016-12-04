@@ -94,3 +94,10 @@ insert into place_type (place_type, img_url, activity) values
 	("Obchod", "money_icon.png", null),
 	("Tržiště", null, null);
 
+--changeset hanuska1:create-3
+alter table material add column DEFAULT_AMOUNT int;
+
+update material set default_amount = 100;
+
+
+

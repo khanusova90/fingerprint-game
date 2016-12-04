@@ -19,14 +19,14 @@ public class PlaceType {
 	@Column(name = "ID_PLACE_TYPE")
 	private Long idPlaceType;
 
-	// @Column(name = "PLACE_TYPE")
+	@Column(name = "PLACE_TYPE")
 	@NotNull
 	private String placeType;
 
 	// @Column(name = "DESCRIPTION")
-	private String description;
+	// private String description;
 
-	// @Column(name = "IMG_URL")
+	@Column(name = "IMG_URL")
 	private String imgUrl;
 
 	@Enumerated(EnumType.STRING)
@@ -41,14 +41,6 @@ public class PlaceType {
 	// @ManyToOne
 	// @JoinColumn(name = "ID_ACTIVITY")
 	// private Activity activity;
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
 
 	public Long getIdPlaceType() {
 		return idPlaceType;

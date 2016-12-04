@@ -35,6 +35,8 @@ public class Place {
 	 */
 	private String name;
 
+	private String description;
+
 	/**
 	 * Typ mista
 	 */
@@ -96,6 +98,21 @@ public class Place {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	/**
+	 * @return the description
+	 */
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * @param description
+	 *            the description to set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public PlaceType getPlaceType() {

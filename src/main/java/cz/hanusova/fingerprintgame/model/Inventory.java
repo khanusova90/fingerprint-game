@@ -48,6 +48,17 @@ public class Inventory {
 		this.amount = amount;
 	}
 
+	/**
+	 * Creates Inventory for given {@link Material} with its default value
+	 * defined by {@link Material#getDefaultAmount()}
+	 * 
+	 * @param material
+	 */
+	public Inventory(Material material) {
+		this.material = material;
+		this.amount = new BigDecimal(material.getDefaultAmount());
+	}
+
 	public Inventory() {
 	}
 

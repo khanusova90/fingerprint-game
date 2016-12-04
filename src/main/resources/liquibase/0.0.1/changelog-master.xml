@@ -6,6 +6,10 @@
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
          
+   	<preConditions>
+    	<dbms type="mysql"/>
+  	</preConditions>
+         
 	<!-- Vytvori tabulky	 -->
 	<include file="src/main/resources/liquibase/0.0.1/init.sql"/>
 

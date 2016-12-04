@@ -32,6 +32,13 @@ public class Material implements Serializable {
 	private String name;
 
 	/**
+	 * Default amount of material for new users
+	 */
+	@NotNull
+	@Column(name = "DEFAULT_AMOUNT")
+	private Integer defaultAmount;
+
+	/**
 	 * @return the idMaterial
 	 */
 	public Long getIdMaterial() {
@@ -59,6 +66,21 @@ public class Material implements Serializable {
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	/**
+	 * @return the defaultAmount
+	 */
+	public Integer getDefaultAmount() {
+		return defaultAmount;
+	}
+
+	/**
+	 * @param defaultAmount
+	 *            the defaultAmount to set
+	 */
+	public void setDefaultAmount(Integer defaultAmount) {
+		this.defaultAmount = defaultAmount;
 	}
 
 }
