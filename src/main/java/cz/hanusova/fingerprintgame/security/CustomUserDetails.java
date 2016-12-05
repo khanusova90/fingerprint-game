@@ -25,12 +25,6 @@ class CustomUserDetails implements UserDetails {
 
 	private List<GrantedAuthority> getUserAuthorities(AppUser user) {
 		List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
-		// for (String role : user.getUserRoles()) {
-		// grantedAuthorities.add(new SimpleGrantedAuthority(role));
-		// }
-		// for (Role role : user.getRoles()) {
-		// grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
-		// }
 		for (Role role : user.getRoles()) {
 			grantedAuthorities.add(new SimpleGrantedAuthority(role.toString()));
 		}
