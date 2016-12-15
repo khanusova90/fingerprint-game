@@ -21,6 +21,7 @@ public interface PlaceService {
 	 * @param place
 	 * @param activity
 	 */
+	@Deprecated
 	public void startActivity(String username, Place place, Activity activity);
 
 }

@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "USER_ACTIVITY")
@@ -22,6 +23,7 @@ public class UserActivity {
 	@Column(name = "ID_USER_ACTIVITY")
 	private Long idUserActivity;
 
+	@Deprecated
 	@Enumerated(EnumType.STRING)
 	private ActivityEnum activity;
 
@@ -29,18 +31,32 @@ public class UserActivity {
 	@JoinColumn(name = "ID_MATERIAL")
 	private Material material;
 
+	@NotNull
+	@ManyToOne
+	@JoinColumn(name = "ID_PLACE")
+	private Place place;
+
 	@Column(name = "MATERIAL_AMOUNT")
 	private Float materialAmount;
 
-	// @ManyToOne
-	// @JoinColumn(name = "ID_ACTIVITY")
-	// private Activity activity;
-
+	@NotNull
 	@Column(name = "START_TIME")
 	private Date startTime;
 
-	// @Column(name = "MATERIAL_USED")
-	// private MaterialEnum materialUsed;
+	@Column(name = "STOP_TIME")
+	private Date stopTime;
+
+	/**
+	 * Creates new UserActivity started at actual date
+	 */
+	public UserActivity(Place place, Float materialAmount) {
+		this.startTime = new Date();
+		this.place = place;
+		this.materialAmount = materialAmount;
+	}
+
+	public UserActivity() {
+	}
 
 	/*
 	 * Getters and setters
@@ -55,7 +71,10 @@ public class UserActivity {
 
 	/**
 	 * @return the activity
+	 * 
+	 *         <b>Deprecated</b> get activity from {@link Place}
 	 */
+	@Deprecated
 	public ActivityEnum getActivity() {
 		return activity;
 	}
@@ -67,13 +86,6 @@ public class UserActivity {
 	public void setActivity(ActivityEnum activity) {
 		this.activity = activity;
 	}
-	// public Activity getActivity() {
-	// return activity;
-	// }
-	//
-	// public void setActivity(Activity activity) {
-	// this.activity = activity;
-	// }
 
 	public Date getStartTime() {
 		return startTime;
@@ -82,14 +94,6 @@ public class UserActivity {
 	public void setStartTime(Date startTime) {
 		this.startTime = startTime;
 	}
-
-	// public MaterialEnum getMaterialUsed() {
-	// return materialUsed;
-	// }
-	//
-	// public void setMaterialUsed(MaterialEnum materialUsed) {
-	// this.materialUsed = materialUsed;
-	// }
 
 	/**
 	 * @return the material
@@ -104,6 +108,21 @@ public class UserActivity {
 	 */
 	public void setMaterial(Material material) {
 		this.material = material;
+	}
+
+	/**
+	 * @return the place
+	 */
+	public Place getPlace() {
+		return place;
+	}
+
+	/**
+	 * @param place
+	 *            the place to set
+	 */
+	public void setPlace(Place place) {
+		this.place = place;
 	}
 
 	public Float getMaterialAmount() {

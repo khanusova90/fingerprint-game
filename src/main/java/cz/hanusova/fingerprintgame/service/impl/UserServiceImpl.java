@@ -26,10 +26,7 @@ public class UserServiceImpl implements UserService {
 
 	private static Log logger = LogFactory.getLog(UserServiceImpl.class);
 
-	@Autowired
 	private UserRepository userRepository;
-
-	@Autowired
 	private MaterialRepository materialRepository;
 
 	// @Value("${app.default.gold}")
@@ -49,8 +46,11 @@ public class UserServiceImpl implements UserService {
 
 	private PasswordEncoder encoder;
 
-	public UserServiceImpl() {
+	@Autowired
+	public UserServiceImpl(UserRepository userRepository, MaterialRepository materialRepository) {
 		this.encoder = new BCryptPasswordEncoder();
+		this.userRepository = userRepository;
+		this.materialRepository = materialRepository;
 	}
 
 	@Transactional

@@ -12,7 +12,7 @@ import cz.hanusova.fingerprintgame.service.PlaceService;
 @RestController
 @RequestMapping("/android/1.0/place")
 @Deprecated
-public class PlaceController {
+public class PlaceController { // TODO: delete class
 
 	@Autowired
 	private PlaceService placeService;

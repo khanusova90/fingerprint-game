@@ -99,5 +99,10 @@ alter table material add column DEFAULT_AMOUNT int;
 
 update material set default_amount = 100;
 
+--changeset hanuska1:create-4
+alter table user_activity add column ID_PLACE bigint(19);
+alter table user_activity add column STOP_TIME datetime;
+alter table user_activity add constraint fk_user_activity_place foreign key fk_user_activity_place (ID_PLACE) references PLACE(ID_PLACE);
+
 
 

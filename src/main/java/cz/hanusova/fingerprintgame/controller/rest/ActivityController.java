@@ -53,6 +53,7 @@ public class ActivityController {
 		String username = UserUtils.getActualUsername();
 		AppUser user = userRepository.findByUsername(username);
 		// TODO: vyclenit do service, nemelo by se resit v controlleru
+		// TODO: zjistit, jestli uz uzivatel na tom miste neco tezi
 		if (materialAmount == 0) {
 			// TODO: najit aktivitu podle mista a ukoncit
 		} else {
