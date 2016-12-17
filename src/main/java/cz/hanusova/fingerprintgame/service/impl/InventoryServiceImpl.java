@@ -7,30 +7,28 @@ import java.math.BigDecimal;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import cz.hanusova.fingerprintgame.model.AppUser;
 import cz.hanusova.fingerprintgame.model.Inventory;
 import cz.hanusova.fingerprintgame.model.Material;
 import cz.hanusova.fingerprintgame.repository.InventoryRepository;
 import cz.hanusova.fingerprintgame.repository.MaterialRepository;
-import cz.hanusova.fingerprintgame.repository.UserRepository;
 import cz.hanusova.fingerprintgame.service.InventoryService;
 
 /**
  * @author khanusova
  *
  */
+@Service
 public class InventoryServiceImpl implements InventoryService {
 
 	private MaterialRepository materialRepository;
-	// private UserRepository userRepository;
 	private InventoryRepository inventoryRepository;
 
 	@Autowired
-	public InventoryServiceImpl(MaterialRepository materialRepository, UserRepository userRepository,
-			InventoryRepository inventoryRepository) {
+	public InventoryServiceImpl(MaterialRepository materialRepository, InventoryRepository inventoryRepository) {
 		this.materialRepository = materialRepository;
-		// this.userRepository = userRepository;
 		this.inventoryRepository = inventoryRepository;
 	}
 

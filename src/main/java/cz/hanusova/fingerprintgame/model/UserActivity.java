@@ -4,8 +4,6 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "USER_ACTIVITY")
@@ -22,10 +22,6 @@ public class UserActivity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID_USER_ACTIVITY")
 	private Long idUserActivity;
-
-	@Deprecated
-	@Enumerated(EnumType.STRING)
-	private ActivityEnum activity;
 
 	@ManyToOne
 	@JoinColumn(name = "ID_MATERIAL")
@@ -41,9 +37,11 @@ public class UserActivity {
 
 	@NotNull
 	@Column(name = "START_TIME")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date startTime;
 
 	@Column(name = "STOP_TIME")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date stopTime;
 
 	/**
@@ -67,24 +65,6 @@ public class UserActivity {
 
 	public void setIdUserActivity(Long idUserActivity) {
 		this.idUserActivity = idUserActivity;
-	}
-
-	/**
-	 * @return the activity
-	 * 
-	 *         <b>Deprecated</b> get activity from {@link Place}
-	 */
-	@Deprecated
-	public ActivityEnum getActivity() {
-		return activity;
-	}
-
-	/**
-	 * @param activity
-	 *            the activity to set
-	 */
-	public void setActivity(ActivityEnum activity) {
-		this.activity = activity;
 	}
 
 	public Date getStartTime() {

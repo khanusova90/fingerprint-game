@@ -1,7 +1,10 @@
 package cz.hanusova.fingerprintgame.service;
 
-import cz.hanusova.fingerprintgame.model.Activity;
+import java.util.Set;
+
+import cz.hanusova.fingerprintgame.model.AppUser;
 import cz.hanusova.fingerprintgame.model.Place;
+import cz.hanusova.fingerprintgame.model.UserActivity;
 
 public interface PlaceService {
 
@@ -15,13 +18,16 @@ public interface PlaceService {
 	public Place getPlaceByCode(String code);
 
 	/**
-	 * Starts new activity for user with given username
+	 * Starts new activity and updates user's amount of workers in inventory
 	 * 
-	 * @param username
+	 * @param user
+	 *            {@link AppUser} who is starting new activity
 	 * @param place
-	 * @param activity
+	 *            {@link Place} where new activity is
+	 * @param workerAmount
+	 *            amount of workers for activity
+	 * @return
 	 */
-	@Deprecated
-	public void startActivity(String username, Place place, Activity activity);
+	public Set<UserActivity> startActivity(AppUser user, Place place, Float workerAmount);
 
 }

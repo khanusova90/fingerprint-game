@@ -6,6 +6,7 @@ package cz.hanusova.fingerprintgame.service.impl;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import cz.hanusova.fingerprintgame.model.AppUser;
 import cz.hanusova.fingerprintgame.model.Place;
@@ -19,6 +20,7 @@ import cz.hanusova.fingerprintgame.service.InventoryService;
  * @author khanusova
  *
  */
+@Service
 public class ActivityServiceImpl implements ActivityService {
 
 	private UserActivityRepository userActivityRepository;

@@ -57,8 +57,7 @@ public class PlaceServiceTest {
 	@Before
 	public void init() {
 		MockitoAnnotations.initMocks(this);
-		InventoryService inventoryService = new InventoryServiceImpl(materialRepositoryMock, userRepositoryMock,
-				inventoryRepositoryMock);
+		InventoryService inventoryService = new InventoryServiceImpl(materialRepositoryMock, inventoryRepositoryMock);
 		ActivityService activityService = new ActivityServiceImpl(userActivityRepositoryMock, userRepositoryMock,
 				inventoryService);
 		placeService = new PlaceServiceImpl(placeRepositoryMock, userRepositoryMock, activityService);
