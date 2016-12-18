@@ -104,5 +104,13 @@ alter table user_activity add column ID_PLACE bigint(19);
 alter table user_activity add column STOP_TIME datetime;
 alter table user_activity add constraint fk_user_activity_place foreign key fk_user_activity_place (ID_PLACE) references PLACE(ID_PLACE);
 
-
+--changeset hanuska1:create-5
+create table USER_PLACE(
+	ID_USER_PLACE bigint(19) not null auto_increment,
+	ID_APP_USER bigint(19),
+	ID_PLACE bigint(19),
+	primary key (ID_USER_PLACE),
+	constraint fk_user_place_user foreign key fk_user_place_user (ID_APP_USER) references app_user(id_app_user),
+	constraint fk_user_place_place foreign key fk_user_place_place(ID_PLACE) references PLACE(ID_PLACE)
+);
 

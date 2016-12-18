@@ -60,7 +60,7 @@ public class PlaceServiceTest {
 		InventoryService inventoryService = new InventoryServiceImpl(materialRepositoryMock, inventoryRepositoryMock);
 		ActivityService activityService = new ActivityServiceImpl(userActivityRepositoryMock, userRepositoryMock,
 				inventoryService);
-		placeService = new PlaceServiceImpl(placeRepositoryMock, activityService);
+		placeService = new PlaceServiceImpl(placeRepositoryMock, activityService, userRepositoryMock);
 		user = userBuilder.build();
 		Mockito.when(materialRepositoryMock.findWorker())
 				.thenReturn(user.getInventory().iterator().next().getMaterial());

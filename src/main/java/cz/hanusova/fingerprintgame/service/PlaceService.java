@@ -30,4 +30,12 @@ public interface PlaceService {
 	 */
 	public List<UserActivity> startActivity(AppUser user, Place place, Float workerAmount);
 
+	/**
+	 * Checks if given place is already in user's list. If not, adds it there
+	 * 
+	 * @param place
+	 *            {@link Place} actually found by user
+	 */
+	public void checkUserPlace(Place place);
+
 }

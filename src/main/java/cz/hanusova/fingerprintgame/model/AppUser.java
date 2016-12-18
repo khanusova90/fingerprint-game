@@ -15,6 +15,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -60,6 +62,11 @@ public class AppUser {
 	@JoinColumn(name = "ID_APP_USER")
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<UserActivity> activities = new ArrayList<>();
+
+	@JoinTable(name = "USER_PLACE", joinColumns = { @JoinColumn(name = "ID_APP_USER") }, inverseJoinColumns = {
+			@JoinColumn(name = "ID_PLACE") })
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private List<Place> places = new ArrayList<>();
 
 	/*
 	 * Getters and setters
@@ -182,6 +189,21 @@ public class AppUser {
 	 */
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
+	}
+
+	/**
+	 * @return the places
+	 */
+	public List<Place> getPlaces() {
+		return places;
+	}
+
+	/**
+	 * @param places
+	 *            the places to set
+	 */
+	public void setPlaces(List<Place> places) {
+		this.places = places;
 	}
 
 }

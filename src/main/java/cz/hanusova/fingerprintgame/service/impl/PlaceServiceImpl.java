@@ -12,8 +12,10 @@ import cz.hanusova.fingerprintgame.model.AppUser;
 import cz.hanusova.fingerprintgame.model.Place;
 import cz.hanusova.fingerprintgame.model.UserActivity;
 import cz.hanusova.fingerprintgame.repository.PlaceRepository;
+import cz.hanusova.fingerprintgame.repository.UserRepository;
 import cz.hanusova.fingerprintgame.service.ActivityService;
 import cz.hanusova.fingerprintgame.service.PlaceService;
+import cz.hanusova.fingerprintgame.utils.UserUtils;
 
 @Service
 public class PlaceServiceImpl implements PlaceService {
@@ -21,17 +23,34 @@ public class PlaceServiceImpl implements PlaceService {
 
 	private PlaceRepository placeRepository;
 	private ActivityService activityService;
+	private UserRepository userRepository;
 
 	@Autowired
-	public PlaceServiceImpl(PlaceRepository placeRepository, ActivityService activityService) {
+	public PlaceServiceImpl(PlaceRepository placeRepository, ActivityService activityService,
+			UserRepository userRepository) {
 		this.placeRepository = placeRepository;
 		this.activityService = activityService;
+		this.userRepository = userRepository;
 	}
 
 	@Override
-	@Transactional(readOnly = true)
+	@Transactional
 	public Place getPlaceByCode(String code) {
 		return placeRepository.findFirstByCode(code);
+	}
+
+	@Override
+	@Transactional
+	public void checkUserPlace(Place place) {
+		String username = UserUtils.getActualUsername();
+		AppUser user = userRepository.findByUsername(username);
+		List<Place> userPlaces = user.getPlaces();
+		Place userPlace = userPlaces.stream().filter(p -> p.equals(place)).findAny().orElse(null);
+		if (userPlace == null) {
+			logger.info("Adding place ID " + place.getIdPlace() + " to user " + username);
+			userPlaces.add(place);
+			userRepository.save(user);
+		}
 	}
 
 	@Override

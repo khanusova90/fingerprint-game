@@ -22,7 +22,9 @@ public class QrController {
 	@RequestMapping(value = "/{code}", produces = "application/json")
 	public Place getPlaceByCode(@PathVariable("code") String code) {
 		logger.info("Getting place with code " + code);
-		return placeService.getPlaceByCode(code);
+		Place place = placeService.getPlaceByCode(code);
+		placeService.checkUserPlace(place);
+		return place;
 	}
 
 }
