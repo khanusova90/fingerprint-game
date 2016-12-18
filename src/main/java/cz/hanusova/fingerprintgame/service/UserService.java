@@ -1,6 +1,6 @@
 package cz.hanusova.fingerprintgame.service;
 
-import java.util.Set;
+import java.util.List;
 
 import cz.hanusova.fingerprintgame.model.AppUser;
 import cz.hanusova.fingerprintgame.model.Inventory;
@@ -22,7 +22,7 @@ public interface UserService {
 	 * 
 	 * @return Seznam {@link Inventory} aktuaniho uzivatele
 	 */
-	public Set<Inventory> getUserInventory();
+	public List<Inventory> getUserInventory();
 
 	/**
 	 * Finds user by given username

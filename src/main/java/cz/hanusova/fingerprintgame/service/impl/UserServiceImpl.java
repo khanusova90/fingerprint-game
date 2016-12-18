@@ -1,7 +1,6 @@
 package cz.hanusova.fingerprintgame.service.impl;
 
 import java.util.List;
-import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -81,7 +80,7 @@ public class UserServiceImpl implements UserService {
 	 */
 	private void createInventory(AppUser user) {
 		List<Material> materials = materialRepository.findAll();
-		Set<Inventory> userInventory = user.getInventory();
+		List<Inventory> userInventory = user.getInventory();
 
 		for (Material m : materials) {
 			Inventory inv = new Inventory(m);
@@ -93,10 +92,10 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Set<Inventory> getUserInventory() {
+	public List<Inventory> getUserInventory() {
 		String username = UserUtils.getActualUsername();
 		AppUser user = userRepository.findByUsername(username);
-		Set<Inventory> result = user.getInventory();
+		List<Inventory> result = user.getInventory();
 		return result;
 	}
 

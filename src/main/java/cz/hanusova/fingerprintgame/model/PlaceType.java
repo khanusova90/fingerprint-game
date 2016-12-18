@@ -23,24 +23,11 @@ public class PlaceType {
 	@NotNull
 	private String placeType;
 
-	// @Column(name = "DESCRIPTION")
-	// private String description;
-
 	@Column(name = "IMG_URL")
 	private String imgUrl;
 
 	@Enumerated(EnumType.STRING)
 	private ActivityEnum activity;
-
-	// @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	// @JoinTable(name = "PLACE_TYPE_ACTIVITY", joinColumns = {
-	// @JoinColumn(name = "ID_PLACE_TYPE") }, inverseJoinColumns = {
-	// @JoinColumn(name = "ID_ACTIVITY") })
-	// private List<Activity> activities = new ArrayList<>();
-
-	// @ManyToOne
-	// @JoinColumn(name = "ID_ACTIVITY")
-	// private Activity activity;
 
 	public Long getIdPlaceType() {
 		return idPlaceType;
@@ -58,14 +45,6 @@ public class PlaceType {
 		this.placeType = placeType;
 	}
 
-	// public List<Activity> getActivities() {
-	// return activities;
-	// }
-	//
-	// public void setActivities(List<Activity> activities) {
-	// this.activities = activities;
-	// }
-
 	public String getImgUrl() {
 		return imgUrl;
 	}
@@ -73,14 +52,6 @@ public class PlaceType {
 	public void setImgUrl(String imgUrl) {
 		this.imgUrl = imgUrl;
 	}
-
-	// public Activity getActivity() {
-	// return activity;
-	// }
-	//
-	// public void setActivity(Activity activity) {
-	// this.activity = activity;
-	// }
 
 	/**
 	 * @return the activity

@@ -17,15 +17,12 @@ public class Character {
 	@Column(name = "ID_CHARACTER")
 	private Long idCharacter;
 
-	// @Column
 	@NotNull
 	private int charisma = 0;
 
-	// @Column
 	@NotNull
 	private int power = 0;
 
-	// @Column
 	@NotNull
 	private int xp = 0;
 

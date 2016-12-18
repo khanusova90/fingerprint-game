@@ -1,6 +1,6 @@
 package cz.hanusova.fingerprintgame.controller;
 
-import java.util.Set;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,7 +38,7 @@ public class OverviewController {
 	}
 
 	private void addUserInventory(Model model) {
-		Set<Inventory> inventory = userService.getUserInventory();
+		List<Inventory> inventory = userService.getUserInventory();
 		model.addAttribute("inventory", inventory);
 	}
 

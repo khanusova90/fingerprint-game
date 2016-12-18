@@ -4,7 +4,7 @@
 package cz.hanusova.fingerprintgame.service.impl;
 
 import java.math.BigDecimal;
-import java.util.Set;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,7 +42,7 @@ public class InventoryServiceImpl implements InventoryService {
 	@Override
 	public void updateWorkerAmount(Float workerAmount, AppUser user) {
 		Material worker = materialRepository.findWorker();
-		Set<Inventory> userInventory = user.getInventory();
+		List<Inventory> userInventory = user.getInventory();
 		Inventory workers = userInventory.stream().filter(i -> i.getMaterial().equals(worker)).findAny().orElse(null);
 
 		BigDecimal actualAmount = workers.getAmount();

@@ -1,7 +1,7 @@
 package cz.hanusova.fingerprintgame.model;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
@@ -47,40 +47,19 @@ public class AppUser {
 	@JoinColumn(name = "ID_CHARACTER")
 	private Character character;
 
-	// @Id
-	// @GeneratedValue(strategy = GenerationType.IDENTITY)
-	// @Column(name = "ID_USER")
-	// private Long idUser;
-	//
-	// @Column(name = "USERNAME")
-	// private String username;
-	//
-	// @Column(name = "STAGNAME", nullable = true)
-	// private String stagname;
-	//
-	// @Column(name = "PASSWORD")
-	// private String password;
-	//
 	@JoinColumn(name = "ID_APP_USER")
 	@OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-	private Set<Inventory> inventory = new HashSet<>();
+	private List<Inventory> inventory = new ArrayList<>();
 
 	@ElementCollection(targetClass = Role.class)
 	@CollectionTable(name = "USER_ROLE", joinColumns = { @JoinColumn(name = "ID_APP_USER") })
 	@Column(name = "ROLE")
 	@Enumerated(EnumType.STRING)
-	// private Set<String> roles = new HashSet<>();
-	private Set<Role> roles = new HashSet<>();
+	private List<Role> roles = new ArrayList<>();
 
 	@JoinColumn(name = "ID_APP_USER")
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private Set<UserActivity> activities = new HashSet<>();
-
-	// @ManyToMany
-	// @JoinTable(name = "USER_ROLE", joinColumns = { @JoinColumn(name =
-	// "ID_APP_USER") }, inverseJoinColumns = {
-	// @JoinColumn(name = "ID_ROLE") })
-	// private Set<Role> roles;
+	private List<UserActivity> activities = new ArrayList<>();
 
 	/*
 	 * Getters and setters
@@ -163,7 +142,7 @@ public class AppUser {
 	/**
 	 * @return the inventory
 	 */
-	public Set<Inventory> getInventory() {
+	public List<Inventory> getInventory() {
 		return inventory;
 	}
 
@@ -171,14 +150,14 @@ public class AppUser {
 	 * @param inventory
 	 *            the inventory to set
 	 */
-	public void setInventory(Set<Inventory> inventory) {
+	public void setInventory(List<Inventory> inventory) {
 		this.inventory = inventory;
 	}
 
 	/**
 	 * @return the activities
 	 */
-	public Set<UserActivity> getActivities() {
+	public List<UserActivity> getActivities() {
 		return activities;
 	}
 
@@ -186,14 +165,14 @@ public class AppUser {
 	 * @param activities
 	 *            the activities to set
 	 */
-	public void setActivities(Set<UserActivity> activities) {
+	public void setActivities(List<UserActivity> activities) {
 		this.activities = activities;
 	}
 
 	/**
 	 * @return the roles
 	 */
-	public Set<Role> getRoles() {
+	public List<Role> getRoles() {
 		return roles;
 	}
 
@@ -201,79 +180,8 @@ public class AppUser {
 	 * @param roles
 	 *            the roles to set
 	 */
-	public void setRoles(Set<Role> roles) {
+	public void setRoles(List<Role> roles) {
 		this.roles = roles;
 	}
 
-	// /**
-	// * @return the roles
-	// */
-	// public Set<String> getRoles() {
-	// return roles;
-	// }
-	//
-	// /**
-	// * @param roles
-	// * the roles to set
-	// */
-	// public void setRoles(Set<String> roles) {
-	// this.roles = roles;
-	// }
-
-	//
-	// public Long getIdUser() {
-	// return idUser;
-	// }
-	//
-	// public void setIdUser(Long idUser) {
-	// this.idUser = idUser;
-	// }
-	//
-	// public String getUsername() {
-	// return username;
-	// }
-	//
-	// public void setUsername(String username) {
-	// this.username = username;
-	// }
-	//
-	// public Set<Inventory> getInventory() {
-	// return inventory;
-	// }
-	//
-	// public String getPassword() {
-	// return password;
-	// }
-	//
-	// public void setPassword(String password) {
-	// this.password = password;
-	// }
-	//
-	// public String getStagname() {
-	// return stagname;
-	// }
-	//
-	// public void setStagname(String stagname) {
-	// this.stagname = stagname;
-	// }
-	//
-	// public Set<String> getUserRoles() {
-	// return userRoles;
-	// }
-	//
-	// public Set<UserActivity> getActivities() {
-	// return activities;
-	// }
-	//
-	// public void setActivities(Set<UserActivity> activities) {
-	// this.activities = activities;
-	// }
-	//
-	// public Character getCharacter() {
-	// return character;
-	// }
-	//
-	// public void setCharacter(Character character) {
-	// this.character = character;
-	// }
 }

@@ -4,8 +4,8 @@
 package cz.hanusova.fingerprintgame.service;
 
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -60,7 +60,7 @@ public class PlaceServiceTest {
 		InventoryService inventoryService = new InventoryServiceImpl(materialRepositoryMock, inventoryRepositoryMock);
 		ActivityService activityService = new ActivityServiceImpl(userActivityRepositoryMock, userRepositoryMock,
 				inventoryService);
-		placeService = new PlaceServiceImpl(placeRepositoryMock, userRepositoryMock, activityService);
+		placeService = new PlaceServiceImpl(placeRepositoryMock, activityService);
 		user = userBuilder.build();
 		Mockito.when(materialRepositoryMock.findWorker())
 				.thenReturn(user.getInventory().iterator().next().getMaterial());
@@ -69,7 +69,7 @@ public class PlaceServiceTest {
 	@Test
 	public void startActivityTest() {
 		int activCount = user.getActivities().size();
-		Set<UserActivity> activities = placeService.startActivity(user, placeMock, MATERIAL_AMOUNT_20);
+		List<UserActivity> activities = placeService.startActivity(user, placeMock, MATERIAL_AMOUNT_20);
 
 		Assert.assertNotNull("List of returned activities should not be null", activities);
 		Assert.assertNotEquals("Activity should be added or removed from user's activities list", activCount,
@@ -79,7 +79,7 @@ public class PlaceServiceTest {
 	@Test
 	public void startNewActivityTest() {
 		int activCount = user.getActivities().size();
-		Set<UserActivity> activities = placeService.startActivity(user, placeMock, MATERIAL_AMOUNT_20);
+		List<UserActivity> activities = placeService.startActivity(user, placeMock, MATERIAL_AMOUNT_20);
 
 		Assert.assertFalse("Returned list should contain at least one activity", activities.isEmpty());
 		Assert.assertEquals("New activity should be added to list", activCount + 1, activities.size());
@@ -90,7 +90,7 @@ public class PlaceServiceTest {
 		createExistingActivity();
 
 		int activCount = user.getActivities().size();
-		Set<UserActivity> activities = placeService.startActivity(user, placeMock, 0f);
+		List<UserActivity> activities = placeService.startActivity(user, placeMock, 0f);
 
 		Assert.assertNotEquals("Activities count should change", activCount, activities.size());
 		Assert.assertEquals("Existing activity should be removed from list", activCount - 1, activities.size());
@@ -101,7 +101,7 @@ public class PlaceServiceTest {
 		Mockito.when(activityMock.getPlace()).thenReturn(placeMock);
 		Mockito.when(activityMock.getMaterialAmount()).thenReturn(MATERIAL_AMOUNT_20);
 
-		Set<UserActivity> activitiesMock = new HashSet<>();
+		List<UserActivity> activitiesMock = new ArrayList<>();
 		activitiesMock.add(activityMock);
 		user.setActivities(activitiesMock);
 	}
@@ -111,7 +111,7 @@ public class PlaceServiceTest {
 		createExistingActivity();
 
 		int activCount = user.getActivities().size();
-		Set<UserActivity> activities = placeService.startActivity(user, placeMock, MATERIAL_AMOUNT_30);
+		List<UserActivity> activities = placeService.startActivity(user, placeMock, MATERIAL_AMOUNT_30);
 
 		Assert.assertEquals("Number of existing activities should not change", activCount, activities.size());
 	}

@@ -1,6 +1,6 @@
 package cz.hanusova.fingerprintgame.service.impl;
 
-import java.util.Set;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -36,9 +36,9 @@ public class PlaceServiceImpl implements PlaceService {
 
 	@Override
 	@Transactional
-	public Set<UserActivity> startActivity(AppUser user, Place place, Float workerAmount) {
+	public List<UserActivity> startActivity(AppUser user, Place place, Float workerAmount) {
 		logger.info("Starting activity for user " + user.getUsername() + " at place ID " + place.getIdPlace());
-		Set<UserActivity> activities = user.getActivities();
+		List<UserActivity> activities = user.getActivities();
 		UserActivity existingActivity = null;
 		if (activities != null && !activities.isEmpty()) {
 			existingActivity = activities.stream().filter(a -> a.getPlace().equals(place)).findAny().orElse(null);

@@ -62,12 +62,6 @@ public class Place {
 	@Column(name = "Y_COORD")
 	private Integer yCoord;
 
-	/**
-	 * Zdroje, ktere jsou k dispozici na danem miste
-	 */
-	// @OneToMany(mappedBy = "place")
-	// private List<Resource> resources;
-
 	public Long getIdPlace() {
 		return idPlace;
 	}
@@ -83,14 +77,6 @@ public class Place {
 	public void setCode(String code) {
 		this.code = code;
 	}
-
-	// public List<Resource> getResources() {
-	// return resources;
-	// }
-	//
-	// public void setResources(List<Resource> resources) {
-	// this.resources = resources;
-	// }
 
 	public String getName() {
 		return name;
@@ -145,6 +131,24 @@ public class Place {
 
 	public void setyCoord(Integer yCoord) {
 		this.yCoord = yCoord;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null)
+			return false;
+		if (obj == this)
+			return true;
+		if (!(obj instanceof Place))
+			return false;
+		Place object = (Place) obj;
+
+		return this.getIdPlace() == object.getIdPlace();
 	}
 
 }

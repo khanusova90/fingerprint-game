@@ -26,22 +26,12 @@ public class Inventory {
 	@Column(name = "ID_INVENTORY")
 	private Long idInventory;
 
-	// @ManyToOne(fetch = FetchType.LAZY)
-	// @JoinColumn(name = "ID_USER")
-	// private AppUser user;
-
-	// private MaterialEnum material;
-
 	@NotNull
 	private BigDecimal amount = BigDecimal.ZERO;
 
 	@ManyToOne
 	@JoinColumn(name = "ID_MATERIAL")
 	private Material material;
-	// public Inventory(MaterialEnum material, BigDecimal amount) {
-	// this.material = material;
-	// this.amount = amount;
-	// }
 
 	public Inventory(Material material, BigDecimal amount) {
 		this.material = material;
@@ -69,22 +59,6 @@ public class Inventory {
 	public void setIdInventory(Long idInventory) {
 		this.idInventory = idInventory;
 	}
-
-	// public AppUser getUser() {
-	// return user;
-	// }
-	//
-	// public void setUser(AppUser user) {
-	// this.user = user;
-	// }
-
-	// public MaterialEnum getMaterial() {
-	// return material;
-	// }
-	//
-	// public void setMaterial(MaterialEnum material) {
-	// this.material = material;
-	// }
 
 	public BigDecimal getAmount() {
 		return amount;

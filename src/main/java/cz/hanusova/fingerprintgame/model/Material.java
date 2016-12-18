@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Immutable;
+
 /**
  * Class representing materials available in game
  * 
@@ -17,6 +19,7 @@ import javax.validation.constraints.NotNull;
  *
  */
 @Entity
+@Immutable
 @Table(name = "MATERIAL")
 public class Material implements Serializable {
 
@@ -81,6 +84,25 @@ public class Material implements Serializable {
 	 */
 	public void setDefaultAmount(Integer defaultAmount) {
 		this.defaultAmount = defaultAmount;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null)
+			return false;
+		if (obj == this)
+			return true;
+		if (!(obj instanceof Material))
+			return false;
+		Material object = (Material) obj;
+
+		return this.getIdMaterial() == object.getIdMaterial();
+
 	}
 
 }

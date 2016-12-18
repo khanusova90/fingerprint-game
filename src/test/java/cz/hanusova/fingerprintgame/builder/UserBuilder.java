@@ -4,8 +4,8 @@
 package cz.hanusova.fingerprintgame.builder;
 
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import cz.hanusova.fingerprintgame.model.AppUser;
 import cz.hanusova.fingerprintgame.model.Inventory;
@@ -29,8 +29,8 @@ public class UserBuilder {
 		return user;
 	}
 
-	private Set<Inventory> createInventory() {
-		Set<Inventory> inventory = new HashSet<>();
+	private List<Inventory> createInventory() {
+		List<Inventory> inventory = new ArrayList<>();
 		Material worker = new Material();
 		worker.setName("WORKER");
 		inventory.add(new Inventory(worker, new BigDecimal("100")));

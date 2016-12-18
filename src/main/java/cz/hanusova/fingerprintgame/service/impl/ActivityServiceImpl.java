@@ -47,10 +47,9 @@ public class ActivityServiceImpl implements ActivityService {
 
 	@Override
 	public void removeActivity(UserActivity activity, AppUser user) {
+		inventoryService.updateWorkerAmount(activity.getMaterialAmount() * -1, user);
 		user.getActivities().remove(activity);
 		userRepository.save(user);
-
-		inventoryService.updateWorkerAmount(activity.getMaterialAmount() * -1, user);
 
 		userActivityRepository.delete(activity);
 	}
