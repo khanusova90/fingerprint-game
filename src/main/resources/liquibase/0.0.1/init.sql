@@ -114,3 +114,17 @@ create table USER_PLACE(
 	constraint fk_user_place_place foreign key fk_user_place_place(ID_PLACE) references PLACE(ID_PLACE)
 );
 
+--changeset hanuska1:insert-2
+update place_type set activity = "BUY", img_url = "shop_icon.png" where id_place_type=2;
+update place_type set activity = "CHANGE", img_url="stall_icon.png" where id_place_type = 3;
+insert into place_type (place_type, img_url, activity) 
+	values ("Staveniště", "house_icon.png", "BUILD");
+	
+alter table material add column ICON_NAME varchar(255);
+
+update material set icon_name = "money_icon.png" where id_material = 2;
+update material set icon_name = "apple_icon.png" where ID_MATERIAL = 2;
+update material set icon_name = "tree_icon.png" where id_material = 3;
+update material set icon_name = "mountain_icon.png" where id_material = 4;
+update material set icon_name = "worker_icon.png" where id_material = 5;
+

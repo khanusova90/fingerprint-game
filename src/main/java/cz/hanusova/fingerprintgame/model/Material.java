@@ -41,6 +41,10 @@ public class Material implements Serializable {
 	@Column(name = "DEFAULT_AMOUNT")
 	private Integer defaultAmount;
 
+	@NotNull
+	@Column(name = "ICON_NAME")
+	private String iconName;
+
 	/**
 	 * @return the idMaterial
 	 */
@@ -84,6 +88,21 @@ public class Material implements Serializable {
 	 */
 	public void setDefaultAmount(Integer defaultAmount) {
 		this.defaultAmount = defaultAmount;
+	}
+
+	/**
+	 * @return the iconName
+	 */
+	public String getIconName() {
+		return iconName;
+	}
+
+	/**
+	 * @param iconName
+	 *            the iconName to set
+	 */
+	public void setIconName(String iconName) {
+		this.iconName = iconName;
 	}
 
 	/*
