@@ -4,6 +4,7 @@
 	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:task="http://www.springframework.org/schema/task"
 	xsi:schemaLocation="
         http://www.springframework.org/schema/beans     
         http://www.springframework.org/schema/beans/spring-beans.xsd
@@ -16,12 +17,15 @@
      	http://www.springframework.org/schema/data/repository
      	http://www.springframework.org/schema/data/repository/spring-repository-1.8.xsd 
      	http://www.springframework.org/schema/tx
-        http://www.springframework.org/schema/tx/spring-tx.xsd">
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/task
+		http://www.springframework.org/schema/task/spring-task.xsd">
  
 	<context:component-scan base-package="cz.hanusova.fingerprintgame" />
 	<context:annotation-config />
 	<jpa:repositories base-package="cz.hanusova.fingerprintgame.repository" />
 	<tx:annotation-driven transaction-manager="transactionManager"/>
+	<task:annotation-driven/>
 	
 	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
