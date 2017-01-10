@@ -127,4 +127,26 @@ public class PlaceServiceTest {
 		Assert.assertNotEquals("Amount of workers should change", workers, workersUpdate);
 	}
 
+	/**
+	 * Checks if created activity has all mandatory properties
+	 */
+	@Test
+	public void attributesTest() {
+		// New activity
+		int activCount = user.getActivities().size();
+		List<UserActivity> activities = placeService.startActivity(user, placeMock, MATERIAL_AMOUNT_20);
+		Assert.assertEquals("New activity should be added to list", activCount + 1, activities.size());
+
+		UserActivity newActivity = activities.get(activities.size() - 1);
+		Assert.assertNotNull("Place should be filled in new activity", newActivity.getPlace());
+		Assert.assertNotNull("Start time should be filled in new activity", newActivity.getStartTime());
+
+		// Activity update
+		activities = placeService.startActivity(user, placeMock, MATERIAL_AMOUNT_30);
+		Assert.assertEquals("New activity should not be added to list", activCount + 1, activities.size());
+		newActivity = activities.get(activities.size() - 1);
+		Assert.assertNotNull("Place should be filled in new activity", newActivity.getPlace());
+		Assert.assertNotNull("Start time should be filled in new activity", newActivity.getStartTime());
+	}
+
 }
