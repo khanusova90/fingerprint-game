@@ -38,4 +38,20 @@ public interface InventoryService {
 	 */
 	public void updateWoodAmount(Float amount, AppUser user);
 
+	/**
+	 * @param amount
+	 *            amount of food that user used. Pass negative parameter value
+	 *            to increase food amount in inventory
+	 * @param user
+	 */
+	public void updateFoodAmount(Float amount, AppUser user);
+
+	/**
+	 * @param amount
+	 *            amount of gold that user used. Pass negative parameter value
+	 *            to increase gold amount in inventory
+	 * @param user
+	 */
+	void updateGoldAmount(Float amount, AppUser user);
+
 }

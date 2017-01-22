@@ -60,6 +60,16 @@ public class InventoryServiceImpl implements InventoryService {
 		updateMaterialAmount(WOOD, amount, user);
 	}
 
+	@Override
+	public void updateFoodAmount(Float amount, AppUser user) {
+		updateMaterialAmount(FOOD, amount, user);
+	}
+
+	@Override
+	public void updateGoldAmount(Float amount, AppUser user) {
+		updateMaterialAmount(GOLD, amount, user);
+	}
+
 	private void updateMaterialAmount(String materialName, Float amount, AppUser user) {
 		Material material = materialRepository.findByName(materialName);
 		List<Inventory> userInventory = user.getInventory();

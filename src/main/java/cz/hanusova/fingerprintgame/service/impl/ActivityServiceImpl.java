@@ -56,6 +56,7 @@ public class ActivityServiceImpl implements ActivityService {
 		case BUILD:
 			inventoryService.updateStoneAmount(amount * 10, user);
 			inventoryService.updateWoodAmount(amount * 10, user);
+			inventoryService.updateWorkerAmount(amount * -1, user);
 			break;
 		default:
 			break;
@@ -74,6 +75,7 @@ public class ActivityServiceImpl implements ActivityService {
 
 	@Override
 	public void changeActivity(UserActivity activity, Float workersAmount, AppUser user) {
+		// TODO: vyresit pro zmenu stavby
 		inventoryService.updateWorkerAmount(activity.getMaterialAmount() * -1, user);
 		activity.setMaterialAmount(workersAmount);
 		activity.setStartTime(new Date());
