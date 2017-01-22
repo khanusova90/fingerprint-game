@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cz.hanusova.fingerprintgame.service;
+package cz.hanusova.fingerprintgame.service.impl;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -21,7 +21,7 @@ import cz.hanusova.fingerprintgame.model.Place;
 import cz.hanusova.fingerprintgame.model.UserActivity;
 import cz.hanusova.fingerprintgame.repository.InventoryRepository;
 import cz.hanusova.fingerprintgame.repository.UserRepository;
-import cz.hanusova.fingerprintgame.service.impl.MiningService;
+import cz.hanusova.fingerprintgame.service.MiningService;
 
 /**
  * @author khanusova

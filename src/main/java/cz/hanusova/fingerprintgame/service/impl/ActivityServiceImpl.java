@@ -8,6 +8,7 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import cz.hanusova.fingerprintgame.model.ActivityEnum;
 import cz.hanusova.fingerprintgame.model.AppUser;
 import cz.hanusova.fingerprintgame.model.Place;
 import cz.hanusova.fingerprintgame.model.UserActivity;
@@ -36,13 +37,30 @@ public class ActivityServiceImpl implements ActivityService {
 	}
 
 	@Override
-	public void startNewActivity(Place place, Float workerAmount, AppUser user) {
-		UserActivity activity = new UserActivity(place, workerAmount);
+	public void startNewActivity(Place place, Float amount, AppUser user) {
+		UserActivity activity = new UserActivity(place, amount);
 		userActivityRepository.save(activity);
 
 		user.getActivities().add(activity);
-		inventoryService.updateWorkerAmount(workerAmount, user);
+		updateInventory(place, user, amount);
+
 		userRepository.save(user);
+	}
+
+	private void updateInventory(Place place, AppUser user, Float amount) {
+		ActivityEnum placeActivity = place.getPlaceType().getActivity();
+		switch (placeActivity) {
+		case MINE:
+			inventoryService.updateWorkerAmount(amount, user);
+			break;
+		case BUILD:
+			inventoryService.updateStoneAmount(amount * 10, user);
+			inventoryService.updateWoodAmount(amount * 10, user);
+			break;
+		default:
+			break;
+		}
+
 	}
 
 	@Override

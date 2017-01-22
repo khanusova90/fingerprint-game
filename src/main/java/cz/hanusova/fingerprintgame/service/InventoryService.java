@@ -22,4 +22,20 @@ public interface InventoryService {
 	 */
 	public void updateWorkerAmount(Float workerAmount, AppUser user);
 
+	/**
+	 * @param amount
+	 *            amount of stone that user used. Pass negative parameter value
+	 *            to increase stone amount in inventory
+	 * @param user
+	 */
+	public void updateStoneAmount(Float amount, AppUser user);
+
+	/**
+	 * @param amount
+	 *            amount of wood that user used. Pass negative parameter value
+	 *            to increase wood amount in inventory
+	 * @param user
+	 */
+	public void updateWoodAmount(Float amount, AppUser user);
+
 }
