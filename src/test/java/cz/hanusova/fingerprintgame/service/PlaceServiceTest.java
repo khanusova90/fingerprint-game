@@ -15,8 +15,10 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import cz.hanusova.fingerprintgame.builder.UserBuilder;
+import cz.hanusova.fingerprintgame.model.ActivityEnum;
 import cz.hanusova.fingerprintgame.model.AppUser;
 import cz.hanusova.fingerprintgame.model.Place;
+import cz.hanusova.fingerprintgame.model.PlaceType;
 import cz.hanusova.fingerprintgame.model.UserActivity;
 import cz.hanusova.fingerprintgame.repository.InventoryRepository;
 import cz.hanusova.fingerprintgame.repository.MaterialRepository;
@@ -47,6 +49,8 @@ public class PlaceServiceTest {
 	private UserRepository userRepositoryMock;
 	@Mock
 	private Place placeMock;
+	@Mock
+	private PlaceType placeTypeMock;
 
 	private UserBuilder userBuilder = new UserBuilder();
 	private AppUser user;
@@ -64,6 +68,10 @@ public class PlaceServiceTest {
 		user = userBuilder.build();
 		Mockito.when(materialRepositoryMock.findWorker())
 				.thenReturn(user.getInventory().iterator().next().getMaterial());
+		Mockito.when(materialRepositoryMock.findByName(Mockito.anyString()))
+				.thenReturn(user.getInventory().iterator().next().getMaterial());
+		Mockito.when(placeMock.getPlaceType()).thenReturn(placeTypeMock);
+		Mockito.when(placeTypeMock.getActivity()).thenReturn(ActivityEnum.MINE);
 	}
 
 	@Test

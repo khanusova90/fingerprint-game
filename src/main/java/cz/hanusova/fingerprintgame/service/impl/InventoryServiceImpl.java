@@ -48,15 +48,6 @@ public class InventoryServiceImpl implements InventoryService {
 	@Override
 	public void updateWorkerAmount(Float workerAmount, AppUser user) {
 		updateMaterialAmount(WORKER, workerAmount, user);
-		// Material worker = materialRepository.findWorker();
-		// List<Inventory> userInventory = user.getInventory();
-		// Inventory workers = userInventory.stream().filter(i ->
-		// i.getMaterial().equals(worker)).findAny().orElse(null);
-		//
-		// BigDecimal actualAmount = workers.getAmount();
-		// workers.setAmount(actualAmount.subtract(new
-		// BigDecimal(workerAmount)));
-		// inventoryRepository.save(workers);
 	}
 
 	@Override
@@ -74,9 +65,11 @@ public class InventoryServiceImpl implements InventoryService {
 		List<Inventory> userInventory = user.getInventory();
 		Inventory materialInventory = userInventory.stream().filter(i -> i.getMaterial().equals(material)).findAny()
 				.orElse(null);
-		BigDecimal actualAmount = materialInventory.getAmount();
-		materialInventory.setAmount(actualAmount.subtract(new BigDecimal(amount)));
-		inventoryRepository.save(materialInventory);
+		if (materialInventory != null) {
+			BigDecimal actualAmount = materialInventory.getAmount();
+			materialInventory.setAmount(actualAmount.subtract(new BigDecimal(amount)));
+			inventoryRepository.save(materialInventory);
+		}
 	}
 
 }
