@@ -32,6 +32,7 @@
 			<list>
 				<value>classpath:database.properties</value>
 				<value>classpath:application.properties</value>
+				<value>classpath:files.properties</value>
 			</list>
 		</property>
 	</bean>
