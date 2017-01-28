@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cz.hanusova.fingerprintgame.service;
+package cz.hanusova.fingerprintgame.service.impl;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -21,7 +21,8 @@ import cz.hanusova.fingerprintgame.model.Place;
 import cz.hanusova.fingerprintgame.model.UserActivity;
 import cz.hanusova.fingerprintgame.repository.InventoryRepository;
 import cz.hanusova.fingerprintgame.repository.UserRepository;
-import cz.hanusova.fingerprintgame.service.impl.MiningService;
+import cz.hanusova.fingerprintgame.service.InventoryService;
+import cz.hanusova.fingerprintgame.service.MiningService;
 
 /**
  * @author khanusova
@@ -29,19 +30,20 @@ import cz.hanusova.fingerprintgame.service.impl.MiningService;
  */
 @Service
 public class MiningServiceImpl implements MiningService {
+	// FIXME: rename class
 	private Log logger = LogFactory.getLog(MiningServiceImpl.class);
 
 	private UserRepository userRepository;
 	private InventoryRepository inventoryRepository; // TODO: je potreba? ->
 														// podivat se na kaskady
+	private InventoryService inventoryService;
 
-	/**
-	 * 
-	 */
 	@Autowired
-	public MiningServiceImpl(UserRepository userRepository, InventoryRepository inventoryRepository) {
+	public MiningServiceImpl(UserRepository userRepository, InventoryRepository inventoryRepository,
+			InventoryService inventoryService) {
 		this.userRepository = userRepository;
 		this.inventoryRepository = inventoryRepository;
+		this.inventoryService = inventoryService;
 	}
 
 	@Scheduled(fixedRate = 60_000)
@@ -55,7 +57,8 @@ public class MiningServiceImpl implements MiningService {
 			for (UserActivity activity : activities) {
 				Place place = activity.getPlace();
 				ActivityEnum activityType = place.getPlaceType().getActivity();
-				if (ActivityEnum.MINE.equals(activityType)) {
+				switch (activityType) {
+				case MINE:
 					float workers = activity.getMaterialAmount();
 					Material material = place.getMaterial();
 					for (Inventory inventory : user.getInventory()) {
@@ -63,12 +66,21 @@ public class MiningServiceImpl implements MiningService {
 							logger.info(
 									"Adding " + workers + " of " + material.getName() + " to " + user.getUsername());
 							BigDecimal actualAmount = inventory.getAmount();
-							// TODO: upravit pocet
 							inventory.setAmount(actualAmount.add(new BigDecimal(workers)));
 							inventoryRepository.save(inventory);
 							break;
 						}
 					}
+					break;
+				case BUILD:
+					float housesAmount = activity.getMaterialAmount();
+					logger.info("User " + user.getUsername() + " is paying rent for " + housesAmount + " houses");
+					;
+					inventoryService.updateGoldAmount(0.5f * housesAmount, user);
+					inventoryService.updateFoodAmount(0.5f * housesAmount, user);
+					break;
+				default:
+					break;
 				}
 			}
 			userRepository.save(user);

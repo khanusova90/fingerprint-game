@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cz.hanusova.fingerprintgame.service.impl;
+package cz.hanusova.fingerprintgame.service;
 
 /**
  * @author khanusova

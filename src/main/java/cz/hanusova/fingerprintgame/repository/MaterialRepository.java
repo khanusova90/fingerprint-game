@@ -29,4 +29,6 @@ public interface MaterialRepository extends JpaRepository<Material, Long> {
 	@Query("from Material m where m.name = 'WORKER'")
 	public Material findWorker();
 
+	public Material findByName(String name);
+
 }

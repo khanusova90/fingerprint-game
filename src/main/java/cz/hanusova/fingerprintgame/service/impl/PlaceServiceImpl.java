@@ -57,13 +57,12 @@ public class PlaceServiceImpl implements PlaceService {
 	@Transactional
 	public List<UserActivity> startActivity(AppUser user, Place place, Float workerAmount) {
 		logger.info("Starting activity for user " + user.getUsername() + " at place ID " + place.getIdPlace());
+
 		List<UserActivity> activities = user.getActivities();
 		UserActivity existingActivity = null;
 		if (activities != null && !activities.isEmpty()) {
 			existingActivity = activities.stream().filter(a -> a.getPlace().equals(place)).findAny().orElse(null);
 		}
-		// TODO: rozdelit podle typu aktivity
-		// TODO: prepocitani inventare az odsud
 		if (existingActivity == null && workerAmount != 0) {
 			activityService.startNewActivity(place, workerAmount, user);
 		} else if (workerAmount == 0) {
