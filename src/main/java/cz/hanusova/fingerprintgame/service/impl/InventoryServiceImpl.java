@@ -6,14 +6,22 @@ package cz.hanusova.fingerprintgame.service.impl;
 import java.math.BigDecimal;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import cz.hanusova.fingerprintgame.model.ActivityEnum;
 import cz.hanusova.fingerprintgame.model.AppUser;
 import cz.hanusova.fingerprintgame.model.Inventory;
 import cz.hanusova.fingerprintgame.model.Material;
+import cz.hanusova.fingerprintgame.model.Place;
+import cz.hanusova.fingerprintgame.model.UserActivity;
 import cz.hanusova.fingerprintgame.repository.InventoryRepository;
 import cz.hanusova.fingerprintgame.repository.MaterialRepository;
+import cz.hanusova.fingerprintgame.repository.UserRepository;
 import cz.hanusova.fingerprintgame.service.InventoryService;
 
 /**
@@ -22,6 +30,7 @@ import cz.hanusova.fingerprintgame.service.InventoryService;
  */
 @Service
 public class InventoryServiceImpl implements InventoryService {
+	private static final Log logger = LogFactory.getLog(InventoryServiceImpl.class);
 
 	private static final String GOLD = "GOLD";
 	private static final String STONE = "STONE";
@@ -31,11 +40,14 @@ public class InventoryServiceImpl implements InventoryService {
 
 	private MaterialRepository materialRepository;
 	private InventoryRepository inventoryRepository;
+	private UserRepository userRepository;
 
 	@Autowired
-	public InventoryServiceImpl(MaterialRepository materialRepository, InventoryRepository inventoryRepository) {
+	public InventoryServiceImpl(MaterialRepository materialRepository, InventoryRepository inventoryRepository,
+			UserRepository userRepository) {
 		this.materialRepository = materialRepository;
 		this.inventoryRepository = inventoryRepository;
+		this.userRepository = userRepository;
 	}
 
 	/*
@@ -46,40 +58,100 @@ public class InventoryServiceImpl implements InventoryService {
 	 * cz.hanusova.fingerprintgame.model.AppUser)
 	 */
 	@Override
-	public void updateWorkerAmount(Float workerAmount, AppUser user) {
-		updateMaterialAmount(WORKER, workerAmount, user);
+	public BigDecimal updateWorkerAmount(Float workerAmount, AppUser user) {
+		return updateMaterialAmount(WORKER, workerAmount, user);
 	}
 
 	@Override
-	public void updateStoneAmount(Float amount, AppUser user) {
-		updateMaterialAmount(STONE, amount, user);
+	public BigDecimal updateStoneAmount(Float amount, AppUser user) {
+		return updateMaterialAmount(STONE, amount, user);
 	}
 
 	@Override
-	public void updateWoodAmount(Float amount, AppUser user) {
-		updateMaterialAmount(WOOD, amount, user);
+	public BigDecimal updateWoodAmount(Float amount, AppUser user) {
+		return updateMaterialAmount(WOOD, amount, user);
 	}
 
 	@Override
-	public void updateFoodAmount(Float amount, AppUser user) {
-		updateMaterialAmount(FOOD, amount, user);
+	public BigDecimal updateFoodAmount(Float amount, AppUser user) {
+		return updateMaterialAmount(FOOD, amount, user);
 	}
 
 	@Override
-	public void updateGoldAmount(Float amount, AppUser user) {
-		updateMaterialAmount(GOLD, amount, user);
+	public BigDecimal updateGoldAmount(Float amount, AppUser user) {
+		return updateMaterialAmount(GOLD, amount, user);
 	}
 
-	private void updateMaterialAmount(String materialName, Float amount, AppUser user) {
+	private BigDecimal updateMaterialAmount(String materialName, Float amount, AppUser user) {
 		Material material = materialRepository.findByName(materialName);
 		List<Inventory> userInventory = user.getInventory();
 		Inventory materialInventory = userInventory.stream().filter(i -> i.getMaterial().equals(material)).findAny()
 				.orElse(null);
 		if (materialInventory != null) {
 			BigDecimal actualAmount = materialInventory.getAmount();
-			materialInventory.setAmount(actualAmount.subtract(new BigDecimal(amount)));
+			BigDecimal newAmount = actualAmount.subtract(new BigDecimal(amount));
+			materialInventory.setAmount(newAmount);
 			inventoryRepository.save(materialInventory);
+
+			return newAmount;
 		}
+		return null;
+	}
+
+	@Scheduled(fixedRate = 60_000)
+	@Transactional // TODO: nemelo by byt v jedne transakci pro vsechny
+					// uzivatele
+	@Override
+	public void checkRunningActivities() {
+		logger.info("Checking activities");
+		List<AppUser> users = userRepository.findAll();
+		for (AppUser user : users) {
+			for (UserActivity activity : user.getActivities()) {
+				Place place = activity.getPlace();
+				ActivityEnum activityType = place.getPlaceType().getActivity();
+				switch (activityType) {
+				case MINE:
+					float workers = activity.getMaterialAmount();
+					if (feedWorkers(workers, user)) {
+						addMining(place, user, workers);
+					}
+					break;
+				case BUILD:
+					payRent(activity, user);
+					break;
+				default:
+					break;
+				}
+			}
+			userRepository.save(user);
+
+		}
+	}
+
+	private void addMining(Place place, AppUser user, float workers) {
+		Material material = place.getMaterial();
+		for (Inventory inventory : user.getInventory()) {
+			if (inventory.getMaterial().equals(material)) {
+				logger.info("Adding " + workers + " of " + material.getName() + " to " + user.getUsername());
+				BigDecimal actualAmount = inventory.getAmount();
+				inventory.setAmount(actualAmount.add(new BigDecimal(workers)));
+				inventoryRepository.save(inventory);
+				break;
+			}
+		}
+	}
+
+	private void payRent(UserActivity activity, AppUser user) {
+		float housesAmount = activity.getMaterialAmount();
+		logger.info("User " + user.getUsername() + " is paying rent for " + housesAmount + " houses");
+		updateGoldAmount(0.5f * housesAmount, user);
+	}
+
+	private boolean feedWorkers(float workers, AppUser user) {
+		logger.info("Giving food to workers");
+		BigDecimal foodAmount = updateFoodAmount(workers * 0.25f, user);
+
+		return true;
 	}
 
 }

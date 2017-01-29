@@ -37,6 +37,9 @@
 		</property>
 	</bean>
 	
+	<bean id="validationFactory" class="javax.validation.Validation"  
+          factory-method="buildDefaultValidatorFactory" />  
+    
 	<bean name="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 	    <property name="driverClassName" value="${jdbc.driver}" />
 	    <property name="url" value="${jdbc.url}" />

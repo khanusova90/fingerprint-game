@@ -7,6 +7,7 @@ import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import cz.hanusova.fingerprintgame.model.ActivityEnum;
 import cz.hanusova.fingerprintgame.model.AppUser;
@@ -37,6 +38,7 @@ public class ActivityServiceImpl implements ActivityService {
 	}
 
 	@Override
+	@Transactional
 	public void startNewActivity(Place place, Float amount, AppUser user) {
 		UserActivity activity = new UserActivity(place, amount);
 		userActivityRepository.save(activity);
@@ -65,6 +67,7 @@ public class ActivityServiceImpl implements ActivityService {
 	}
 
 	@Override
+	@Transactional
 	public void removeActivity(UserActivity activity, AppUser user) {
 		inventoryService.updateWorkerAmount(activity.getMaterialAmount() * -1, user);
 		user.getActivities().remove(activity);
@@ -74,6 +77,7 @@ public class ActivityServiceImpl implements ActivityService {
 	}
 
 	@Override
+	@Transactional
 	public void changeActivity(UserActivity activity, Float workersAmount, AppUser user) {
 		// TODO: vyresit pro zmenu stavby
 		inventoryService.updateWorkerAmount(activity.getMaterialAmount() * -1, user);
