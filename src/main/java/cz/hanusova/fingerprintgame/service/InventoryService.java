@@ -6,6 +6,8 @@ package cz.hanusova.fingerprintgame.service;
 import java.math.BigDecimal;
 
 import cz.hanusova.fingerprintgame.model.AppUser;
+import cz.hanusova.fingerprintgame.model.Place;
+import cz.hanusova.fingerprintgame.model.UserActivity;
 
 /**
  * @author khanusova
@@ -62,9 +64,37 @@ public interface InventoryService {
 	public BigDecimal updateGoldAmount(Float amount, AppUser user);
 
 	/**
-	 * Checks actually running activities of all users and updates their
-	 * inventory
+	 * Adds mined material
+	 * 
+	 * @param place
+	 *            {@link Place} where mining takes place
+	 * @param user
+	 *            {@link AppUser} who is mining
+	 * @param workers
+	 *            amount of workers mining
 	 */
-	void checkRunningActivities();
+	public void addMining(Place place, AppUser user, float workers);
+
+	/**
+	 * Subtracts material as rent for houses that user has built
+	 * 
+	 * @param activity
+	 *            currently running building {@link UserActivity}
+	 * @param user
+	 *            {@link AppUser}
+	 */
+	public void payRent(UserActivity activity, AppUser user);
+
+	/**
+	 * Subtracts food for actually mining workers
+	 * 
+	 * @param workers
+	 *            number of workers mining
+	 * @param user
+	 *            {@link AppUser}
+	 * @return <code>true</code> if user has enough food for workers otherwise
+	 *         returns <code>false</code>
+	 */
+	boolean feedWorkers(float workers, AppUser user);
 
 }

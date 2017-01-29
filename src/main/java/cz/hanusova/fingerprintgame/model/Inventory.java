@@ -12,8 +12,6 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-import org.springframework.validation.annotation.Validated;
-
 /**
  * Trida reprezentujici inventar uzivatele. Ke kazdemu typu zdroje ma ulozene
  * mnozstvi
@@ -21,7 +19,6 @@ import org.springframework.validation.annotation.Validated;
  * @author Katerina Hanusova
  *
  */
-@Validated
 @Entity(name = "INVENTORY")
 public class Inventory {
 

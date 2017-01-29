@@ -9,11 +9,8 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import cz.hanusova.fingerprintgame.model.ActivityEnum;
 import cz.hanusova.fingerprintgame.model.AppUser;
 import cz.hanusova.fingerprintgame.model.Inventory;
 import cz.hanusova.fingerprintgame.model.Material;
@@ -98,37 +95,8 @@ public class InventoryServiceImpl implements InventoryService {
 		return null;
 	}
 
-	@Scheduled(fixedRate = 60_000)
-	@Transactional // TODO: nemelo by byt v jedne transakci pro vsechny
-					// uzivatele
 	@Override
-	public void checkRunningActivities() {
-		logger.info("Checking activities");
-		List<AppUser> users = userRepository.findAll();
-		for (AppUser user : users) {
-			for (UserActivity activity : user.getActivities()) {
-				Place place = activity.getPlace();
-				ActivityEnum activityType = place.getPlaceType().getActivity();
-				switch (activityType) {
-				case MINE:
-					float workers = activity.getMaterialAmount();
-					if (feedWorkers(workers, user)) {
-						addMining(place, user, workers);
-					}
-					break;
-				case BUILD:
-					payRent(activity, user);
-					break;
-				default:
-					break;
-				}
-			}
-			userRepository.save(user);
-
-		}
-	}
-
-	private void addMining(Place place, AppUser user, float workers) {
+	public void addMining(Place place, AppUser user, float workers) {
 		Material material = place.getMaterial();
 		for (Inventory inventory : user.getInventory()) {
 			if (inventory.getMaterial().equals(material)) {
@@ -141,13 +109,15 @@ public class InventoryServiceImpl implements InventoryService {
 		}
 	}
 
-	private void payRent(UserActivity activity, AppUser user) {
+	@Override
+	public void payRent(UserActivity activity, AppUser user) {
 		float housesAmount = activity.getMaterialAmount();
 		logger.info("User " + user.getUsername() + " is paying rent for " + housesAmount + " houses");
 		updateGoldAmount(0.5f * housesAmount, user);
 	}
 
-	private boolean feedWorkers(float workers, AppUser user) {
+	@Override
+	public boolean feedWorkers(float workers, AppUser user) {
 		logger.info("Giving food to workers");
 		BigDecimal foodAmount = updateFoodAmount(workers * 0.25f, user);
 

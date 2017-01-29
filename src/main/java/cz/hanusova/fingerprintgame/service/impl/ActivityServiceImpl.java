@@ -4,8 +4,12 @@
 package cz.hanusova.fingerprintgame.service.impl;
 
 import java.util.Date;
+import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +28,7 @@ import cz.hanusova.fingerprintgame.service.InventoryService;
  */
 @Service
 public class ActivityServiceImpl implements ActivityService {
+	private static final Log logger = LogFactory.getLog(ActivityServiceImpl.class);
 
 	private UserActivityRepository userActivityRepository;
 	private UserRepository userRepository;
@@ -84,6 +89,35 @@ public class ActivityServiceImpl implements ActivityService {
 		activity.setMaterialAmount(workersAmount);
 		activity.setStartTime(new Date());
 		inventoryService.updateWorkerAmount(workersAmount, user);
+	}
+
+	@Scheduled(fixedRate = 60_000)
+	@Override
+	public void checkRunningActivities() {
+		logger.info("Checking activities");
+		List<AppUser> users = userRepository.findAll();
+		for (AppUser user : users) {
+			for (UserActivity activity : user.getActivities()) {
+				Place place = activity.getPlace();
+				ActivityEnum activityType = place.getPlaceType().getActivity();
+				switch (activityType) {
+				case MINE:
+					float workers = activity.getMaterialAmount();
+					if (inventoryService.feedWorkers(workers, user)) {
+						inventoryService.addMining(place, user, workers);
+					}
+					break;
+				case BUILD:
+					inventoryService.payRent(activity, user);
+					break;
+				default:
+					break;
+				}
+			}
+			userRepository.save(user);
+
+		}
+
 	}
 
 }
