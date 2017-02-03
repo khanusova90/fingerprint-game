@@ -10,6 +10,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import cz.hanusova.fingerprintgame.model.AppUser;
 import cz.hanusova.fingerprintgame.model.Inventory;
@@ -18,7 +19,6 @@ import cz.hanusova.fingerprintgame.model.Place;
 import cz.hanusova.fingerprintgame.model.UserActivity;
 import cz.hanusova.fingerprintgame.repository.InventoryRepository;
 import cz.hanusova.fingerprintgame.repository.MaterialRepository;
-import cz.hanusova.fingerprintgame.repository.UserRepository;
 import cz.hanusova.fingerprintgame.service.InventoryService;
 
 /**
@@ -35,16 +35,22 @@ public class InventoryServiceImpl implements InventoryService {
 	private static final String WORKER = "WORKER";
 	private static final String FOOD = "FOOD";
 
+	/**
+	 * Amount of food that gets every worker for work
+	 */
+	private static final Float FOOD_FOR_WORK = 0.25f;
+	/**
+	 * Amount of material that every worker mines
+	 */
+	private static final Float MINING_COEF = 1f;
+
 	private MaterialRepository materialRepository;
 	private InventoryRepository inventoryRepository;
-	private UserRepository userRepository;
 
 	@Autowired
-	public InventoryServiceImpl(MaterialRepository materialRepository, InventoryRepository inventoryRepository,
-			UserRepository userRepository) {
+	public InventoryServiceImpl(MaterialRepository materialRepository, InventoryRepository inventoryRepository) {
 		this.materialRepository = materialRepository;
 		this.inventoryRepository = inventoryRepository;
-		this.userRepository = userRepository;
 	}
 
 	/*
@@ -80,10 +86,7 @@ public class InventoryServiceImpl implements InventoryService {
 	}
 
 	private BigDecimal updateMaterialAmount(String materialName, Float amount, AppUser user) {
-		Material material = materialRepository.findByName(materialName);
-		List<Inventory> userInventory = user.getInventory();
-		Inventory materialInventory = userInventory.stream().filter(i -> i.getMaterial().equals(material)).findAny()
-				.orElse(null);
+		Inventory materialInventory = getUserInventory(user, materialName);
 		if (materialInventory != null) {
 			BigDecimal actualAmount = materialInventory.getAmount();
 			BigDecimal newAmount = actualAmount.subtract(new BigDecimal(amount));
@@ -95,33 +98,77 @@ public class InventoryServiceImpl implements InventoryService {
 		return null;
 	}
 
-	@Override
-	public void addMining(Place place, AppUser user, float workers) {
-		Material material = place.getMaterial();
-		for (Inventory inventory : user.getInventory()) {
-			if (inventory.getMaterial().equals(material)) {
-				logger.info("Adding " + workers + " of " + material.getName() + " to " + user.getUsername());
-				BigDecimal actualAmount = inventory.getAmount();
-				inventory.setAmount(actualAmount.add(new BigDecimal(workers)));
-				inventoryRepository.save(inventory);
-				break;
-			}
-		}
+	private Inventory getUserInventory(AppUser user, String materialName) {
+		Material material = materialRepository.findByName(materialName);
+		return getUserInventory(user, material);
+	}
+
+	private Inventory getUserInventory(AppUser user, Material material) {
+		List<Inventory> userInventory = user.getInventory();
+		return userInventory.stream().filter(i -> i.getMaterial().equals(material)).findAny().orElse(null);
 	}
 
 	@Override
+	@Transactional
+	public void mine(Place place, AppUser user, float workers) {
+		if (hasEnoughFood(workers, user)) {
+			updateFoodAmount(workers * FOOD_FOR_WORK, user);
+			mineMaterial(place.getMaterial(), user, workers);
+		} else {
+			logger.info("User " + user.getUsername()
+					+ " does not have enough food to feed workers. Stopping activity at place ID "
+					+ place.getIdPlace());
+			// TODO: odebrat delniky
+		}
+	}
+
+	private void mineMaterial(Material material, AppUser user, float workers) {
+		Inventory inventory = getUserInventory(user, material);
+		Float minedAmount = workers * MINING_COEF;
+		logger.info("Adding " + minedAmount + " of " + material.getName() + " to " + user.getUsername());
+
+		BigDecimal actualAmount = inventory.getAmount();
+		inventory.setAmount(actualAmount.add(new BigDecimal(minedAmount)));
+		inventoryRepository.save(inventory);
+	}
+	//
+	// @Override
+	// @Transactional
+	// public void addMining(Place place, AppUser user, float workers) {
+	// Material material = place.getMaterial();
+	// for (Inventory inventory : user.getInventory()) {
+	// if (inventory.getMaterial().equals(material)) {
+	// logger.info("Adding " + workers + " of " + material.getName() + " to " +
+	// user.getUsername());
+	// BigDecimal actualAmount = inventory.getAmount();
+	// inventory.setAmount(actualAmount.add(new BigDecimal(workers)));
+	// inventoryRepository.save(inventory);
+	// break;
+	// }
+	// }
+	// }
+
+	@Override
+	@Transactional
 	public void payRent(UserActivity activity, AppUser user) {
 		float housesAmount = activity.getMaterialAmount();
 		logger.info("User " + user.getUsername() + " is paying rent for " + housesAmount + " houses");
 		updateGoldAmount(0.5f * housesAmount, user);
 	}
 
-	@Override
-	public boolean feedWorkers(float workers, AppUser user) {
-		logger.info("Giving food to workers");
-		BigDecimal foodAmount = updateFoodAmount(workers * 0.25f, user);
+	// @Override
+	// @Transactional
+	// private void feedWorkers(float workers, AppUser user) {
+	// logger.info("Giving food to workers");
+	// BigDecimal foodAmount = updateFoodAmount(workers * 0.25f, user);
+	// }
 
-		return true;
+	// @Override
+	// @Transactional(readOnly = true)
+	private boolean hasEnoughFood(float workers, AppUser user) {
+		Inventory foodInventory = getUserInventory(user, FOOD);
+		BigDecimal amount = foodInventory.getAmount();
+		return amount.compareTo(new BigDecimal(workers * FOOD_FOR_WORK)) != -1;
 	}
 
 }

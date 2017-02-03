@@ -102,10 +102,7 @@ public class ActivityServiceImpl implements ActivityService {
 				ActivityEnum activityType = place.getPlaceType().getActivity();
 				switch (activityType) {
 				case MINE:
-					float workers = activity.getMaterialAmount();
-					if (inventoryService.feedWorkers(workers, user)) {
-						inventoryService.addMining(place, user, workers);
-					}
+					inventoryService.mine(place, user, activity.getMaterialAmount());
 					break;
 				case BUILD:
 					inventoryService.payRent(activity, user);
@@ -114,8 +111,7 @@ public class ActivityServiceImpl implements ActivityService {
 					break;
 				}
 			}
-			userRepository.save(user);
-
+			// userRepository.save(user); // TODO: dat do jednotlivych transakci
 		}
 
 	}

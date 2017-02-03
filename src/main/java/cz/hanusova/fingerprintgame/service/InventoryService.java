@@ -63,17 +63,17 @@ public interface InventoryService {
 	 */
 	public BigDecimal updateGoldAmount(Float amount, AppUser user);
 
-	/**
-	 * Adds mined material
-	 * 
-	 * @param place
-	 *            {@link Place} where mining takes place
-	 * @param user
-	 *            {@link AppUser} who is mining
-	 * @param workers
-	 *            amount of workers mining
-	 */
-	public void addMining(Place place, AppUser user, float workers);
+	// /**
+	// * Adds mined material
+	// *
+	// * @param place
+	// * {@link Place} where mining takes place
+	// * @param user
+	// * {@link AppUser} who is mining
+	// * @param workers
+	// * amount of workers mining
+	// */
+	// public void addMining(Place place, AppUser user, float workers);
 
 	/**
 	 * Subtracts material as rent for houses that user has built
@@ -86,15 +86,37 @@ public interface InventoryService {
 	public void payRent(UserActivity activity, AppUser user);
 
 	/**
-	 * Subtracts food for actually mining workers
+	 * Starts mining with given amount of workers only in case that user has
+	 * enough food to feed them
 	 * 
-	 * @param workers
-	 *            number of workers mining
+	 * @param place
 	 * @param user
-	 *            {@link AppUser}
-	 * @return <code>true</code> if user has enough food for workers otherwise
-	 *         returns <code>false</code>
+	 * @param workers
 	 */
-	boolean feedWorkers(float workers, AppUser user);
+	void mine(Place place, AppUser user, float workers);
+
+	// /**
+	// * Subtracts food for actually mining workers
+	// *
+	// * @param workers
+	// * number of workers mining
+	// * @param user
+	// * {@link AppUser}
+	// * @return <code>true</code> if user has enough food for workers otherwise
+	// * returns <code>false</code>
+	// */
+	// boolean feedWorkers(float workers, AppUser user);
+
+	// /**
+	// * Finds out if user has enough food to feed workers
+	// *
+	// * @param workers
+	// * float value of workers amount
+	// * @param user
+	// * {@link AppUser}
+	// * @return <code>true</code> if user has enough food for given amount of
+	// * workers
+	// */
+	// boolean hasEnoughFood(float workers, AppUser user);
 
 }
