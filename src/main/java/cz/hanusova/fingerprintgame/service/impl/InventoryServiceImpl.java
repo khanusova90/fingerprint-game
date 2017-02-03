@@ -111,15 +111,8 @@ public class InventoryServiceImpl implements InventoryService {
 	@Override
 	@Transactional
 	public void mine(Place place, AppUser user, float workers) {
-		if (hasEnoughFood(workers, user)) {
-			updateFoodAmount(workers * FOOD_FOR_WORK, user);
-			mineMaterial(place.getMaterial(), user, workers);
-		} else {
-			logger.info("User " + user.getUsername()
-					+ " does not have enough food to feed workers. Stopping activity at place ID "
-					+ place.getIdPlace());
-			// TODO: odebrat delniky
-		}
+		updateFoodAmount(workers * FOOD_FOR_WORK, user);
+		mineMaterial(place.getMaterial(), user, workers);
 	}
 
 	private void mineMaterial(Material material, AppUser user, float workers) {
@@ -131,22 +124,6 @@ public class InventoryServiceImpl implements InventoryService {
 		inventory.setAmount(actualAmount.add(new BigDecimal(minedAmount)));
 		inventoryRepository.save(inventory);
 	}
-	//
-	// @Override
-	// @Transactional
-	// public void addMining(Place place, AppUser user, float workers) {
-	// Material material = place.getMaterial();
-	// for (Inventory inventory : user.getInventory()) {
-	// if (inventory.getMaterial().equals(material)) {
-	// logger.info("Adding " + workers + " of " + material.getName() + " to " +
-	// user.getUsername());
-	// BigDecimal actualAmount = inventory.getAmount();
-	// inventory.setAmount(actualAmount.add(new BigDecimal(workers)));
-	// inventoryRepository.save(inventory);
-	// break;
-	// }
-	// }
-	// }
 
 	@Override
 	@Transactional
@@ -156,16 +133,9 @@ public class InventoryServiceImpl implements InventoryService {
 		updateGoldAmount(0.5f * housesAmount, user);
 	}
 
-	// @Override
-	// @Transactional
-	// private void feedWorkers(float workers, AppUser user) {
-	// logger.info("Giving food to workers");
-	// BigDecimal foodAmount = updateFoodAmount(workers * 0.25f, user);
-	// }
-
-	// @Override
-	// @Transactional(readOnly = true)
-	private boolean hasEnoughFood(float workers, AppUser user) {
+	@Override
+	@Transactional(readOnly = true)
+	public boolean hasEnoughFood(float workers, AppUser user) {
 		Inventory foodInventory = getUserInventory(user, FOOD);
 		BigDecimal amount = foodInventory.getAmount();
 		return amount.compareTo(new BigDecimal(workers * FOOD_FOR_WORK)) != -1;

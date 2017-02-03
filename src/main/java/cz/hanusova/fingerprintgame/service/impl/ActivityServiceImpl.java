@@ -102,7 +102,15 @@ public class ActivityServiceImpl implements ActivityService {
 				ActivityEnum activityType = place.getPlaceType().getActivity();
 				switch (activityType) {
 				case MINE:
-					inventoryService.mine(place, user, activity.getMaterialAmount());
+					float workers = activity.getMaterialAmount();
+					if (inventoryService.hasEnoughFood(workers, user)) {
+						inventoryService.mine(place, user, workers);
+					} else {
+						logger.info("User " + user.getUsername()
+								+ " does not have enough food to feed workers. Stopping activity at place ID "
+								+ place.getIdPlace());
+						userActivityRepository.delete(activity);
+					}
 					break;
 				case BUILD:
 					inventoryService.payRent(activity, user);

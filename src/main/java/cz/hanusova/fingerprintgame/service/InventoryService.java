@@ -86,8 +86,7 @@ public interface InventoryService {
 	public void payRent(UserActivity activity, AppUser user);
 
 	/**
-	 * Starts mining with given amount of workers only in case that user has
-	 * enough food to feed them
+	 * Starts mining with given amount of workers and subtracts food for them
 	 * 
 	 * @param place
 	 * @param user
@@ -107,16 +106,16 @@ public interface InventoryService {
 	// */
 	// boolean feedWorkers(float workers, AppUser user);
 
-	// /**
-	// * Finds out if user has enough food to feed workers
-	// *
-	// * @param workers
-	// * float value of workers amount
-	// * @param user
-	// * {@link AppUser}
-	// * @return <code>true</code> if user has enough food for given amount of
-	// * workers
-	// */
-	// boolean hasEnoughFood(float workers, AppUser user);
+	/**
+	 * Finds out if user has enough food to feed workers
+	 *
+	 * @param workers
+	 *            float value of workers amount
+	 * @param user
+	 *            {@link AppUser}
+	 * @return <code>true</code> if user has enough food for given amount of
+	 *         workers
+	 */
+	boolean hasEnoughFood(float workers, AppUser user);
 
 }
