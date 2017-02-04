@@ -4,9 +4,14 @@
 package cz.hanusova.fingerprintgame.service.impl;
 
 import java.util.Date;
+import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import cz.hanusova.fingerprintgame.model.ActivityEnum;
 import cz.hanusova.fingerprintgame.model.AppUser;
@@ -23,6 +28,7 @@ import cz.hanusova.fingerprintgame.service.InventoryService;
  */
 @Service
 public class ActivityServiceImpl implements ActivityService {
+	private static final Log logger = LogFactory.getLog(ActivityServiceImpl.class);
 
 	private UserActivityRepository userActivityRepository;
 	private UserRepository userRepository;
@@ -37,6 +43,7 @@ public class ActivityServiceImpl implements ActivityService {
 	}
 
 	@Override
+	@Transactional
 	public void startNewActivity(Place place, Float amount, AppUser user) {
 		UserActivity activity = new UserActivity(place, amount);
 		userActivityRepository.save(activity);
@@ -65,6 +72,7 @@ public class ActivityServiceImpl implements ActivityService {
 	}
 
 	@Override
+	@Transactional
 	public void removeActivity(UserActivity activity, AppUser user) {
 		inventoryService.updateWorkerAmount(activity.getMaterialAmount() * -1, user);
 		user.getActivities().remove(activity);
@@ -74,12 +82,52 @@ public class ActivityServiceImpl implements ActivityService {
 	}
 
 	@Override
+	@Transactional
 	public void changeActivity(UserActivity activity, Float workersAmount, AppUser user) {
 		// TODO: vyresit pro zmenu stavby
 		inventoryService.updateWorkerAmount(activity.getMaterialAmount() * -1, user);
 		activity.setMaterialAmount(workersAmount);
 		activity.setStartTime(new Date());
 		inventoryService.updateWorkerAmount(workersAmount, user);
+	}
+
+	@Scheduled(fixedRate = 60_000)
+	@Override
+	public void checkRunningActivities() {
+		logger.info("Checking activities");
+		List<AppUser> users = userRepository.findAll();
+		for (AppUser user : users) {
+			for (UserActivity activity : user.getActivities()) {
+				Place place = activity.getPlace();
+				ActivityEnum activityType = place.getPlaceType().getActivity();
+				switch (activityType) {
+				case MINE:
+					float workers = activity.getMaterialAmount();
+					if (inventoryService.hasEnoughFood(workers, user)) {
+						inventoryService.mine(place, user, workers);
+					} else {
+						logger.info("User " + user.getUsername()
+								+ " does not have enough food to feed workers. Stopping activity at place ID "
+								+ place.getIdPlace());
+						userActivityRepository.delete(activity);
+					}
+					break;
+				case BUILD:
+					if (inventoryService.hasEnoughGold(activity.getMaterialAmount(), user)) {
+						inventoryService.payRent(activity, user);
+					} else {
+						logger.info("User " + user.getUsername()
+								+ " does not have enough gold to pay workers living at place ID " + place.getIdPlace()
+								+ ". ");
+						inventoryService.stopBuilding(activity, user);
+					}
+					break;
+				default:
+					break;
+				}
+			}
+		}
+
 	}
 
 }

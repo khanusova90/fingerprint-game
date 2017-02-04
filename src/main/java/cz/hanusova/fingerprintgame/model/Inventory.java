@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -27,6 +28,7 @@ public class Inventory {
 	private Long idInventory;
 
 	@NotNull
+	@Min(value = 0)
 	private BigDecimal amount = BigDecimal.ZERO;
 
 	@ManyToOne

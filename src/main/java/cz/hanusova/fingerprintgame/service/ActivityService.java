@@ -42,4 +42,10 @@ public interface ActivityService {
 	 */
 	public void changeActivity(UserActivity activity, Float workersAmount, AppUser user);
 
+	/**
+	 * Checks actually running activities of all users and updates their
+	 * inventory
+	 */
+	void checkRunningActivities();
+
 }
