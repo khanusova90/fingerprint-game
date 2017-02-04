@@ -19,6 +19,7 @@ import cz.hanusova.fingerprintgame.model.Place;
 import cz.hanusova.fingerprintgame.model.UserActivity;
 import cz.hanusova.fingerprintgame.repository.InventoryRepository;
 import cz.hanusova.fingerprintgame.repository.MaterialRepository;
+import cz.hanusova.fingerprintgame.repository.UserActivityRepository;
 import cz.hanusova.fingerprintgame.service.InventoryService;
 
 /**
@@ -44,13 +45,21 @@ public class InventoryServiceImpl implements InventoryService {
 	 */
 	private static final Float MINING_COEF = 1f;
 
+	/**
+	 * Amount of gold for paying rent for each worker
+	 */
+	private static final Float GOLD_RENT = 0.25f;
+
 	private MaterialRepository materialRepository;
 	private InventoryRepository inventoryRepository;
+	private UserActivityRepository userActivityRepository;
 
 	@Autowired
-	public InventoryServiceImpl(MaterialRepository materialRepository, InventoryRepository inventoryRepository) {
+	public InventoryServiceImpl(MaterialRepository materialRepository, InventoryRepository inventoryRepository,
+			UserActivityRepository userActivityRepository) {
 		this.materialRepository = materialRepository;
 		this.inventoryRepository = inventoryRepository;
+		this.userActivityRepository = userActivityRepository;
 	}
 
 	/*
@@ -85,17 +94,45 @@ public class InventoryServiceImpl implements InventoryService {
 		return updateMaterialAmount(GOLD, amount, user);
 	}
 
+	/**
+	 * Updates amount of material in user's inventory by subtracting given
+	 * amount
+	 * 
+	 * @param materialName
+	 *            name of material to update
+	 * @param amount
+	 *            amount of material to subtract. Pass negative parameter value
+	 *            to increase material amount in inventory
+	 * @param user
+	 * @return new material amount
+	 */
 	private BigDecimal updateMaterialAmount(String materialName, Float amount, AppUser user) {
 		Inventory materialInventory = getUserInventory(user, materialName);
 		if (materialInventory != null) {
-			BigDecimal actualAmount = materialInventory.getAmount();
-			BigDecimal newAmount = actualAmount.subtract(new BigDecimal(amount));
-			materialInventory.setAmount(newAmount);
-			inventoryRepository.save(materialInventory);
-
-			return newAmount;
+			return updateMaterialAmount(materialInventory, amount, user);
 		}
 		return null;
+	}
+
+	/**
+	 * Updates amount of material in user's inventory by subtracting given
+	 * amount
+	 * 
+	 * @param materialInventory
+	 *            {@link Inventory} to update
+	 * @param amount
+	 *            amount of material to subtract. Pass negative parameter value
+	 *            to increase material amount in inventory
+	 * @param user
+	 * @return new material amount
+	 */
+	private BigDecimal updateMaterialAmount(Inventory materialInventory, Float amount, AppUser user) {
+		BigDecimal actualAmount = materialInventory.getAmount();
+		BigDecimal newAmount = actualAmount.subtract(new BigDecimal(amount));
+		materialInventory.setAmount(newAmount);
+		inventoryRepository.save(materialInventory);
+
+		return newAmount;
 	}
 
 	private Inventory getUserInventory(AppUser user, String materialName) {
@@ -139,6 +176,23 @@ public class InventoryServiceImpl implements InventoryService {
 		Inventory foodInventory = getUserInventory(user, FOOD);
 		BigDecimal amount = foodInventory.getAmount();
 		return amount.compareTo(new BigDecimal(workers * FOOD_FOR_WORK)) != -1;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public boolean hasEnoughGold(float workers, AppUser user) {
+		Inventory goldInventory = getUserInventory(user, GOLD);
+		BigDecimal amount = goldInventory.getAmount();
+		return amount.compareTo(new BigDecimal(workers * GOLD_RENT)) != -1;
+	}
+
+	@Override
+	@Transactional
+	public void stopBuilding(UserActivity activity, AppUser user) {
+		Float workersAmount = activity.getMaterialAmount();
+		Inventory workers = getUserInventory(user, WORKER);
+		updateMaterialAmount(workers, workersAmount, user);
+		userActivityRepository.delete(activity);
 	}
 
 }

@@ -113,13 +113,19 @@ public class ActivityServiceImpl implements ActivityService {
 					}
 					break;
 				case BUILD:
-					inventoryService.payRent(activity, user);
+					if (inventoryService.hasEnoughGold(activity.getMaterialAmount(), user)) {
+						inventoryService.payRent(activity, user);
+					} else {
+						logger.info("User " + user.getUsername()
+								+ " does not have enough gold to pay workers living at place ID " + place.getIdPlace()
+								+ ". ");
+						inventoryService.stopBuilding(activity, user);
+					}
 					break;
 				default:
 					break;
 				}
 			}
-			// userRepository.save(user); // TODO: dat do jednotlivych transakci
 		}
 
 	}

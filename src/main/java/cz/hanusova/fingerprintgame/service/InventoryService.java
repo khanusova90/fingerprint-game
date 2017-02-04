@@ -118,4 +118,24 @@ public interface InventoryService {
 	 */
 	boolean hasEnoughFood(float workers, AppUser user);
 
+	/**
+	 * Finds out if user has enough gold to pay rent for his workers
+	 * 
+	 * @param workers
+	 *            float value of workers amount
+	 * @param user
+	 * @return <code>true</code> if user has enough gold to pay rent
+	 */
+	boolean hasEnoughGold(float workers, AppUser user);
+
+	/**
+	 * Stops activity for building houses and subtracts workers from user's
+	 * inventory
+	 * 
+	 * @param activity
+	 *            {@link UserActivity} for building houses
+	 * @param user
+	 */
+	void stopBuilding(UserActivity activity, AppUser user);
+
 }
