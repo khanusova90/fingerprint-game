@@ -1,76 +1,33 @@
-package cz.hanusova.fingerprintgame.model;
+/**
+ * 
+ */
+package cz.hanusova.fingerprintgame.dto;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import cz.hanusova.fingerprintgame.model.Character;
+import cz.hanusova.fingerprintgame.model.Inventory;
+import cz.hanusova.fingerprintgame.model.Item;
+import cz.hanusova.fingerprintgame.model.Place;
+import cz.hanusova.fingerprintgame.model.Role;
+import cz.hanusova.fingerprintgame.model.UserActivity;
 
 /**
- * Trida reprezentujici uzivatele
- * 
- * @author Katerina Hanusova
+ * @author khanusova
  *
  */
-@Entity
-@Table(name = "APP_USER")
-public class AppUser {
+public class UserDTO {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ID_APP_USER")
 	private Long idUser;
-
-	@NotNull
 	private String username;
-
-	@NotNull
 	private String password;
-
 	private String stagname;
-
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "ID_CHARACTER")
 	private Character character;
-
-	@JoinColumn(name = "ID_APP_USER")
-	@OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
 	private List<Inventory> inventory = new ArrayList<>();
-
-	@ElementCollection(targetClass = Role.class)
-	@CollectionTable(name = "USER_ROLE", joinColumns = { @JoinColumn(name = "ID_APP_USER") })
-	@Column(name = "ROLE")
-	@Enumerated(EnumType.STRING)
 	private List<Role> roles = new ArrayList<>();
-
-	@JoinColumn(name = "ID_APP_USER")
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<UserActivity> activities = new ArrayList<>();
-
-	@JoinTable(name = "USER_PLACE", joinColumns = { @JoinColumn(name = "ID_APP_USER") }, inverseJoinColumns = {
-			@JoinColumn(name = "ID_PLACE") })
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Place> places = new ArrayList<>();
-
-	@JoinTable(name = "USER_ITEM", joinColumns = { @JoinColumn(name = "ID_APP_USER") }, inverseJoinColumns = {
-			@JoinColumn(name = "ID_ITEM") })
-	@ManyToMany(cascade = CascadeType.ALL)
 	private List<Item> items = new ArrayList<>();
 
 	/*

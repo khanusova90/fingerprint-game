@@ -2,6 +2,7 @@ package cz.hanusova.fingerprintgame.service;
 
 import java.util.List;
 
+import cz.hanusova.fingerprintgame.dto.UserDTO;
 import cz.hanusova.fingerprintgame.model.AppUser;
 import cz.hanusova.fingerprintgame.model.Inventory;
 
@@ -33,11 +34,12 @@ public interface UserService {
 	public AppUser getUserByName(String username);
 
 	/**
-	 * Finds user by given username fetch joined with his roles
+	 * Finds user by given username with all collections initialized
 	 * 
 	 * @param username
-	 * @return {@link AppUser}
+	 * @return {@link UserDTO} filled with all information (including
+	 *         collections) about user
 	 */
-	public AppUser getUserByUsernameWithRoles(String username);
+	public UserDTO getUserDTOByUsername(String username);
 
 }

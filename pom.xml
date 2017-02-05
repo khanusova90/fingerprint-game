@@ -210,7 +210,7 @@
 		<version>${liquibase.version}</version>
 	</dependency>
 	
-<!-- 	Log4j	 -->
+<!-- 	Logging	 -->
 	<dependency>
 		<groupId>log4j</groupId>
 		<artifactId>log4j</artifactId>
@@ -226,6 +226,14 @@
 		<artifactId>log4j-over-slf4j</artifactId>
 		<version>${slf4j.version}</version>
 	</dependency>
+	
+<!-- 	Mapping -->
+	<dependency>
+	    <groupId>org.modelmapper</groupId>
+	    <artifactId>modelmapper</artifactId>
+	    <version>0.7.7</version>
+	</dependency>
+	
     
   </dependencies>
   

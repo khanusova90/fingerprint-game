@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import cz.hanusova.fingerprintgame.model.AppUser;
+import cz.hanusova.fingerprintgame.dto.UserDTO;
 import cz.hanusova.fingerprintgame.service.UserService;
 
 @RestController
@@ -21,9 +21,9 @@ public class MobileLoginController {
 	private UserService userService;
 
 	@RequestMapping(value = "/login", produces = "application/json", method = RequestMethod.POST)
-	public AppUser getUser(@RequestParam("username") String username) {
+	public UserDTO getUser(@RequestParam("username") String username) {
 		logger.info("Getting user from mobile app: " + username);
-		return userService.getUserByUsernameWithRoles(username);
+		return userService.getUserDTOByUsername(username);
 	}
 
 }

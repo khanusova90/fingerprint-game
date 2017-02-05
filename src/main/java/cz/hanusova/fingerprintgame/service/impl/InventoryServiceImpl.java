@@ -5,6 +5,7 @@ package cz.hanusova.fingerprintgame.service.impl;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -12,8 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import cz.hanusova.fingerprintgame.model.ActivityEnum;
 import cz.hanusova.fingerprintgame.model.AppUser;
 import cz.hanusova.fingerprintgame.model.Inventory;
+import cz.hanusova.fingerprintgame.model.Item;
+import cz.hanusova.fingerprintgame.model.ItemType;
 import cz.hanusova.fingerprintgame.model.Material;
 import cz.hanusova.fingerprintgame.model.Place;
 import cz.hanusova.fingerprintgame.model.UserActivity;
@@ -49,6 +53,11 @@ public class InventoryServiceImpl implements InventoryService {
 	 * Amount of gold for paying rent for each worker
 	 */
 	private static final Float GOLD_RENT = 0.25f;
+
+	/**
+	 * Value indicating how much will each level of item increase mining
+	 */
+	private static final float LEVEL_INCREASE = 0.1f;
 
 	private MaterialRepository materialRepository;
 	private InventoryRepository inventoryRepository;
@@ -154,12 +163,29 @@ public class InventoryServiceImpl implements InventoryService {
 
 	private void mineMaterial(Material material, AppUser user, float workers) {
 		Inventory inventory = getUserInventory(user, material);
-		Float minedAmount = workers * MINING_COEF;
+		Float minedAmount = workers * getMiningCoef(user, material);
 		logger.info("Adding " + minedAmount + " of " + material.getName() + " to " + user.getUsername());
 
 		BigDecimal actualAmount = inventory.getAmount();
 		inventory.setAmount(actualAmount.add(new BigDecimal(minedAmount)));
 		inventoryRepository.save(inventory);
+	}
+
+	private float getMiningCoef(AppUser user, Material material) {
+		float coef = MINING_COEF;
+		List<Item> miningItems = getMiningItems(user, material);
+		for (Item item : miningItems) {
+			coef += item.getLevel() * LEVEL_INCREASE;
+		}
+		return coef;
+	}
+
+	private List<Item> getMiningItems(AppUser user, Material material) {
+		List<Item> userItems = user.getItems();
+		return userItems.stream().filter(item -> {
+			ItemType type = item.getItemType();
+			return ActivityEnum.MINE.equals(type.getActivity()) && material.equals(type.getMaterial());
+		}).collect(Collectors.toList());
 	}
 
 	@Override
