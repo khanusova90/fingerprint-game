@@ -1,10 +1,7 @@
 package cz.hanusova.fingerprintgame.service;
 
-import java.util.List;
-
 import cz.hanusova.fingerprintgame.model.AppUser;
 import cz.hanusova.fingerprintgame.model.Place;
-import cz.hanusova.fingerprintgame.model.UserActivity;
 
 public interface PlaceService {
 
@@ -26,9 +23,9 @@ public interface PlaceService {
 	 *            {@link Place} where new activity is
 	 * @param workerAmount
 	 *            amount of workers for activity
-	 * @return List of user's actual activities
+	 * @return updated {@link AppUser}
 	 */
-	public List<UserActivity> startActivity(AppUser user, Place place, Float workerAmount);
+	public AppUser startActivity(AppUser user, Place place, Float workerAmount);
 
 	/**
 	 * Checks if given place is already in user's list. If not, adds it there

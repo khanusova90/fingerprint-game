@@ -4,12 +4,14 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import cz.hanusova.fingerprintgame.dto.UserDTO;
 import cz.hanusova.fingerprintgame.model.AppUser;
 import cz.hanusova.fingerprintgame.model.Character;
 import cz.hanusova.fingerprintgame.model.Inventory;
@@ -27,21 +29,6 @@ public class UserServiceImpl implements UserService {
 
 	private UserRepository userRepository;
 	private MaterialRepository materialRepository;
-
-	// @Value("${app.default.gold}")
-	// private String goldAmount;
-	//
-	// @Value("${app.default.food}")
-	// private String foodAmount;
-	//
-	// @Value("${app.default.wood}")
-	// private String woodAmount;
-	//
-	// @Value("${app.default.stone}")
-	// private String stoneAmount;
-	//
-	// @Value("${app.default.worker}")
-	// private String workerAmount;
 
 	private PasswordEncoder encoder;
 
@@ -93,8 +80,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional(readOnly = true)
 	public List<Inventory> getUserInventory() {
-		String username = UserUtils.getActualUsername();
-		AppUser user = userRepository.findByUsername(username);
+		AppUser user = getActualUser();
 		List<Inventory> result = user.getInventory();
 		return result;
 	}
@@ -108,9 +94,23 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public AppUser getUserByUsernameWithRoles(String username) {
-		AppUser user = userRepository.findByUsernameFetch(username);
-		return user;
+	public UserDTO getUserDTOByUsername(String username) {
+		AppUser user = getUserByName(username);
+		ModelMapper mapper = new ModelMapper();
+		UserDTO userDTO = mapper.map(user, UserDTO.class);
+		return userDTO;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see cz.hanusova.fingerprintgame.service.UserService#getActualUser()
+	 */
+	@Override
+	@Transactional(readOnly = true)
+	public AppUser getActualUser() {
+		String username = UserUtils.getActualUsername();
+		return getUserByName(username);
 	}
 
 }

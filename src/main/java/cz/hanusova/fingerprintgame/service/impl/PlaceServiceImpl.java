@@ -55,7 +55,7 @@ public class PlaceServiceImpl implements PlaceService {
 
 	@Override
 	@Transactional
-	public List<UserActivity> startActivity(AppUser user, Place place, Float workerAmount) {
+	public AppUser startActivity(AppUser user, Place place, Float workerAmount) {
 		logger.info("Starting activity for user " + user.getUsername() + " at place ID " + place.getIdPlace());
 
 		List<UserActivity> activities = user.getActivities();
@@ -71,7 +71,7 @@ public class PlaceServiceImpl implements PlaceService {
 			activityService.changeActivity(existingActivity, workerAmount, user);
 		}
 
-		return user.getActivities();
+		return user;
 	}
 
 }
