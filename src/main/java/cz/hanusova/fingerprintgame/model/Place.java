@@ -28,6 +28,7 @@ public class Place {
 	 * Kod mista
 	 */
 	@NotNull
+	@Column(name = "CODE", unique = true)
 	private String code;
 
 	/**
@@ -170,7 +171,7 @@ public class Place {
 			return false;
 		Place object = (Place) obj;
 
-		return this.getIdPlace() == object.getIdPlace();
+		return this.getCode() == object.getCode();
 	}
 
 }

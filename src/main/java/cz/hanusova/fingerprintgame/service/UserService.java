@@ -42,4 +42,9 @@ public interface UserService {
 	 */
 	public UserDTO getUserDTOByUsername(String username);
 
+	/**
+	 * @return {@link AppUser} who is actually signed in
+	 */
+	public AppUser getActualUser();
+
 }

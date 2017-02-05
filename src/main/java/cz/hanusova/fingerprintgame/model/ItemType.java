@@ -104,4 +104,24 @@ public class ItemType implements Serializable {
 		this.material = material;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
+			return true;
+		}
+		if (!(obj instanceof ItemType)) {
+			return false;
+		}
+		ItemType objItemType = (ItemType) obj;
+		return objItemType.getIdItemType() == this.getIdItemType();
+	}
+
 }

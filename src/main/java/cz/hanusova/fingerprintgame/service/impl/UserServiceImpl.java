@@ -30,21 +30,6 @@ public class UserServiceImpl implements UserService {
 	private UserRepository userRepository;
 	private MaterialRepository materialRepository;
 
-	// @Value("${app.default.gold}")
-	// private String goldAmount;
-	//
-	// @Value("${app.default.food}")
-	// private String foodAmount;
-	//
-	// @Value("${app.default.wood}")
-	// private String woodAmount;
-	//
-	// @Value("${app.default.stone}")
-	// private String stoneAmount;
-	//
-	// @Value("${app.default.worker}")
-	// private String workerAmount;
-
 	private PasswordEncoder encoder;
 
 	@Autowired
@@ -95,8 +80,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional(readOnly = true)
 	public List<Inventory> getUserInventory() {
-		String username = UserUtils.getActualUsername();
-		AppUser user = userRepository.findByUsername(username);
+		AppUser user = getActualUser();
 		List<Inventory> result = user.getInventory();
 		return result;
 	}
@@ -111,10 +95,22 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional(readOnly = true)
 	public UserDTO getUserDTOByUsername(String username) {
-		AppUser user = userRepository.findByUsername(username);
+		AppUser user = getUserByName(username);
 		ModelMapper mapper = new ModelMapper();
 		UserDTO userDTO = mapper.map(user, UserDTO.class);
 		return userDTO;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see cz.hanusova.fingerprintgame.service.UserService#getActualUser()
+	 */
+	@Override
+	@Transactional(readOnly = true)
+	public AppUser getActualUser() {
+		String username = UserUtils.getActualUsername();
+		return getUserByName(username);
 	}
 
 }

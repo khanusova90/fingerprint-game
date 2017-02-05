@@ -78,8 +78,8 @@ public class PlaceServiceTest {
 	@Test
 	public void startActivityTest() {
 		int activCount = user.getActivities().size();
-		List<UserActivity> activities = placeService.startActivity(user, placeMock, MATERIAL_AMOUNT_20);
-
+		placeService.startActivity(user, placeMock, MATERIAL_AMOUNT_20);
+		List<UserActivity> activities = user.getActivities();
 		Assert.assertNotNull("List of returned activities should not be null", activities);
 		Assert.assertNotEquals("Activity should be added or removed from user's activities list", activCount,
 				activities.size());
@@ -88,8 +88,8 @@ public class PlaceServiceTest {
 	@Test
 	public void startNewActivityTest() {
 		int activCount = user.getActivities().size();
-		List<UserActivity> activities = placeService.startActivity(user, placeMock, MATERIAL_AMOUNT_20);
-
+		placeService.startActivity(user, placeMock, MATERIAL_AMOUNT_20);
+		List<UserActivity> activities = user.getActivities();
 		Assert.assertFalse("Returned list should contain at least one activity", activities.isEmpty());
 		Assert.assertEquals("New activity should be added to list", activCount + 1, activities.size());
 	}
@@ -99,8 +99,8 @@ public class PlaceServiceTest {
 		createExistingActivity();
 
 		int activCount = user.getActivities().size();
-		List<UserActivity> activities = placeService.startActivity(user, placeMock, 0f);
-
+		placeService.startActivity(user, placeMock, 0f);
+		List<UserActivity> activities = user.getActivities();
 		Assert.assertNotEquals("Activities count should change", activCount, activities.size());
 		Assert.assertEquals("Existing activity should be removed from list", activCount - 1, activities.size());
 	}
@@ -120,8 +120,8 @@ public class PlaceServiceTest {
 		createExistingActivity();
 
 		int activCount = user.getActivities().size();
-		List<UserActivity> activities = placeService.startActivity(user, placeMock, MATERIAL_AMOUNT_30);
-
+		placeService.startActivity(user, placeMock, MATERIAL_AMOUNT_30);
+		List<UserActivity> activities = user.getActivities();
 		Assert.assertEquals("Number of existing activities should not change", activCount, activities.size());
 	}
 
@@ -143,7 +143,8 @@ public class PlaceServiceTest {
 	public void attributesTest() {
 		// New activity
 		int activCount = user.getActivities().size();
-		List<UserActivity> activities = placeService.startActivity(user, placeMock, MATERIAL_AMOUNT_20);
+		placeService.startActivity(user, placeMock, MATERIAL_AMOUNT_20);
+		List<UserActivity> activities = user.getActivities();
 		Assert.assertEquals("New activity should be added to list", activCount + 1, activities.size());
 
 		UserActivity newActivity = activities.get(activities.size() - 1);
@@ -151,7 +152,8 @@ public class PlaceServiceTest {
 		Assert.assertNotNull("Start time should be filled in new activity", newActivity.getStartTime());
 
 		// Activity update
-		activities = placeService.startActivity(user, placeMock, MATERIAL_AMOUNT_30);
+		placeService.startActivity(user, placeMock, MATERIAL_AMOUNT_30);
+		activities = user.getActivities();
 		Assert.assertEquals("New activity should not be added to list", activCount + 1, activities.size());
 		newActivity = activities.get(activities.size() - 1);
 		Assert.assertNotNull("Place should be filled in new activity", newActivity.getPlace());
