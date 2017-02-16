@@ -171,7 +171,7 @@ public class Place {
 			return false;
 		Place object = (Place) obj;
 
-		return this.getCode() == object.getCode();
+		return this.getCode().equals(object.getCode());
 	}
 
 }
