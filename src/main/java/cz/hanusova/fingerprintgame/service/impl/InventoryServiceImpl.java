@@ -4,8 +4,6 @@
 package cz.hanusova.fingerprintgame.service.impl;
 
 import java.math.BigDecimal;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,6 +11,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import cz.hanusova.fingerprintgame.model.ActivityEnum;
@@ -26,6 +25,7 @@ import cz.hanusova.fingerprintgame.model.UserActivity;
 import cz.hanusova.fingerprintgame.repository.InventoryRepository;
 import cz.hanusova.fingerprintgame.repository.MaterialRepository;
 import cz.hanusova.fingerprintgame.repository.UserActivityRepository;
+import cz.hanusova.fingerprintgame.repository.UserRepository;
 import cz.hanusova.fingerprintgame.service.InventoryService;
 
 /**
@@ -64,6 +64,7 @@ public class InventoryServiceImpl implements InventoryService {
 	private MaterialRepository materialRepository;
 	private InventoryRepository inventoryRepository;
 	private UserActivityRepository userActivityRepository;
+	private UserRepository userRepository;
 
 	@Autowired
 	public InventoryServiceImpl(MaterialRepository materialRepository, InventoryRepository inventoryRepository,
@@ -157,8 +158,9 @@ public class InventoryServiceImpl implements InventoryService {
 	}
 
 	@Override
-	@Transactional
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void mine(Place place, AppUser user, float workers) {
+
 		updateFoodAmount(workers * FOOD_FOR_WORK, user);
 		mineMaterial(place.getMaterial(), user, workers);
 	}
@@ -183,7 +185,7 @@ public class InventoryServiceImpl implements InventoryService {
 	}
 
 	private List<Item> getMiningItems(AppUser user, Material material) {
-		Collection<Item> userItems = Collections.unmodifiableCollection(user.getItems());
+		List<Item> userItems = user.getItems();
 		return userItems.stream().filter(item -> {
 			ItemType type = item.getItemType();
 			return ActivityEnum.MINE.equals(type.getActivity()) && material.equals(type.getMaterial());
@@ -191,7 +193,7 @@ public class InventoryServiceImpl implements InventoryService {
 	}
 
 	@Override
-	@Transactional
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void payRent(UserActivity activity, AppUser user) {
 		float housesAmount = activity.getMaterialAmount();
 		logger.info("User " + user.getUsername() + " is paying rent for " + housesAmount + " houses");
@@ -215,12 +217,21 @@ public class InventoryServiceImpl implements InventoryService {
 	}
 
 	@Override
-	@Transactional
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void stopBuilding(UserActivity activity, AppUser user) {
 		Float workersAmount = activity.getMaterialAmount();
 		Inventory workers = getUserInventory(user, WORKER);
 		updateMaterialAmount(workers, workersAmount, user);
 		userActivityRepository.delete(activity);
+	}
+
+	/**
+	 * @param userRepository
+	 *            the userRepository to set
+	 */
+	@Autowired
+	public void setUserRepository(UserRepository userRepository) {
+		this.userRepository = userRepository;
 	}
 
 }
