@@ -4,6 +4,8 @@
 package cz.hanusova.fingerprintgame.service.impl;
 
 import java.math.BigDecimal;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -181,7 +183,7 @@ public class InventoryServiceImpl implements InventoryService {
 	}
 
 	private List<Item> getMiningItems(AppUser user, Material material) {
-		List<Item> userItems = user.getItems();
+		Collection<Item> userItems = Collections.unmodifiableCollection(user.getItems());
 		return userItems.stream().filter(item -> {
 			ItemType type = item.getItemType();
 			return ActivityEnum.MINE.equals(type.getActivity()) && material.equals(type.getMaterial());
