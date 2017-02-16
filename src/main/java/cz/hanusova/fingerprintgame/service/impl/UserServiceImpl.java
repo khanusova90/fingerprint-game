@@ -101,6 +101,14 @@ public class UserServiceImpl implements UserService {
 		return userDTO;
 	}
 
+	@Override
+	@Transactional(readOnly = true)
+	public UserDTO getUserDTO(AppUser user) {
+		ModelMapper mapper = new ModelMapper();
+		UserDTO userDTO = mapper.map(user, UserDTO.class);
+		return userDTO;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
