@@ -24,7 +24,6 @@ import cz.hanusova.fingerprintgame.utils.UserUtils;
 
 @Service("userService")
 public class UserServiceImpl implements UserService {
-
 	private static Log logger = LogFactory.getLog(UserServiceImpl.class);
 
 	private UserRepository userRepository;
@@ -96,14 +95,6 @@ public class UserServiceImpl implements UserService {
 	@Transactional(readOnly = true)
 	public UserDTO getUserDTOByUsername(String username) {
 		AppUser user = getUserByName(username);
-		ModelMapper mapper = new ModelMapper();
-		UserDTO userDTO = mapper.map(user, UserDTO.class);
-		return userDTO;
-	}
-
-	@Override
-	@Transactional(readOnly = true)
-	public UserDTO getUserDTO(AppUser user) {
 		ModelMapper mapper = new ModelMapper();
 		UserDTO userDTO = mapper.map(user, UserDTO.class);
 		return userDTO;

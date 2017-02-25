@@ -25,7 +25,7 @@ public class FingerprintController {
 	@Autowired
 	private FingerprintService fingerprintService;
 
-	@RequestMapping(value = "/save", method = RequestMethod.POST)
+	@RequestMapping(value = "/save", method = RequestMethod.PUT)
 	public void saveFingerprint(@RequestBody Fingerprint fingerprint) {
 		fingerprintService.saveFingerprint(fingerprint);
 	}

@@ -43,13 +43,13 @@ public class ActivityController {
 		String username = UserUtils.getActualUsername();
 		AppUser user = userRepository.findByUsername(username);
 		user = placeService.startActivity(user, place, Float.valueOf(materialAmount));
-		return userService.getUserDTO(user);
+		return userService.getUserDTOByUsername(user.getUsername());
 	}
 
 	@RequestMapping("/buy")
 	public UserDTO buyItem(@RequestBody Item item) {
 		AppUser user = userService.getActualUser();
-		return userService.getUserDTO(itemService.addItem(user, item));
+		return userService.getUserDTOByUsername(itemService.addItem(user, item).getUsername());
 	}
 
 }

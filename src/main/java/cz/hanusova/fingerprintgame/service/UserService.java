@@ -47,12 +47,4 @@ public interface UserService {
 	 */
 	public AppUser getActualUser();
 
-	/**
-	 * Gets User with all collections initialized so as it can be send to server
-	 * 
-	 * @param user
-	 * @return {@link UserDTO} filled with all information about user
-	 */
-	public UserDTO getUserDTO(AppUser user);
-
 }
