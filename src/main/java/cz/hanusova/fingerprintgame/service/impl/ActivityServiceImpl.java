@@ -93,6 +93,7 @@ public class ActivityServiceImpl implements ActivityService {
 
 	@Scheduled(fixedRate = 60_000)
 	@Override
+	@Transactional
 	public void checkRunningActivities() {
 		logger.info("Checking activities");
 		List<AppUser> users = userRepository.findAll();

@@ -24,7 +24,6 @@ import cz.hanusova.fingerprintgame.utils.UserUtils;
 
 @Service("userService")
 public class UserServiceImpl implements UserService {
-
 	private static Log logger = LogFactory.getLog(UserServiceImpl.class);
 
 	private UserRepository userRepository;

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import cz.hanusova.fingerprintgame.dto.UserDTO;
 import cz.hanusova.fingerprintgame.model.AppUser;
 import cz.hanusova.fingerprintgame.model.Item;
 import cz.hanusova.fingerprintgame.model.Place;
@@ -38,16 +39,17 @@ public class ActivityController {
 	private UserService userService;
 
 	@RequestMapping("/start")
-	public AppUser startActivity(@RequestParam Integer materialAmount, @RequestBody Place place) {
+	public UserDTO startActivity(@RequestParam Integer materialAmount, @RequestBody Place place) {
 		String username = UserUtils.getActualUsername();
 		AppUser user = userRepository.findByUsername(username);
-		return placeService.startActivity(user, place, Float.valueOf(materialAmount));
+		user = placeService.startActivity(user, place, Float.valueOf(materialAmount));
+		return userService.getUserDTOByUsername(user.getUsername());
 	}
 
 	@RequestMapping("/buy")
-	public AppUser buyItem(@RequestBody Item item) {
+	public UserDTO buyItem(@RequestBody Item item) {
 		AppUser user = userService.getActualUser();
-		return itemService.addItem(user, item);
+		return userService.getUserDTOByUsername(itemService.addItem(user, item).getUsername());
 	}
 
 }
