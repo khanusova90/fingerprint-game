@@ -3,6 +3,8 @@
  */
 package cz.hanusova.fingerprintgame.controller.rest;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,6 +52,11 @@ public class ActivityController {
 	public UserDTO buyItem(@RequestBody Item item) {
 		AppUser user = userService.getActualUser();
 		return userService.getUserDTOByUsername(itemService.addItem(user, item).getUsername());
+	}
+
+	@RequestMapping("/getItems")
+	public List<Item> getPossibleItems() {
+		return itemService.getItemsForUser(userService.getActualUser());
 	}
 
 }

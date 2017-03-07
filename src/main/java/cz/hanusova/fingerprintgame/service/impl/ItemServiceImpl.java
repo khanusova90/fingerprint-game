@@ -3,6 +3,7 @@
  */
 package cz.hanusova.fingerprintgame.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -14,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import cz.hanusova.fingerprintgame.model.AppUser;
 import cz.hanusova.fingerprintgame.model.Item;
 import cz.hanusova.fingerprintgame.model.ItemType;
+import cz.hanusova.fingerprintgame.repository.ItemRepository;
+import cz.hanusova.fingerprintgame.repository.ItemTypeRepository;
 import cz.hanusova.fingerprintgame.repository.UserRepository;
 import cz.hanusova.fingerprintgame.service.ItemService;
 
@@ -26,13 +29,18 @@ public class ItemServiceImpl implements ItemService {
 	private static final Log logger = LogFactory.getLog(ItemServiceImpl.class);
 
 	private UserRepository userRepository;
+	private ItemRepository itemRepository;
+	private ItemTypeRepository itemTypeRepository;
 
 	/**
 	 * 
 	 */
 	@Autowired
-	public ItemServiceImpl(UserRepository userRepository) {
+	public ItemServiceImpl(UserRepository userRepository, ItemTypeRepository itemTypeRepository,
+			ItemRepository itemRepository) {
 		this.userRepository = userRepository;
+		this.itemTypeRepository = itemTypeRepository;
+		this.itemRepository = itemRepository;
 	}
 
 	@Override
@@ -44,6 +52,25 @@ public class ItemServiceImpl implements ItemService {
 		userRepository.save(user);
 
 		return user;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Item> getItemsForUser(AppUser user) {
+		List<Item> items = new ArrayList<>();
+		List<ItemType> itemTypes = itemTypeRepository.findAll();
+		for (ItemType type : itemTypes) {
+			Item userItem = findItemByType(user, type);
+			if (userItem != null) {
+				Item item = itemRepository.findByItemTypeAndLevel(type, userItem.getLevel() + 1);
+				if (item != null) {
+					items.add(item);
+				}
+				continue;
+			}
+			items.add(itemRepository.findByItemTypeAndLevel(type, 0));
+		}
+		return items;
 	}
 
 	private void deleteActualItem(AppUser user, ItemType type) {
