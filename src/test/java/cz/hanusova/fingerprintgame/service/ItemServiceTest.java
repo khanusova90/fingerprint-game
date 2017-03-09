@@ -13,6 +13,8 @@ import cz.hanusova.fingerprintgame.builder.ItemBuilder;
 import cz.hanusova.fingerprintgame.builder.UserBuilder;
 import cz.hanusova.fingerprintgame.model.AppUser;
 import cz.hanusova.fingerprintgame.model.Item;
+import cz.hanusova.fingerprintgame.repository.ItemRepository;
+import cz.hanusova.fingerprintgame.repository.ItemTypeRepository;
 import cz.hanusova.fingerprintgame.repository.UserRepository;
 import cz.hanusova.fingerprintgame.service.impl.ItemServiceImpl;
 
@@ -26,6 +28,10 @@ public class ItemServiceTest {
 
 	@Mock
 	private UserRepository userRepositoryMock;
+	@Mock
+	private ItemRepository itemRepositoryMock;
+	@Mock
+	private ItemTypeRepository itemTypeRepositoryMock;
 
 	private UserBuilder userBuilder;
 	private ItemBuilder itemBuilder;
@@ -33,7 +39,7 @@ public class ItemServiceTest {
 	@Before
 	public void init() {
 		MockitoAnnotations.initMocks(this);
-		itemService = new ItemServiceImpl(userRepositoryMock);
+		itemService = new ItemServiceImpl(userRepositoryMock, itemTypeRepositoryMock, itemRepositoryMock);
 		userBuilder = new UserBuilder();
 		itemBuilder = new ItemBuilder();
 	}

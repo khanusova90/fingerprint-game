@@ -3,6 +3,8 @@
  */
 package cz.hanusova.fingerprintgame.service;
 
+import java.util.List;
+
 import cz.hanusova.fingerprintgame.model.AppUser;
 import cz.hanusova.fingerprintgame.model.Item;
 
@@ -21,5 +23,13 @@ public interface ItemService {
 	 * @return updated {@link AppUser}
 	 */
 	AppUser addItem(AppUser user, Item item);
+
+	/**
+	 * Gets items that user can buy
+	 * 
+	 * @param user
+	 * @return
+	 */
+	List<Item> getItemsForUser(AppUser user);
 
 }
