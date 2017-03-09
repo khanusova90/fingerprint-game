@@ -42,6 +42,7 @@ public class ItemServiceTest {
 		itemService = new ItemServiceImpl(userRepositoryMock, itemTypeRepositoryMock, itemRepositoryMock);
 		userBuilder = new UserBuilder();
 		itemBuilder = new ItemBuilder();
+
 	}
 
 	@Test
