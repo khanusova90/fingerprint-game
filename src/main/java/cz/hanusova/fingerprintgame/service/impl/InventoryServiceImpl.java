@@ -25,7 +25,6 @@ import cz.hanusova.fingerprintgame.model.UserActivity;
 import cz.hanusova.fingerprintgame.repository.InventoryRepository;
 import cz.hanusova.fingerprintgame.repository.MaterialRepository;
 import cz.hanusova.fingerprintgame.repository.UserActivityRepository;
-import cz.hanusova.fingerprintgame.repository.UserRepository;
 import cz.hanusova.fingerprintgame.service.InventoryService;
 
 /**
@@ -64,7 +63,6 @@ public class InventoryServiceImpl implements InventoryService {
 	private MaterialRepository materialRepository;
 	private InventoryRepository inventoryRepository;
 	private UserActivityRepository userActivityRepository;
-	private UserRepository userRepository;
 
 	@Autowired
 	public InventoryServiceImpl(MaterialRepository materialRepository, InventoryRepository inventoryRepository,
@@ -223,15 +221,6 @@ public class InventoryServiceImpl implements InventoryService {
 		Inventory workers = getUserInventory(user, WORKER);
 		updateMaterialAmount(workers, workersAmount, user);
 		userActivityRepository.delete(activity);
-	}
-
-	/**
-	 * @param userRepository
-	 *            the userRepository to set
-	 */
-	@Autowired
-	public void setUserRepository(UserRepository userRepository) {
-		this.userRepository = userRepository;
 	}
 
 }

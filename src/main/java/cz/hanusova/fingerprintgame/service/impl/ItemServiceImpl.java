@@ -18,6 +18,7 @@ import cz.hanusova.fingerprintgame.model.ItemType;
 import cz.hanusova.fingerprintgame.repository.ItemRepository;
 import cz.hanusova.fingerprintgame.repository.ItemTypeRepository;
 import cz.hanusova.fingerprintgame.repository.UserRepository;
+import cz.hanusova.fingerprintgame.service.InventoryService;
 import cz.hanusova.fingerprintgame.service.ItemService;
 
 /**
@@ -28,19 +29,23 @@ import cz.hanusova.fingerprintgame.service.ItemService;
 public class ItemServiceImpl implements ItemService {
 	private static final Log logger = LogFactory.getLog(ItemServiceImpl.class);
 
+	private static final Float ITEM_PRICE = 50f;
+
 	private UserRepository userRepository;
 	private ItemRepository itemRepository;
 	private ItemTypeRepository itemTypeRepository;
+	private InventoryService inventoryService;
 
 	/**
 	 * 
 	 */
 	@Autowired
 	public ItemServiceImpl(UserRepository userRepository, ItemTypeRepository itemTypeRepository,
-			ItemRepository itemRepository) {
+			ItemRepository itemRepository, InventoryService inventoryService) {
 		this.userRepository = userRepository;
 		this.itemTypeRepository = itemTypeRepository;
 		this.itemRepository = itemRepository;
+		this.inventoryService = inventoryService;
 	}
 
 	@Override
@@ -49,6 +54,7 @@ public class ItemServiceImpl implements ItemService {
 		deleteActualItem(user, item.getItemType());
 		logger.info("Adding item " + item.getName() + " to user " + user.getUsername());
 		user.getItems().add(item);
+		inventoryService.updateGoldAmount(ITEM_PRICE * item.getLevel(), user);
 		userRepository.save(user);
 
 		return user;
