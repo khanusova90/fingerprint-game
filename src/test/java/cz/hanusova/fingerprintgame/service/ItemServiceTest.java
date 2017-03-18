@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import cz.hanusova.fingerprintgame.builder.ItemBuilder;
@@ -32,6 +33,8 @@ public class ItemServiceTest {
 	private ItemRepository itemRepositoryMock;
 	@Mock
 	private ItemTypeRepository itemTypeRepositoryMock;
+	@Mock
+	private InventoryService inventoryServiceMock;
 
 	private UserBuilder userBuilder;
 	private ItemBuilder itemBuilder;
@@ -39,7 +42,8 @@ public class ItemServiceTest {
 	@Before
 	public void init() {
 		MockitoAnnotations.initMocks(this);
-		itemService = new ItemServiceImpl(userRepositoryMock, itemTypeRepositoryMock, itemRepositoryMock);
+		itemService = new ItemServiceImpl(userRepositoryMock, itemTypeRepositoryMock, itemRepositoryMock,
+				inventoryServiceMock);
 		userBuilder = new UserBuilder();
 		itemBuilder = new ItemBuilder();
 	}
@@ -62,6 +66,14 @@ public class ItemServiceTest {
 		Item item2 = itemBuilder.build(2);
 		itemService.addItem(user, item2);
 		Assert.assertEquals("Size of item list should not change", 1, user.getItems().size());
+	}
+
+	@Test
+	public void addItemInventoryUpdateTest() {
+		AppUser user = userBuilder.build();
+		Item item = itemBuilder.build(1);
+		itemService.addItem(user, item);
+		Mockito.verify(inventoryServiceMock, Mockito.times(1)).updateGoldAmount(Mockito.anyFloat(), Mockito.any());
 	}
 
 }
