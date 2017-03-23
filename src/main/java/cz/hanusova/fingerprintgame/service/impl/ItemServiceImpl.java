@@ -79,9 +79,7 @@ public class ItemServiceImpl implements ItemService {
 				}
 				continue;
 			}
-			items.add(itemRepository.findByItemTypeAndLevel(type, 1)); // TODO:
-																		// vrati
-																		// null
+			items.add(itemRepository.findByItemTypeAndLevel(type, 1));
 		}
 		return items;
 	}
