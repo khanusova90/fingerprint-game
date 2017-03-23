@@ -57,13 +57,6 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
-	/**
-	 * Prideli uzivateli pocatecni seznam surovin dle paramteru nastavenych v
-	 * <code>application.properties</code>
-	 * 
-	 * @param user
-	 *            {@link AppUser} novy uzivatel
-	 */
 	private void createInventory(AppUser user) {
 		List<Material> materials = materialRepository.findAll();
 		List<Inventory> userInventory = user.getInventory();

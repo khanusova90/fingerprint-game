@@ -20,6 +20,7 @@ import cz.hanusova.fingerprintgame.repository.ItemTypeRepository;
 import cz.hanusova.fingerprintgame.repository.UserRepository;
 import cz.hanusova.fingerprintgame.service.InventoryService;
 import cz.hanusova.fingerprintgame.service.ItemService;
+import cz.hanusova.fingerprintgame.service.UserService;
 
 /**
  * @author khanusova
@@ -35,22 +36,25 @@ public class ItemServiceImpl implements ItemService {
 	private ItemRepository itemRepository;
 	private ItemTypeRepository itemTypeRepository;
 	private InventoryService inventoryService;
+	private UserService userService;
 
 	/**
 	 * 
 	 */
 	@Autowired
 	public ItemServiceImpl(UserRepository userRepository, ItemTypeRepository itemTypeRepository,
-			ItemRepository itemRepository, InventoryService inventoryService) {
+			ItemRepository itemRepository, InventoryService inventoryService, UserService userService) {
 		this.userRepository = userRepository;
 		this.itemTypeRepository = itemTypeRepository;
 		this.itemRepository = itemRepository;
 		this.inventoryService = inventoryService;
+		this.userService = userService;
 	}
 
 	@Override
 	@Transactional
-	public AppUser addItem(AppUser user, Item item) {
+	public AppUser addItem(Item item) {
+		AppUser user = userService.getActualUser();
 		deleteActualItem(user, item.getItemType());
 		logger.info("Adding item " + item.getName() + " to user " + user.getUsername());
 		user.getItems().add(item);
@@ -62,7 +66,8 @@ public class ItemServiceImpl implements ItemService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Item> getItemsForUser(AppUser user) {
+	public List<Item> getItemsForActualUser() {
+		AppUser user = userService.getActualUser();
 		List<Item> items = new ArrayList<>();
 		List<ItemType> itemTypes = itemTypeRepository.findAll();
 		for (ItemType type : itemTypes) {
@@ -74,7 +79,7 @@ public class ItemServiceImpl implements ItemService {
 				}
 				continue;
 			}
-			items.add(itemRepository.findByItemTypeAndLevel(type, 0));
+			items.add(itemRepository.findByItemTypeAndLevel(type, 1));
 		}
 		return items;
 	}

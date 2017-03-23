@@ -50,13 +50,12 @@ public class ActivityController {
 
 	@RequestMapping("/buy")
 	public UserDTO buyItem(@RequestBody Item item) {
-		AppUser user = userService.getActualUser();
-		return userService.getUserDTOByUsername(itemService.addItem(user, item).getUsername());
+		return userService.getUserDTOByUsername(itemService.addItem(item).getUsername());
 	}
 
 	@RequestMapping("/getItems")
 	public List<Item> getPossibleItems() {
-		return itemService.getItemsForUser(userService.getActualUser());
+		return itemService.getItemsForActualUser();
 	}
 
 }
