@@ -57,12 +57,13 @@ public class ItemServiceImpl implements ItemService {
 		AppUser user = userService.getActualUser();
 		for (Item item : items) {
 			deleteActualItem(user, item.getItemType());
-			logger.info("Adding item " + item.getName() + " to user " + user.getUsername());
+			logger.info("Adding item " + item.getItemType().getName() + " level " + item.getLevel() + " to user "
+					+ user.getUsername());
 			user.getItems().add(item);
+			userRepository.save(user);
 			inventoryService.updateGoldAmount(ITEM_PRICE * item.getLevel(), user);
 		}
 		userRepository.save(user);
-
 		return user;
 	}
 
@@ -91,6 +92,7 @@ public class ItemServiceImpl implements ItemService {
 		Item item = findItemByType(user, type);
 		if (item != null) {
 			user.getItems().remove(item);
+			userRepository.save(user);
 		}
 	}
 
