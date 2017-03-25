@@ -85,12 +85,25 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	@Transactional(readOnly = true)
+	@Transactional
 	public UserDTO getUserDTOByUsername(String username) {
 		AppUser user = getUserByName(username);
+		if (user == null) {
+			user = createUser(username);
+		}
 		ModelMapper mapper = new ModelMapper();
 		UserDTO userDTO = mapper.map(user, UserDTO.class);
 		return userDTO;
+	}
+
+	private AppUser createUser(String username) {
+		AppUser user = new AppUser();
+		user.setUsername(username);
+		user.getRoles().add(Role.ROLE_USER);
+		user.setCharacter(new Character());
+		createInventory(user);
+		userRepository.save(user);
+		return user;
 	}
 
 	/*
