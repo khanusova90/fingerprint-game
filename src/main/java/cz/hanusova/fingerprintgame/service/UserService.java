@@ -34,7 +34,8 @@ public interface UserService {
 	public AppUser getUserByName(String username);
 
 	/**
-	 * Finds user by given username with all collections initialized
+	 * Finds user by given username with all collections initialized. <br />
+	 * If no {@link AppUser} with this username exists, creates a new one.
 	 * 
 	 * @param username
 	 * @return {@link UserDTO} filled with all information (including
