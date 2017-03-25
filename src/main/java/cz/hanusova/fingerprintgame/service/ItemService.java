@@ -15,13 +15,13 @@ import cz.hanusova.fingerprintgame.model.Item;
 public interface ItemService {
 
 	/**
-	 * Adds {@link Item} to user's item list. If user actually has some item of
+	 * Adds {@link Item}s to user's item list. If user actually has some item of
 	 * the same type, this method deletes it
 	 * 
-	 * @param item
+	 * @param items
 	 * @return updated {@link AppUser}
 	 */
-	AppUser addItem(Item item);
+	AppUser addItem(List<Item> items);
 
 	/**
 	 * Gets items that user can buy

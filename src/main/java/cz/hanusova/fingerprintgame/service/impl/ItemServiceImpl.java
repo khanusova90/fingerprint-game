@@ -53,12 +53,14 @@ public class ItemServiceImpl implements ItemService {
 
 	@Override
 	@Transactional
-	public AppUser addItem(Item item) {
+	public AppUser addItem(List<Item> items) {
 		AppUser user = userService.getActualUser();
-		deleteActualItem(user, item.getItemType());
-		logger.info("Adding item " + item.getName() + " to user " + user.getUsername());
-		user.getItems().add(item);
-		inventoryService.updateGoldAmount(ITEM_PRICE * item.getLevel(), user);
+		for (Item item : items) {
+			deleteActualItem(user, item.getItemType());
+			logger.info("Adding item " + item.getName() + " to user " + user.getUsername());
+			user.getItems().add(item);
+			inventoryService.updateGoldAmount(ITEM_PRICE * item.getLevel(), user);
+		}
 		userRepository.save(user);
 
 		return user;
