@@ -3,22 +3,20 @@ package cz.hanusova.fingerprintgame.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import cz.hanusova.fingerprintgame.model.Inventory;
 import cz.hanusova.fingerprintgame.service.UserService;
 
-@Controller
-@RequestMapping(value = { "/overview", "/signup" })
+//@Controller
+//@RequestMapping(value = { "/overview", "/signup" })
 public class OverviewController {
 
 	@Autowired
 	private UserService userService;
 
-	@RequestMapping("")
+	// @RequestMapping("")
 	public String getRequest(Model model) {
 		addUserInventory(model);
 		model.addAttribute("floor", 1);
@@ -27,7 +25,7 @@ public class OverviewController {
 		return "overview";
 	}
 
-	@RequestMapping("/maps")
+	// @RequestMapping("/maps")
 	public String getMaps(@RequestParam("floor") String floor, Model model) {
 		addUserInventory(model);
 		model.addAttribute("floor", floor);
