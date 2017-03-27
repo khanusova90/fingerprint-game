@@ -48,4 +48,24 @@ public interface UserService {
 	 */
 	public AppUser getActualUser();
 
+	/**
+	 * @param username
+	 * @param password
+	 * @return
+	 */
+	UserDTO getUserDTOByUsernameAndPassword(String username, String password);
+
+	/**
+	 * Tries to sign in user via IS STAG <br />
+	 * If user signs in STAG successfully, creates a new one in DB or updates
+	 * his password in case that user with this username already exists.
+	 * 
+	 * @param auth
+	 *            Auth header from client (Basic auth)
+	 * @param username
+	 * @return {@link UserDTO} or <code>null</code> in case that user was not
+	 *         logged in STAG
+	 */
+	UserDTO loginUser(String auth, String username);
+
 }
