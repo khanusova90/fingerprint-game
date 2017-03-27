@@ -47,4 +47,5 @@ insert into item(name, id_item_type, level, img_url) values
 	("Stříbrný žebřík", 3, 3, "silver_ladder.jpg"),
 	("Zlatý žebřík", 3, 4, "gold_ladder.jpg");
 
-
+--changeset hanuska1:items-3
+alter table item_type add PRICE bigint(19) default 100;

@@ -58,7 +58,7 @@ public class ItemServiceTest {
 		AppUser user = userBuilder.build();
 		signInUser(user);
 		int itemSize = user.getItems().size();
-		List<Item> items = new ArrayList();
+		List<Item> items = new ArrayList<>();
 		items.add(itemBuilder.build(1));
 		itemService.addItem(items);
 		Assert.assertNotEquals("User should get new item to his item list", itemSize, user.getItems().size());
@@ -71,7 +71,7 @@ public class ItemServiceTest {
 		Item item1 = itemBuilder.build(1);
 		user.getItems().add(item1);
 		Assert.assertEquals("User should have only one item", 1, user.getItems().size());
-		List<Item> items = new ArrayList();
+		List<Item> items = new ArrayList<>();
 		items.add(itemBuilder.build(2));
 		itemService.addItem(items);
 		Assert.assertEquals("Size of item list should not change", 1, user.getItems().size());
@@ -81,7 +81,7 @@ public class ItemServiceTest {
 	public void addItemInventoryUpdateTest() {
 		AppUser user = userBuilder.build();
 		signInUser(user);
-		List<Item> items = new ArrayList();
+		List<Item> items = new ArrayList<>();
 		items.add(itemBuilder.build(1));
 		itemService.addItem(items);
 		Mockito.verify(inventoryServiceMock, Mockito.times(1)).updateGoldAmount(Mockito.anyFloat(), Mockito.any());
