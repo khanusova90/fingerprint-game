@@ -30,8 +30,6 @@ import cz.hanusova.fingerprintgame.service.UserService;
 public class ItemServiceImpl implements ItemService {
 	private static final Log logger = LogFactory.getLog(ItemServiceImpl.class);
 
-	private static final Float ITEM_PRICE = 50f;
-
 	private UserRepository userRepository;
 	private ItemRepository itemRepository;
 	private ItemTypeRepository itemTypeRepository;
@@ -61,7 +59,7 @@ public class ItemServiceImpl implements ItemService {
 					+ user.getUsername());
 			user.getItems().add(item);
 			userRepository.save(user);
-			inventoryService.updateGoldAmount(ITEM_PRICE * item.getLevel(), user);
+			inventoryService.updateGoldAmount(item.getItemType().getPrice().floatValue() * item.getLevel(), user);
 		}
 		userRepository.save(user);
 		return user;

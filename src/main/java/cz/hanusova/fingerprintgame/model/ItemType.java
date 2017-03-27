@@ -44,6 +44,9 @@ public class ItemType implements Serializable {
 	@JoinColumn(name = "ID_MATERIAL")
 	private Material material;
 
+	@Column(name = "PRICE")
+	private Integer price;
+
 	/**
 	 * @return the idItemType
 	 */
@@ -102,6 +105,21 @@ public class ItemType implements Serializable {
 	 */
 	public void setMaterial(Material material) {
 		this.material = material;
+	}
+
+	/**
+	 * @return the price
+	 */
+	public Integer getPrice() {
+		return price;
+	}
+
+	/**
+	 * @param price
+	 *            the price to set
+	 */
+	public void setPrice(Integer price) {
+		this.price = price;
 	}
 
 	/*

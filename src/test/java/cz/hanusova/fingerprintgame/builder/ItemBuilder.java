@@ -22,6 +22,7 @@ public class ItemBuilder {
 	private ItemType createType() {
 		ItemType type = new ItemType();
 		type.setIdItemType(1l);
+		type.setPrice(100);
 		return type;
 	}
 
