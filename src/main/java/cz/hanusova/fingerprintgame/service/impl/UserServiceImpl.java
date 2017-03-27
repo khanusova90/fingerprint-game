@@ -87,18 +87,33 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public UserDTO getUserDTOByUsername(String username) {
+		AppUser user = getUserByName(username); // STAG
+		ModelMapper mapper = new ModelMapper();
+		UserDTO userDTO = mapper.map(user, UserDTO.class);
+		return userDTO;
+	}
+
+	@Override
+	@Transactional
+	public UserDTO getUserDTOByUsernameAndPassword(String username, String password) {
 		AppUser user = getUserByName(username);
 		if (user == null) {
-			user = createUser(username);
+			user = createUser(username, password);
+		} else {
+			user.setPassword(encoder.encode(password));
+			userRepository.save(user);
 		}
 		ModelMapper mapper = new ModelMapper();
 		UserDTO userDTO = mapper.map(user, UserDTO.class);
 		return userDTO;
 	}
 
-	private AppUser createUser(String username) {
+	private AppUser createUser(String username, String password) {
 		AppUser user = new AppUser();
+		logger.info("Saving new user: " + username);
+		String encPass = encoder.encode(password);
 		user.setUsername(username);
+		user.setPassword(encPass);
 		user.getRoles().add(Role.ROLE_USER);
 		user.setCharacter(new Character());
 		createInventory(user);

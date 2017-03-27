@@ -48,4 +48,11 @@ public interface UserService {
 	 */
 	public AppUser getActualUser();
 
+	/**
+	 * @param username
+	 * @param password
+	 * @return
+	 */
+	UserDTO getUserDTOByUsernameAndPassword(String username, String password);
+
 }
