@@ -34,6 +34,7 @@ import cz.hanusova.fingerprintgame.utils.UserUtils;
 @Service("userService")
 public class UserServiceImpl implements UserService {
 	private static Log logger = LogFactory.getLog(UserServiceImpl.class);
+	private static final Log loggingLogger = LogFactory.getLog("logging");
 
 	private static final String STAG_URL = "https://stagws.uhk.cz/ws/services/rest/";
 
@@ -100,12 +101,15 @@ public class UserServiceImpl implements UserService {
 	public UserDTO loginUser(String auth, String username) {
 		try {
 			RestTemplate template = new RestTemplate();
+			loggingLogger.info("Getting user " + username + " from STAG");
 			List<StagUser> users = template
 					.exchange(STAG_URL + "users/getOsobniCislaByExternalLogin?login=" + username + "&outputFormat=JSON",
 							HttpMethod.GET, null, new ParameterizedTypeReference<List<StagUser>>() {
 							})
 					.getBody();
 			if (users != null && users.size() > 0) {
+				loggingLogger.info("Trying to authorize user " + username);
+
 				HttpHeaders headers = new HttpHeaders();
 				headers.add("authorization", auth);
 
@@ -116,13 +120,19 @@ public class UserServiceImpl implements UserService {
 						HttpMethod.GET, entity, new ParameterizedTypeReference<List<TimetableAction>>() {
 						}).getBody();
 				if (timetable != null) {
+					loggingLogger.info("User " + username + " authorized successfully");
 					byte[] credentialsByte = Base64.getDecoder().decode(auth.substring(auth.indexOf(" ") + 1));
 					String[] credentials = new String(credentialsByte).split(":");
 					return getUserDTOByUsernameAndPassword(credentials[0], credentials[1]);
+				} else {
+					loggingLogger.info("User " + username + " was not authorized");
 				}
+			} else {
+				loggingLogger.info("User " + username + " was not found in STAG");
 			}
 		} catch (HttpClientErrorException e) {
 			logger.warn("Returned 401 from STAG");
+			loggingLogger.warn("Returned 401 from STAG");
 		}
 		return null;
 	}

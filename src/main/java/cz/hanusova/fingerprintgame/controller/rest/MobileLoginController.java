@@ -32,8 +32,10 @@ public class MobileLoginController {
 
 		UserDTO user = userService.loginUser(auth, username);
 		if (user == null) {
+			loggingLogger.warn(username + " UNAUTHORIZED");
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		} else {
+			loggingLogger.info(username + " logged in successfully");
 			return new ResponseEntity<Object>(user, HttpStatus.OK);
 		}
 	}
