@@ -19,6 +19,7 @@ import cz.hanusova.fingerprintgame.service.UserService;
 public class MobileLoginController {
 
 	private static final Log logger = LogFactory.getLog(MobileLoginController.class);
+	private static final Log loggingLogger = LogFactory.getLog("logging");
 
 	@Autowired
 	private UserService userService;
@@ -27,6 +28,7 @@ public class MobileLoginController {
 	public ResponseEntity<Object> getUser(@RequestParam("username") String username,
 			@RequestHeader("authorization") String auth) {
 		logger.info("Getting user from mobile app: " + username);
+		loggingLogger.info("Getting user from mobile app: " + username);
 
 		UserDTO user = userService.loginUser(auth, username);
 		if (user == null) {
