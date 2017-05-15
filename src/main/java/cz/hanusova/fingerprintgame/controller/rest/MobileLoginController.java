@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import cz.hanusova.fingerprintgame.dto.UserDTO;
-import cz.hanusova.fingerprintgame.service.UserService;
+import cz.hanusova.fingerprintgame.service.LoginService;
 
 @RestController
 @RequestMapping("/android/1.0")
@@ -22,7 +22,7 @@ public class MobileLoginController {
 	private static final Log loggingLogger = LogFactory.getLog("logging");
 
 	@Autowired
-	private UserService userService;
+	private LoginService loginService;
 
 	@RequestMapping(value = "/login", produces = "application/json", method = RequestMethod.POST)
 	public ResponseEntity<Object> getUser(@RequestParam("username") String username,
@@ -30,7 +30,7 @@ public class MobileLoginController {
 		logger.info("Getting user from mobile app: " + username);
 		loggingLogger.info("Getting user from mobile app: " + username);
 
-		UserDTO user = userService.loginUser(auth, username);
+		UserDTO user = loginService.loginUser(auth, username);
 		if (user == null) {
 			loggingLogger.warn(username + " UNAUTHORIZED");
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
