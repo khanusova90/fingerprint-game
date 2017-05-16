@@ -33,6 +33,10 @@ public class Fingerprint implements Serializable {
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date createdDate;
 
+	private String appName;
+	private String serverVersion;
+	private String clientVersion;
+
 	/**
 	 * @return the description
 	 */
@@ -470,5 +474,50 @@ public class Fingerprint implements Serializable {
 
 	public void setCellScans(List<CellScan> cellScans) {
 		this.cellScans = cellScans;
+	}
+
+	/**
+	 * @return the appName
+	 */
+	public String getAppName() {
+		return appName;
+	}
+
+	/**
+	 * @param appName
+	 *            the appName to set
+	 */
+	public void setAppName(String appName) {
+		this.appName = appName;
+	}
+
+	/**
+	 * @return the clientVersion
+	 */
+	public String getClientVersion() {
+		return clientVersion;
+	}
+
+	/**
+	 * @param clientVersion
+	 *            the clientVersion to set
+	 */
+	public void setClientVersion(String clientVersion) {
+		this.clientVersion = clientVersion;
+	}
+
+	/**
+	 * @return the serverVersion
+	 */
+	public String getServerVersion() {
+		return serverVersion;
+	}
+
+	/**
+	 * @param serverVersion
+	 *            the serverVersion to set
+	 */
+	public void setServerVersion(String serverVersion) {
+		this.serverVersion = serverVersion;
 	}
 }
