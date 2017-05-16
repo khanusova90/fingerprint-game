@@ -25,9 +25,6 @@ import cz.hanusova.fingerprintgame.utils.UserUtils;
 @Service("userService")
 public class UserServiceImpl implements UserService {
 	private static Log logger = LogFactory.getLog(UserServiceImpl.class);
-	private static final Log loggingLogger = LogFactory.getLog("logging");
-
-	private static final String STAG_URL = "https://stagws.uhk.cz/ws/services/rest/";
 
 	private UserRepository userRepository;
 	private MaterialRepository materialRepository;
