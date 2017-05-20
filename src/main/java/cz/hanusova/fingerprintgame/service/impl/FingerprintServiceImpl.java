@@ -17,10 +17,7 @@ import org.springframework.stereotype.Service;
 
 import com.couchbase.client.java.Bucket;
 import com.couchbase.client.java.CouchbaseCluster;
-import com.couchbase.client.java.document.JsonDocument;
-import com.couchbase.client.java.document.json.JsonObject;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.couchbase.client.java.document.SerializableDocument;
 
 import cz.hanusova.fingerprintgame.fingerprint.Fingerprint;
 import cz.hanusova.fingerprintgame.service.FingerprintService;
@@ -52,9 +49,11 @@ public class FingerprintServiceImpl implements FingerprintService {
 	@Override
 	public void saveFingerprint(Fingerprint fingerprint) {
 		fingerprint.setAppName(APP_NAME);
-		saveToFile(fingerprint);
+		Date now = new Date();
+		String name = fileName + SEPARATOR + SDF.format(now);
+		saveToFile(fingerprint, name);
 		if (profile.equals("production")) {
-			saveToCouchbase(fingerprint);
+			saveToCouchbase(fingerprint, name);
 		}
 	}
 
@@ -63,9 +62,8 @@ public class FingerprintServiceImpl implements FingerprintService {
 	 * 
 	 * @param fingerprint
 	 */
-	private void saveToFile(Fingerprint fingerprint) {
-		Date now = new Date();
-		String name = path + fileName + SEPARATOR + SDF.format(now);
+	private void saveToFile(Fingerprint fingerprint, String fileName) {
+		String name = path + fileName;
 		logger.info("Saving new fingerprint to file " + name);
 		try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(name))) {
 			writer.write(fingerprint.toString());
@@ -75,18 +73,17 @@ public class FingerprintServiceImpl implements FingerprintService {
 		}
 	}
 
-	private void saveToCouchbase(Fingerprint fingerprint) {
+	private void saveToCouchbase(Fingerprint fingerprint, String fileName) {
 		CouchbaseCluster cluster = CouchbaseCluster.create();
-		try {
-			ObjectMapper mapper = new ObjectMapper();
-			String fpString = mapper.writeValueAsString(fingerprint);
-			Bucket bucket = cluster.openBucket("beacon");
-			JsonObject object = JsonObject.fromJson(fpString);
-			bucket.upsert(JsonDocument.create(ID_NAME + fingerprint_id, object));
-			fingerprint_id++;
-		} catch (JsonProcessingException e) {
-			logger.error("could not deserialize fingerprint", e);
-		}
+		// try {
+		// ObjectMapper mapper = new ObjectMapper();
+		// String fpString = mapper.writeValueAsString(fingerprint);
+		Bucket bucket = cluster.openBucket("beacon");
+		bucket.upsert(SerializableDocument.create(fileName, fingerprint));
+		fingerprint_id++;
+		// } catch (JsonProcessingException e) {
+		// logger.error("could not deserialize fingerprint", e);
+		// }
 		cluster.disconnect();
 	}
 
