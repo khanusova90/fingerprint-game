@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -51,7 +52,7 @@ public class FingerprintServiceImpl implements FingerprintService {
 		Date now = new Date();
 		String name = fileName + SEPARATOR + SDF.format(now);
 		saveToFile(fingerprint, name);
-		saveToCouchbase(fingerprint, name);
+		saveToCouchbase(fingerprint);
 	}
 
 	/**
@@ -70,13 +71,13 @@ public class FingerprintServiceImpl implements FingerprintService {
 		}
 	}
 
-	private void saveToCouchbase(Fingerprint fingerprint, String fileName) {
+	private void saveToCouchbase(Fingerprint fingerprint) {
 		CouchbaseCluster cluster = CouchbaseCluster.create();
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			String fpString = mapper.writeValueAsString(fingerprint);
 			Bucket bucket = cluster.openBucket("beacon");
-			bucket.upsert(RawJsonDocument.create(fileName, fpString));
+			bucket.upsert(RawJsonDocument.create(UUID.randomUUID().toString(), fpString));
 		} catch (JsonProcessingException e) {
 			logger.error("could not deserialize fingerprint", e);
 		}

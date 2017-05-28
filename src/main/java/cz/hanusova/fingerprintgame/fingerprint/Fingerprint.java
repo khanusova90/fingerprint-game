@@ -12,8 +12,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  */
 public class Fingerprint implements Serializable {
 
-	private long id;
-
 	private String level;
 
 	private int x;
