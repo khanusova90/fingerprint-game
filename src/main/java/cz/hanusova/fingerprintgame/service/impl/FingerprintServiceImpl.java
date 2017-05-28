@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -17,8 +18,7 @@ import org.springframework.stereotype.Service;
 
 import com.couchbase.client.java.Bucket;
 import com.couchbase.client.java.CouchbaseCluster;
-import com.couchbase.client.java.document.JsonDocument;
-import com.couchbase.client.java.document.json.JsonObject;
+import com.couchbase.client.java.document.RawJsonDocument;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -37,10 +37,7 @@ public class FingerprintServiceImpl implements FingerprintService {
 
 	private static final SimpleDateFormat SDF = new SimpleDateFormat("ddMMyyyy_HHmmssSSS");
 	private static final String SEPARATOR = "_";
-	private static final String ID_NAME = "fingerprint";
 	private static final String APP_NAME = "fingerprint-game";
-
-	private static int fingerprint_id = 0;
 
 	@Value("${file.fingerprint.name}")
 	private String fileName;
@@ -52,10 +49,10 @@ public class FingerprintServiceImpl implements FingerprintService {
 	@Override
 	public void saveFingerprint(Fingerprint fingerprint) {
 		fingerprint.setAppName(APP_NAME);
-		saveToFile(fingerprint);
-		if (profile.equals("production")) {
-			saveToCouchbase(fingerprint);
-		}
+		Date now = new Date();
+		String name = fileName + SEPARATOR + SDF.format(now);
+		saveToFile(fingerprint, name);
+		saveToCouchbase(fingerprint);
 	}
 
 	/**
@@ -63,9 +60,8 @@ public class FingerprintServiceImpl implements FingerprintService {
 	 * 
 	 * @param fingerprint
 	 */
-	private void saveToFile(Fingerprint fingerprint) {
-		Date now = new Date();
-		String name = path + fileName + SEPARATOR + SDF.format(now);
+	private void saveToFile(Fingerprint fingerprint, String fileName) {
+		String name = path + fileName;
 		logger.info("Saving new fingerprint to file " + name);
 		try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(name))) {
 			writer.write(fingerprint.toString());
@@ -81,9 +77,7 @@ public class FingerprintServiceImpl implements FingerprintService {
 			ObjectMapper mapper = new ObjectMapper();
 			String fpString = mapper.writeValueAsString(fingerprint);
 			Bucket bucket = cluster.openBucket("beacon");
-			JsonObject object = JsonObject.fromJson(fpString);
-			bucket.upsert(JsonDocument.create(ID_NAME + fingerprint_id, object));
-			fingerprint_id++;
+			bucket.upsert(RawJsonDocument.create(UUID.randomUUID().toString(), fpString));
 		} catch (JsonProcessingException e) {
 			logger.error("could not deserialize fingerprint", e);
 		}
