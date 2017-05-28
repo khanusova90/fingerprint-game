@@ -17,7 +17,9 @@ import org.springframework.stereotype.Service;
 
 import com.couchbase.client.java.Bucket;
 import com.couchbase.client.java.CouchbaseCluster;
-import com.couchbase.client.java.document.SerializableDocument;
+import com.couchbase.client.java.document.RawJsonDocument;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import cz.hanusova.fingerprintgame.fingerprint.Fingerprint;
 import cz.hanusova.fingerprintgame.service.FingerprintService;
@@ -34,10 +36,7 @@ public class FingerprintServiceImpl implements FingerprintService {
 
 	private static final SimpleDateFormat SDF = new SimpleDateFormat("ddMMyyyy_HHmmssSSS");
 	private static final String SEPARATOR = "_";
-	private static final String ID_NAME = "fingerprint";
 	private static final String APP_NAME = "fingerprint-game";
-
-	private static int fingerprint_id = 0;
 
 	@Value("${file.fingerprint.name}")
 	private String fileName;
@@ -52,9 +51,7 @@ public class FingerprintServiceImpl implements FingerprintService {
 		Date now = new Date();
 		String name = fileName + SEPARATOR + SDF.format(now);
 		saveToFile(fingerprint, name);
-		if (profile.equals("production")) {
-			saveToCouchbase(fingerprint, name);
-		}
+		saveToCouchbase(fingerprint, name);
 	}
 
 	/**
@@ -75,15 +72,14 @@ public class FingerprintServiceImpl implements FingerprintService {
 
 	private void saveToCouchbase(Fingerprint fingerprint, String fileName) {
 		CouchbaseCluster cluster = CouchbaseCluster.create();
-		// try {
-		// ObjectMapper mapper = new ObjectMapper();
-		// String fpString = mapper.writeValueAsString(fingerprint);
-		Bucket bucket = cluster.openBucket("beacon");
-		bucket.upsert(SerializableDocument.create(fileName, fingerprint));
-		fingerprint_id++;
-		// } catch (JsonProcessingException e) {
-		// logger.error("could not deserialize fingerprint", e);
-		// }
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			String fpString = mapper.writeValueAsString(fingerprint);
+			Bucket bucket = cluster.openBucket("beacon");
+			bucket.upsert(RawJsonDocument.create(fileName, fpString));
+		} catch (JsonProcessingException e) {
+			logger.error("could not deserialize fingerprint", e);
+		}
 		cluster.disconnect();
 	}
 

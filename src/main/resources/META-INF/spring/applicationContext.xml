@@ -5,6 +5,7 @@
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:couchbase="http://www.springframework.org/schema/data/couchbase"
 	xsi:schemaLocation="
         http://www.springframework.org/schema/beans     
         http://www.springframework.org/schema/beans/spring-beans.xsd
@@ -19,7 +20,9 @@
      	http://www.springframework.org/schema/tx
         http://www.springframework.org/schema/tx/spring-tx.xsd
         http://www.springframework.org/schema/task
-		http://www.springframework.org/schema/task/spring-task.xsd">
+		http://www.springframework.org/schema/task/spring-task.xsd
+		http://www.springframework.org/schema/data/couchbase
+    	http://www.springframework.org/schema/data/couchbase/spring-couchbase.xsd">
  
 	<context:component-scan base-package="cz.hanusova.fingerprintgame" />
 	<context:annotation-config />
@@ -57,5 +60,15 @@
 		<property name="packagesToScan" value="cz.hanusova.fingerprintgame.model" />
 	</bean>
 	<bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.HibernateJpaDialect" />
+	
+	<couchbase:cluster>
+      <couchbase:node>127.0.0.1</couchbase:node>
+    </couchbase:cluster>
+    
+    <couchbase:clusterInfo login="Administrator" password="uhkcouch"/>
+
+    <couchbase:bucket bucketName="beacon" bucketPassword=""/>
+	
+    <couchbase:env /> 
 	
 </beans>
