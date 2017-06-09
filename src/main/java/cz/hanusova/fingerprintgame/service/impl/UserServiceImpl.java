@@ -16,6 +16,7 @@ import cz.hanusova.fingerprintgame.model.AppUser;
 import cz.hanusova.fingerprintgame.model.Character;
 import cz.hanusova.fingerprintgame.model.Inventory;
 import cz.hanusova.fingerprintgame.model.Material;
+import cz.hanusova.fingerprintgame.model.Place;
 import cz.hanusova.fingerprintgame.model.Role;
 import cz.hanusova.fingerprintgame.repository.MaterialRepository;
 import cz.hanusova.fingerprintgame.repository.PlaceRepository;
@@ -26,6 +27,9 @@ import cz.hanusova.fingerprintgame.utils.UserUtils;
 @Service("userService")
 public class UserServiceImpl implements UserService {
 	private static Log logger = LogFactory.getLog(UserServiceImpl.class);
+
+	private static final int FIRST_LEVEL = 5;
+	private static final float LEVEL_COEF = 1.2f;
 
 	private UserRepository userRepository;
 	private MaterialRepository materialRepository;
@@ -112,7 +116,16 @@ public class UserServiceImpl implements UserService {
 	private UserDTO getUserDTOWithInfo(AppUser user) {
 		ModelMapper mapper = new ModelMapper();
 		UserDTO userDTO = mapper.map(user, UserDTO.class);
-		userDTO.setPlaceProgress(100 * user.getPlaces().size() / placeRepository.findAll().size());
+		List<Place> places = placeRepository.findAll();
+		if (places.size() == 0) {
+			userDTO.setPlaceProgress(100);
+		} else {
+			userDTO.setPlaceProgress(100 * user.getPlaces().size() / placeRepository.findAll().size());
+		}
+		int xp = user.getCharacter().getXp();
+		double level = Math.log(xp / FIRST_LEVEL) / Math.log(LEVEL_COEF);
+		userDTO.setLevel((int) level);
+		userDTO.setLevelProgress((int) ((level % 1) * 100));
 
 		return userDTO;
 	}
