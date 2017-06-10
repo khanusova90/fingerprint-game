@@ -123,9 +123,11 @@ public class UserServiceImpl implements UserService {
 			userDTO.setPlaceProgress(100 * user.getPlaces().size() / placeRepository.findAll().size());
 		}
 		int xp = user.getCharacter().getXp();
-		double level = Math.log(xp / FIRST_LEVEL) / Math.log(LEVEL_COEF);
-		userDTO.setLevel((int) level);
-		userDTO.setLevelProgress((int) ((level % 1) * 100));
+		if (xp != 0) {
+			double level = Math.log(xp / FIRST_LEVEL) / Math.log(LEVEL_COEF);
+			userDTO.setLevel((int) level + 1);
+			userDTO.setLevelProgress((int) ((level % 1) * 100));
+		}
 
 		return userDTO;
 	}
