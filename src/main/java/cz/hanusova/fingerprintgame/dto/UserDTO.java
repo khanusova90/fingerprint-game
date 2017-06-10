@@ -34,7 +34,7 @@ public class UserDTO {
 	 * Information to send to client
 	 */
 	private int placeProgress;
-	private int level;
+	private int level = 1;
 	private int levelProgress;
 
 	/*
