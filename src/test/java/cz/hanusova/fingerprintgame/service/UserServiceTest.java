@@ -33,19 +33,30 @@ public class UserServiceTest {
 	@Mock
 	PlaceRepository placeRepositoryMock;
 
+	AppUser userMock;
+
 	@Before
 	public void init() {
 		MockitoAnnotations.initMocks(this);
 		userService = new UserServiceImpl(userRepositoryMock, materialRepositoryMock, placeRepositoryMock);
-		AppUser user = userBuilder.build();
-		Mockito.when(userRepositoryMock.findByUsername(Mockito.anyString())).thenReturn(user);
+		userMock = userBuilder.build();
+		Mockito.when(userRepositoryMock.findByUsername(Mockito.anyString())).thenReturn(userMock);
+	}
+
+	@Test
+	public void fillPropertiesTest() {
+		UserDTO user = userService.getUserDTOByUsername("username");
+		Assert.assertNotEquals("Level should be calculated", 0, user.getLevel());
+		Assert.assertNotEquals("Level progress should be calculated", 0, user.getLevelProgress());
+		Assert.assertNotEquals("Place progress should be calculated", 0, user.getPlaceProgress());
 	}
 
 	@Test
 	public void testUserLevel() {
+		userMock.getCharacter().setXp(6);
 		UserDTO user = userService.getUserDTOByUsername("username");
-		Assert.assertNotEquals("Level should be calculated", 0, user.getLevel());
-		Assert.assertNotEquals("Level progress should be calculated", 0, user.getLevelProgress());
+		Assert.assertEquals("User with 6 XP should be in second level", 2, user.getLevel());
+		Assert.assertNotEquals("Level progress should be set", 0, user.getLevelProgress());
 	}
 
 }

@@ -28,8 +28,8 @@ import cz.hanusova.fingerprintgame.utils.UserUtils;
 public class UserServiceImpl implements UserService {
 	private static Log logger = LogFactory.getLog(UserServiceImpl.class);
 
-	private static final int FIRST_LEVEL = 5;
-	private static final float LEVEL_COEF = 1.2f;
+	private static final float FIRST_LEVEL = 5f;
+	private static final float LEVEL_COEF = 1.6f;
 
 	private UserRepository userRepository;
 	private MaterialRepository materialRepository;
@@ -124,9 +124,14 @@ public class UserServiceImpl implements UserService {
 		}
 		int xp = user.getCharacter().getXp();
 		if (xp != 0) {
-			double level = Math.log(xp / FIRST_LEVEL) / Math.log(LEVEL_COEF);
-			userDTO.setLevel((int) level + 1);
-			userDTO.setLevelProgress((int) ((level % 1) * 100));
+			if (xp > FIRST_LEVEL) {
+				double level = Math.log(xp / FIRST_LEVEL) / Math.log(LEVEL_COEF) + 2;
+				userDTO.setLevel((int) level);
+				userDTO.setLevelProgress((int) ((level % 1) * 100));
+			} else {
+				userDTO.setLevel(1);
+				userDTO.setLevelProgress((int) (100 * xp / FIRST_LEVEL));
+			}
 		}
 
 		return userDTO;
