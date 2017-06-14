@@ -31,6 +31,13 @@ public class UserDTO {
 	private List<Item> items = new ArrayList<>();
 
 	/*
+	 * Information to send to client
+	 */
+	private int placeProgress;
+	private int level = 1;
+	private int levelProgress;
+
+	/*
 	 * Getters and setters
 	 */
 	/**
@@ -181,6 +188,51 @@ public class UserDTO {
 	 */
 	public void setItems(List<Item> items) {
 		this.items = items;
+	}
+
+	/**
+	 * @return the placeProgress
+	 */
+	public int getPlaceProgress() {
+		return placeProgress;
+	}
+
+	/**
+	 * @param placeProgress
+	 *            the placeProgress to set
+	 */
+	public void setPlaceProgress(int placeProgress) {
+		this.placeProgress = placeProgress;
+	}
+
+	/**
+	 * @return the level
+	 */
+	public int getLevel() {
+		return level;
+	}
+
+	/**
+	 * @param level
+	 *            the level to set
+	 */
+	public void setLevel(int level) {
+		this.level = level;
+	}
+
+	/**
+	 * @return the levelProgress
+	 */
+	public int getLevelProgress() {
+		return levelProgress;
+	}
+
+	/**
+	 * @param levelProgress
+	 *            the levelProgress to set
+	 */
+	public void setLevelProgress(int levelProgress) {
+		this.levelProgress = levelProgress;
 	}
 
 }

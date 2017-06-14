@@ -16,8 +16,10 @@ import cz.hanusova.fingerprintgame.model.AppUser;
 import cz.hanusova.fingerprintgame.model.Character;
 import cz.hanusova.fingerprintgame.model.Inventory;
 import cz.hanusova.fingerprintgame.model.Material;
+import cz.hanusova.fingerprintgame.model.Place;
 import cz.hanusova.fingerprintgame.model.Role;
 import cz.hanusova.fingerprintgame.repository.MaterialRepository;
+import cz.hanusova.fingerprintgame.repository.PlaceRepository;
 import cz.hanusova.fingerprintgame.repository.UserRepository;
 import cz.hanusova.fingerprintgame.service.UserService;
 import cz.hanusova.fingerprintgame.utils.UserUtils;
@@ -26,16 +28,22 @@ import cz.hanusova.fingerprintgame.utils.UserUtils;
 public class UserServiceImpl implements UserService {
 	private static Log logger = LogFactory.getLog(UserServiceImpl.class);
 
+	private static final float FIRST_LEVEL = 5f;
+	private static final float LEVEL_COEF = 1.6f;
+
 	private UserRepository userRepository;
 	private MaterialRepository materialRepository;
+	private PlaceRepository placeRepository;
 
 	private PasswordEncoder encoder;
 
 	@Autowired
-	public UserServiceImpl(UserRepository userRepository, MaterialRepository materialRepository) {
+	public UserServiceImpl(UserRepository userRepository, MaterialRepository materialRepository,
+			PlaceRepository placeRepository) {
 		this.encoder = new BCryptPasswordEncoder();
 		this.userRepository = userRepository;
 		this.materialRepository = materialRepository;
+		this.placeRepository = placeRepository;
 	}
 
 	@Transactional
@@ -84,76 +92,11 @@ public class UserServiceImpl implements UserService {
 		return user;
 	}
 
-	// @Override
-	// @Transactional
-	// public UserDTO loginUser(String auth, String username) {
-	// try {
-	// RestTemplate template = new RestTemplate();
-	// loggingLogger.info("Getting user " + username + " from STAG");
-	// List<StagUserInfo> users = template.exchange(
-	// STAG_URL + "users/getStagUserListForExternalLogin?externalLogin=" +
-	// username + "&outputFormat=JSON",
-	// HttpMethod.GET, null, new
-	// ParameterizedTypeReference<List<StagUserInfo>>() {
-	// }).getBody();
-	// if (users != null && !users.isEmpty() && users.get(0).getUsers() != null
-	// && !users.get(0).getUsers().isEmpty()) {
-	// loggingLogger.info("Trying to authorize user " + username);
-	//
-	// HttpHeaders headers = new HttpHeaders();
-	// headers.add("authorization", auth);
-	//
-	// HttpEntity<String> entity = new HttpEntity<String>("parameters",
-	// headers);
-	//
-	// for (StagUser user : users.get(0).getUsers()) {
-	// switch (user.getRole()) {
-	// case "ST":
-	// List<StagUser> students = template.exchange(
-	// STAG_URL + "users/getOsobniCislaByExternalLogin?login=" + username
-	// + "&outputFormat=JSON",
-	// HttpMethod.GET, null, new ParameterizedTypeReference<List<StagUser>>() {
-	// }).getBody();
-	//
-	// List<TimetableAction> timetable = template.exchange(
-	// STAG_URL + "rozvrhy/getRozvrhByStudent?osCislo="
-	// + students.get(0).getUserNumbers().get(0) + "&outputFormat=JSON",
-	// HttpMethod.GET, entity, new
-	// ParameterizedTypeReference<List<TimetableAction>>() {
-	// }).getBody();
-	// if (timetable != null) {
-	// loggingLogger.info("User " + username + " authorized successfully");
-	// byte[] credentialsByte =
-	// Base64.getDecoder().decode(auth.substring(auth.indexOf(" ") + 1));
-	// String[] credentials = new String(credentialsByte).split(":");
-	// return getUserDTOByUsernameAndPassword(credentials[0], credentials[1]);
-	// } else {
-	// loggingLogger.info("User " + username + " was not authorized");
-	// }
-	// break;
-	//
-	// default:
-	// break;
-	// }
-	// }
-	//
-	// } else {
-	// loggingLogger.info("User " + username + " was not found in STAG");
-	// }
-	// } catch (HttpClientErrorException e) {
-	// logger.warn("Returned 401 from STAG");
-	// loggingLogger.warn("Returned 401 from STAG");
-	// }
-	// return null;
-	// }
-
 	@Override
 	@Transactional
 	public UserDTO getUserDTOByUsername(String username) {
 		AppUser user = getUserByName(username);
-		ModelMapper mapper = new ModelMapper();
-		UserDTO userDTO = mapper.map(user, UserDTO.class);
-		return userDTO;
+		return getUserDTOWithInfo(user);
 	}
 
 	@Override
@@ -166,8 +109,31 @@ public class UserServiceImpl implements UserService {
 			user.setPassword(encoder.encode(password));
 			userRepository.save(user);
 		}
+
+		return getUserDTOWithInfo(user);
+	}
+
+	private UserDTO getUserDTOWithInfo(AppUser user) {
 		ModelMapper mapper = new ModelMapper();
 		UserDTO userDTO = mapper.map(user, UserDTO.class);
+		List<Place> places = placeRepository.findAll();
+		if (places.size() == 0) {
+			userDTO.setPlaceProgress(100);
+		} else {
+			userDTO.setPlaceProgress(100 * user.getPlaces().size() / placeRepository.findAll().size());
+		}
+		int xp = user.getCharacter().getXp();
+		if (xp != 0) {
+			if (xp > FIRST_LEVEL) {
+				double level = Math.log(xp / FIRST_LEVEL) / Math.log(LEVEL_COEF) + 2;
+				userDTO.setLevel((int) level);
+				userDTO.setLevelProgress((int) ((level % 1) * 100));
+			} else {
+				userDTO.setLevel(1);
+				userDTO.setLevelProgress((int) (100 * xp / FIRST_LEVEL));
+			}
+		}
+
 		return userDTO;
 	}
 

@@ -49,6 +49,8 @@ public class ActivityServiceImpl implements ActivityService {
 		userActivityRepository.save(activity);
 
 		user.getActivities().add(activity);
+		int xp = user.getCharacter().getXp();
+		user.getCharacter().setXp(xp + 1);
 		updateInventory(place, user, amount);
 
 		userRepository.save(user);
