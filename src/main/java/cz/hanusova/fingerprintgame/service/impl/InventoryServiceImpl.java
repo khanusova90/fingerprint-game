@@ -159,10 +159,12 @@ public class InventoryServiceImpl implements InventoryService {
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void mine(Place place, AppUser user, float workers) {
 		updateFoodAmount(workers * FOOD_FOR_WORK, user);
-		mineMaterial(place.getMaterial(), user, workers);
+		updateMaterial(place.getMaterial(), user, workers);
 	}
 
-	private void mineMaterial(Material material, AppUser user, float workers) {
+	@Override
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public void updateMaterial(Material material, AppUser user, float workers) {
 		Inventory inventory = getUserInventory(user, material);
 		Float minedAmount = workers * getMiningCoef(user, material);
 		logger.info("Adding " + minedAmount + " of " + material.getName() + " to " + user.getUsername());

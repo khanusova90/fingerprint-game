@@ -6,6 +6,7 @@ package cz.hanusova.fingerprintgame.service;
 import java.math.BigDecimal;
 
 import cz.hanusova.fingerprintgame.model.AppUser;
+import cz.hanusova.fingerprintgame.model.Material;
 import cz.hanusova.fingerprintgame.model.Place;
 import cz.hanusova.fingerprintgame.model.UserActivity;
 
@@ -137,5 +138,17 @@ public interface InventoryService {
 	 * @param user
 	 */
 	void stopBuilding(UserActivity activity, AppUser user);
+
+	/**
+	 * Updates material amount for user
+	 * 
+	 * @param material
+	 *            {@link Material} that should be updated
+	 * @param user
+	 *            {@link AppUser}
+	 * @param workers
+	 *            amount of workers that mine this material
+	 */
+	void updateMaterial(Material material, AppUser user, float workers);
 
 }
