@@ -61,6 +61,7 @@ public class ActivityServiceImpl implements ActivityService {
 		switch (placeActivity) {
 		case MINE:
 			inventoryService.updateWorkerAmount(amount, user);
+			inventoryService.mine(place, user, amount);
 			break;
 		case BUILD:
 			inventoryService.updateStoneAmount(amount * 10, user);
