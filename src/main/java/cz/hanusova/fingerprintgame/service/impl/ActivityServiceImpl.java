@@ -11,6 +11,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import cz.hanusova.fingerprintgame.model.ActivityEnum;
@@ -43,8 +44,10 @@ public class ActivityServiceImpl implements ActivityService {
 	}
 
 	@Override
-	@Transactional
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void startNewActivity(Place place, Float amount, AppUser user) {
+		user = userRepository.findOne(user.getIdUser()); // Refresh user for
+															// this transaction
 		UserActivity activity = new UserActivity(place, amount);
 		userActivityRepository.save(activity);
 
@@ -61,6 +64,7 @@ public class ActivityServiceImpl implements ActivityService {
 		switch (placeActivity) {
 		case MINE:
 			inventoryService.updateWorkerAmount(amount, user);
+			inventoryService.updateMaterial(place.getMaterial(), user, amount);
 			break;
 		case BUILD:
 			inventoryService.updateStoneAmount(amount * 10, user);
@@ -109,10 +113,11 @@ public class ActivityServiceImpl implements ActivityService {
 					if (inventoryService.hasEnoughFood(workers, user)) {
 						inventoryService.mine(place, user, workers);
 					} else {
+						inventoryService.updateWorkerAmount(workers * -1, user);
+						userActivityRepository.delete(activity);
 						logger.info("User " + user.getUsername()
 								+ " does not have enough food to feed workers. Stopping activity at place ID "
 								+ place.getIdPlace());
-						userActivityRepository.delete(activity);
 					}
 					break;
 				case BUILD:
