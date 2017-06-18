@@ -74,6 +74,7 @@ public class PlaceServiceTest {
 		Mockito.when(placeMock.getPlaceType()).thenReturn(placeTypeMock);
 		Mockito.when(placeMock.getMaterial()).thenReturn(user.getInventory().iterator().next().getMaterial());
 		Mockito.when(placeTypeMock.getActivity()).thenReturn(ActivityEnum.MINE);
+		Mockito.when(userRepositoryMock.findOne(Mockito.anyLong())).thenReturn(user);
 	}
 
 	@Test

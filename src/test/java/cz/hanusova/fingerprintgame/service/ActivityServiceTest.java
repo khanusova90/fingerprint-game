@@ -48,6 +48,7 @@ public class ActivityServiceTest {
 		user = userBuilder.build();
 		Mockito.when(placeMock.getPlaceType()).thenReturn(placeTypeMock);
 		Mockito.when(placeTypeMock.getActivity()).thenReturn(ActivityEnum.MINE);
+		Mockito.when(userRepository.findOne(Mockito.anyLong())).thenReturn(user);
 	}
 
 	@Test
