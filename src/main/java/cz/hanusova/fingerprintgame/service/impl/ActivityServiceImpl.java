@@ -109,10 +109,10 @@ public class ActivityServiceImpl implements ActivityService {
 					if (inventoryService.hasEnoughFood(workers, user)) {
 						inventoryService.mine(place, user, workers);
 					} else {
+						userActivityRepository.delete(activity);
 						logger.info("User " + user.getUsername()
 								+ " does not have enough food to feed workers. Stopping activity at place ID "
 								+ place.getIdPlace());
-						userActivityRepository.delete(activity);
 					}
 					break;
 				case BUILD:

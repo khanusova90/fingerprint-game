@@ -50,7 +50,7 @@ public class AppUser {
 	private Character character;
 
 	@JoinColumn(name = "ID_APP_USER")
-	@OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Inventory> inventory = new ArrayList<>();
 
 	@ElementCollection(targetClass = Role.class)
@@ -60,17 +60,17 @@ public class AppUser {
 	private List<Role> roles = new ArrayList<>();
 
 	@JoinColumn(name = "ID_APP_USER")
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
 	private List<UserActivity> activities = new ArrayList<>();
 
 	@JoinTable(name = "USER_PLACE", joinColumns = { @JoinColumn(name = "ID_APP_USER") }, inverseJoinColumns = {
 			@JoinColumn(name = "ID_PLACE") })
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
 	private List<Place> places = new ArrayList<>();
 
 	@JoinTable(name = "USER_ITEM", joinColumns = { @JoinColumn(name = "ID_APP_USER") }, inverseJoinColumns = {
 			@JoinColumn(name = "ID_ITEM") })
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.PERSIST)
 	private List<Item> items = new ArrayList<>();
 
 	/*
