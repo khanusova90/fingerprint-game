@@ -30,6 +30,7 @@ public class UserBuilder {
 	 */
 	public AppUser build() {
 		AppUser user = new AppUser();
+		user.setIdUser(1L);
 		user.setInventory(createInventory());
 		user.setCharacter(createCharacter());
 		return user;
