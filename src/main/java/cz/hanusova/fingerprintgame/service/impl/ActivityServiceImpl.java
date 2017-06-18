@@ -11,6 +11,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import cz.hanusova.fingerprintgame.model.ActivityEnum;
@@ -43,8 +44,10 @@ public class ActivityServiceImpl implements ActivityService {
 	}
 
 	@Override
-	@Transactional
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void startNewActivity(Place place, Float amount, AppUser user) {
+		user = userRepository.findOne(user.getIdUser()); // Refresh user for
+															// this transaction
 		UserActivity activity = new UserActivity(place, amount);
 		userActivityRepository.save(activity);
 

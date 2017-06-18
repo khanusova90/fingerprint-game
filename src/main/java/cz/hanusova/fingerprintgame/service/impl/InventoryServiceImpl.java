@@ -163,7 +163,7 @@ public class InventoryServiceImpl implements InventoryService {
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	@Transactional
 	public void updateMaterial(Material material, AppUser user, float workers) {
 		Inventory inventory = getUserInventory(user, material);
 		Float minedAmount = workers * getMiningCoef(user, material);

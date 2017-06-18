@@ -65,12 +65,12 @@ public class AppUser {
 
 	@JoinTable(name = "USER_PLACE", joinColumns = { @JoinColumn(name = "ID_APP_USER") }, inverseJoinColumns = {
 			@JoinColumn(name = "ID_PLACE") })
-	@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Place> places = new ArrayList<>();
 
 	@JoinTable(name = "USER_ITEM", joinColumns = { @JoinColumn(name = "ID_APP_USER") }, inverseJoinColumns = {
 			@JoinColumn(name = "ID_ITEM") })
-	@ManyToMany(cascade = CascadeType.PERSIST)
+	@ManyToMany(cascade = CascadeType.ALL)
 	private List<Item> items = new ArrayList<>();
 
 	/*
