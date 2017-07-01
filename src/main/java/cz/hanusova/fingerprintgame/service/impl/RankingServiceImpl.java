@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import cz.hanusova.fingerprintgame.dto.RankingDTO;
 import cz.hanusova.fingerprintgame.model.AppUser;
@@ -18,6 +19,7 @@ import cz.hanusova.fingerprintgame.service.RankingService;
  * @author khanusova
  *
  */
+@Service
 public class RankingServiceImpl implements RankingService {
 
 	private UserRepository userRepository;
