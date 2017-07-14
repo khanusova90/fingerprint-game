@@ -90,7 +90,6 @@ public class ActivityServiceImpl implements ActivityService {
 	@Override
 	@Transactional
 	public void changeActivity(UserActivity activity, Float workersAmount, AppUser user) {
-		// TODO: vyresit pro zmenu stavby
 		inventoryService.updateWorkerAmount(activity.getMaterialAmount() * -1, user);
 		activity.setMaterialAmount(workersAmount);
 		activity.setStartTime(new Date());

@@ -53,7 +53,7 @@ public class InventoryServiceImpl implements InventoryService {
 	/**
 	 * Amount of gold for paying rent for each worker
 	 */
-	private static final Float GOLD_RENT = 0.25f;
+	private static final Float GOLD_RENT = 0.5f;
 
 	/**
 	 * Value indicating how much will each level of item increase mining
@@ -196,7 +196,7 @@ public class InventoryServiceImpl implements InventoryService {
 	public void payRent(UserActivity activity, AppUser user) {
 		float housesAmount = activity.getMaterialAmount();
 		logger.info("User " + user.getUsername() + " is paying rent for " + housesAmount + " houses");
-		updateGoldAmount(0.5f * housesAmount, user);
+		updateGoldAmount(GOLD_RENT * housesAmount, user);
 	}
 
 	@Override

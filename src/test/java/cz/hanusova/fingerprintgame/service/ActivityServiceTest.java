@@ -3,6 +3,9 @@
  */
 package cz.hanusova.fingerprintgame.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -49,6 +52,9 @@ public class ActivityServiceTest {
 		Mockito.when(placeMock.getPlaceType()).thenReturn(placeTypeMock);
 		Mockito.when(placeTypeMock.getActivity()).thenReturn(ActivityEnum.MINE);
 		Mockito.when(userRepository.findOne(Mockito.anyLong())).thenReturn(user);
+		List<AppUser> users = new ArrayList<>();
+		users.add(user);
+		Mockito.when(userRepository.findAll()).thenReturn(users);
 	}
 
 	@Test
