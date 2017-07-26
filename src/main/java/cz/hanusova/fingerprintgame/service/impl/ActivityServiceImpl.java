@@ -80,20 +80,41 @@ public class ActivityServiceImpl implements ActivityService {
 	@Override
 	@Transactional
 	public void removeActivity(UserActivity activity, AppUser user) {
-		inventoryService.updateWorkerAmount(activity.getMaterialAmount() * -1, user);
-		user.getActivities().remove(activity);
+		ActivityEnum placeActivity = activity.getPlace().getPlaceType().getActivity();
+		switch (placeActivity) {
+		case MINE:
+			inventoryService.updateWorkerAmount(activity.getMaterialAmount() * -1, user);
+			user.getActivities().remove(activity);
+			userActivityRepository.delete(activity);
+			break;
+		case BUILD:
+			inventoryService.stopBuilding(activity, user);
+			break;
+		default:
+			break;
+		}
 		userRepository.save(user);
-
-		userActivityRepository.delete(activity);
 	}
 
 	@Override
 	@Transactional
 	public void changeActivity(UserActivity activity, Float workersAmount, AppUser user) {
-		inventoryService.updateWorkerAmount(activity.getMaterialAmount() * -1, user);
-		activity.setMaterialAmount(workersAmount);
-		activity.setStartTime(new Date());
-		inventoryService.updateWorkerAmount(workersAmount, user);
+		ActivityEnum placeActivity = activity.getPlace().getPlaceType().getActivity();
+		switch (placeActivity) {
+		case MINE:
+			inventoryService.updateWorkerAmount(activity.getMaterialAmount() * -1, user);
+			activity.setMaterialAmount(workersAmount);
+			activity.setStartTime(new Date());
+			inventoryService.updateWorkerAmount(workersAmount, user);
+			break;
+		case BUILD:
+			inventoryService.stopBuilding(activity, user);
+			startNewActivity(activity.getPlace(), workersAmount, user);
+			break;
+		default:
+			break;
+		}
+
 	}
 
 	@Scheduled(fixedRate = 60_000)

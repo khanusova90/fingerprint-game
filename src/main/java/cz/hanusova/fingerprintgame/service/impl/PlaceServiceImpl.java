@@ -64,6 +64,7 @@ public class PlaceServiceImpl implements PlaceService {
 		if (activities != null && !activities.isEmpty()) {
 			existingActivity = activities.stream().filter(a -> a.getPlace().equals(place)).findAny().orElse(null);
 		}
+
 		if (existingActivity == null && workerAmount != 0) {
 			activityService.startNewActivity(place, workerAmount, user);
 		} else if (workerAmount == 0) {
