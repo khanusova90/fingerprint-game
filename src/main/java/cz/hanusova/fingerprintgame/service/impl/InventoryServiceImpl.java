@@ -117,6 +117,7 @@ public class InventoryServiceImpl implements InventoryService {
 	 * @return new material amount
 	 */
 	private BigDecimal updateMaterialAmount(String materialName, Float amount, AppUser user) {
+		logger.info("Updating " + materialName + " for user " + user.getUsername());
 		Inventory materialInventory = getUserInventory(user, materialName);
 		if (materialInventory != null) {
 			return updateMaterialAmount(materialInventory, amount, user);
@@ -139,6 +140,7 @@ public class InventoryServiceImpl implements InventoryService {
 	private BigDecimal updateMaterialAmount(Inventory materialInventory, Float amount, AppUser user) {
 		BigDecimal actualAmount = materialInventory.getAmount();
 		BigDecimal newAmount = actualAmount.subtract(new BigDecimal(amount));
+		logger.info("New amount: " + newAmount);
 		materialInventory.setAmount(newAmount);
 		inventoryRepository.save(materialInventory);
 

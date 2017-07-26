@@ -56,7 +56,8 @@ public class PlaceServiceImpl implements PlaceService {
 	@Override
 	@Transactional
 	public AppUser startActivity(AppUser user, Place place, Float workerAmount) {
-		logger.info("Starting activity for user " + user.getUsername() + " at place ID " + place.getIdPlace());
+		logger.info("Starting activity for user " + user.getUsername() + " at place ID " + place.getIdPlace() + " with "
+				+ workerAmount + " workers");
 
 		List<UserActivity> activities = user.getActivities();
 		UserActivity existingActivity = null;
