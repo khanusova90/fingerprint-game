@@ -56,13 +56,15 @@ public class PlaceServiceImpl implements PlaceService {
 	@Override
 	@Transactional
 	public AppUser startActivity(AppUser user, Place place, Float workerAmount) {
-		logger.info("Starting activity for user " + user.getUsername() + " at place ID " + place.getIdPlace());
+		logger.info("Starting activity for user " + user.getUsername() + " at place ID " + place.getIdPlace() + " with "
+				+ workerAmount + " workers");
 
 		List<UserActivity> activities = user.getActivities();
 		UserActivity existingActivity = null;
 		if (activities != null && !activities.isEmpty()) {
 			existingActivity = activities.stream().filter(a -> a.getPlace().equals(place)).findAny().orElse(null);
 		}
+
 		if (existingActivity == null && workerAmount != 0) {
 			activityService.startNewActivity(place, workerAmount, user);
 		} else if (workerAmount == 0) {
