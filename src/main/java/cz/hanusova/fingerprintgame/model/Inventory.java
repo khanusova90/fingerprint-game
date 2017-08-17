@@ -13,8 +13,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 /**
- * Trida reprezentujici inventar uzivatele. Ke kazdemu typu zdroje ma ulozene
- * mnozstvi
+ * Class representing user's inventory
  * 
  * @author Katerina Hanusova
  *
@@ -27,10 +26,16 @@ public class Inventory {
 	@Column(name = "ID_INVENTORY")
 	private Long idInventory;
 
+	/**
+	 * Material amount
+	 */
 	@NotNull
 	@Min(value = 0)
 	private BigDecimal amount = BigDecimal.ZERO;
 
+	/**
+	 * Material in inventory
+	 */
 	@ManyToOne
 	@JoinColumn(name = "ID_MATERIAL")
 	private Material material;

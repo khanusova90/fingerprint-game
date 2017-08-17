@@ -8,12 +8,16 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
+ * Fingerprint from mobile client
+ * 
  * Created by khanusova on 10.1.2017.
  */
 public class Fingerprint implements Serializable {
 
+	// Fingerprint floor (1 - 3)
 	private String level;
 
+	// Expected coordinates
 	private int x;
 	private int y;
 	private String description;

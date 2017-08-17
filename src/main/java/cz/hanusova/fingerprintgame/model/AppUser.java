@@ -23,7 +23,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 /**
- * Trida reprezentujici uzivatele
+ * Class representing user of the application
  * 
  * @author Katerina Hanusova
  *
@@ -43,6 +43,7 @@ public class AppUser {
 	@NotNull
 	private String password;
 
+	// For future use
 	private String stagname;
 
 	@OneToOne(cascade = CascadeType.ALL)

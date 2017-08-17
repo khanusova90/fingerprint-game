@@ -18,6 +18,8 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Immutable;
 
 /**
+ * Item used to increase mining power
+ * 
  * @author khanusova
  *
  */

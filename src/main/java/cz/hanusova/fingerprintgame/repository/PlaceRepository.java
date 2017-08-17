@@ -8,8 +8,4 @@ public interface PlaceRepository extends JpaRepository<Place, Long> {
 
 	public Place findFirstByCode(String code);
 
-	// @Query("select p from Place p left join fetch p.resources r where p.code
-	// = :code")
-	// public Place findFirstByCodeFetch(@Param("code")String code);
-
 }

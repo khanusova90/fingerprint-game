@@ -8,6 +8,12 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+/**
+ * Character of user
+ * 
+ * @author khanusova
+ *
+ */
 @Entity
 @Table(name = "USER_CHARACTER")
 public class Character {
@@ -17,12 +23,17 @@ public class Character {
 	@Column(name = "ID_CHARACTER")
 	private Long idCharacter;
 
+	// For future use
 	@NotNull
 	private int charisma = 0;
 
+	// For future use
 	@NotNull
 	private int power = 0;
 
+	/**
+	 * Experience points - used for level count
+	 */
 	@NotNull
 	private int xp = 0;
 

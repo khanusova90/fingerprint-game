@@ -14,6 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 import cz.hanusova.fingerprintgame.dto.UserDTO;
 import cz.hanusova.fingerprintgame.service.LoginService;
 
+/**
+ * Controller for login from mobile clients
+ * 
+ * @author khanusova
+ *
+ */
 @RestController
 @RequestMapping("/android/1.0")
 public class MobileLoginController {

@@ -2,6 +2,12 @@ package cz.hanusova.fingerprintgame.model;
 
 import java.util.List;
 
+/**
+ * Timetable action from STAG IS
+ * 
+ * @author khanusova
+ *
+ */
 public class TimetableAction {
 
 	private List<TimetableActionInfo> timetableActionInfos;

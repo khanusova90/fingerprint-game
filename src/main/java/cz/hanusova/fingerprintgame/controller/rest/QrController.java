@@ -10,6 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 import cz.hanusova.fingerprintgame.model.Place;
 import cz.hanusova.fingerprintgame.service.PlaceService;
 
+/**
+ * Controller for getting values from QR codes
+ * 
+ * @author khanusova
+ *
+ */
 @RestController
 @RequestMapping("/android/1.0/qr")
 public class QrController {

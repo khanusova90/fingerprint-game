@@ -3,16 +3,17 @@ package cz.hanusova.fingerprintgame.fingerprint;
 import java.io.Serializable;
 
 /**
+ * BLE scanned for fingerprints
+ * 
  * Created by khanusova on 10.1.2017.
  */
 public class BleScan implements Serializable {
 
-	// FIXME: REFACTOR NEEDED!
-	int rssi;
-	String uuid = "";
-	int major, minor;
-	String address = "";
-	long time;
+	private int rssi;
+	private String uuid = "";
+	private int major, minor;
+	private String address = "";
+	private long time;
 
 	public BleScan() {
 	}

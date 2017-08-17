@@ -13,6 +13,8 @@ import cz.hanusova.fingerprintgame.dto.RankingDTO;
 import cz.hanusova.fingerprintgame.service.RankingService;
 
 /**
+ * Controller for handling rankings
+ * 
  * @author khanusova
  *
  */

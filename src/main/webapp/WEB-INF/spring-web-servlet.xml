@@ -25,7 +25,6 @@
 
 	<mvc:resources mapping="/resources/**" location="/resources/" />
 	<mvc:resources mapping="/disk-resources/**" location="file:///C:/beacon/fingerprint-game/"/>
-<!-- 	<mvc:resources mapping="/disk-resources/**" location="file:///C:/Development/icons/"/> -->
 
 	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
 		<property name="basenames">
@@ -60,8 +59,4 @@
 		<property name="characterEncoding" value="UTF-8"/>
 	</bean>
 	
-<!-- 	<bean name="restConfig" class="org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration" /> -->
-	
-	<!-- RepositoryRestMvcConfiguration -->
-
 </beans>

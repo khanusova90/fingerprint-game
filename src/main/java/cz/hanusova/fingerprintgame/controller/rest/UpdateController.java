@@ -18,6 +18,8 @@ import cz.hanusova.fingerprintgame.repository.ItemRepository;
  * @author khanusova
  *
  */
+
+// TODO: delete???
 @RestController
 @RequestMapping("/update")
 public class UpdateController {

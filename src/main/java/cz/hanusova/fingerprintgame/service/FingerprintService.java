@@ -12,7 +12,7 @@ import cz.hanusova.fingerprintgame.fingerprint.Fingerprint;
 public interface FingerprintService {
 
 	/**
-	 * Saves new fingerprint to separate file <br/>
+	 * Saves new fingerprint to separate file and couchbase DB
 	 * 
 	 * @param fingerprint
 	 *            {@link Fingerprint} sent from client

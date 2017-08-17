@@ -59,6 +59,14 @@ public class ActivityServiceImpl implements ActivityService {
 		userRepository.save(user);
 	}
 
+	/**
+	 * Updates user inventory (different for each {@link ActivityEnum} that
+	 * takes place in place param
+	 * 
+	 * @param place
+	 * @param user
+	 * @param amount
+	 */
 	private void updateInventory(Place place, AppUser user, Float amount) {
 		ActivityEnum placeActivity = place.getPlaceType().getActivity();
 		switch (placeActivity) {

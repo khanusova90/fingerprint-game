@@ -20,6 +20,7 @@ import org.springframework.web.client.RestTemplate;
 
 import cz.hanusova.fingerprintgame.dto.UserDTO;
 import cz.hanusova.fingerprintgame.model.StagUser;
+import cz.hanusova.fingerprintgame.model.StagUserInfo;
 import cz.hanusova.fingerprintgame.model.TimetableAction;
 import cz.hanusova.fingerprintgame.service.LoginService;
 import cz.hanusova.fingerprintgame.service.UserService;
@@ -52,22 +53,19 @@ public class LoginServiceImpl implements LoginService {
 			loggingLogger.info("Getting user " + username + " from STAG");
 			byte[] credentialsByte = Base64.getDecoder().decode(auth.substring(auth.indexOf(" ") + 1));
 			String[] credentials = new String(credentialsByte).split(":");
-			return userService.getUserDTOByUsernameAndPassword(credentials[0], credentials[1]);
-			// List<StagUserInfo> users = template.exchange(
-			// STAG_URL + "users/getStagUserListForExternalLogin?externalLogin="
-			// + username + "&outputFormat=JSON",
-			// HttpMethod.GET, null, new
-			// ParameterizedTypeReference<List<StagUserInfo>>() {
-			// }).getBody();
-			// if (users != null && !users.isEmpty() && users.get(0).getUsers()
-			// != null
-			// && !users.get(0).getUsers().isEmpty()) {
-			//
-			// return authorizeUser(auth, username, users.get(0).getUsers());
-			// } else {
-			// loggingLogger.info("User " + username + " was not found in
-			// STAG");
-			// }
+			// return
+			// userService.getUserDTOByUsernameAndPassword(credentials[0],
+			// credentials[1]);
+			List<StagUserInfo> users = template.exchange(
+					STAG_URL + "users/getStagUserListForExternalLogin?externalLogin=" + username + "&outputFormat=JSON",
+					HttpMethod.GET, null, new ParameterizedTypeReference<List<StagUserInfo>>() {
+					}).getBody();
+			if (users != null && !users.isEmpty() && users.get(0).getUsers() != null
+					&& !users.get(0).getUsers().isEmpty()) {
+				return authorizeUser(auth, username, users.get(0).getUsers());
+			} else {
+				loggingLogger.info("User " + username + " was not found in STAG");
+			}
 		} catch (HttpClientErrorException e) {
 			logger.warn("Returned 401 from STAG");
 			loggingLogger.warn("Returned 401 from STAG");

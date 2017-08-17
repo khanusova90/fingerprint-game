@@ -10,8 +10,8 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
 /**
- * Trida reprezentujici nejake misto ve hre. Na miste jsou k dispozici zdroje
- * surovin, ktere mohou hraci tezit. Kazde misto je oznaceno kodem.
+ * Clas representing a place in game <br />
+ * There are materials for mining available. Every place has unique code
  * 
  * @author Katerina Hanusova
  *
@@ -25,21 +25,24 @@ public class Place {
 	private Long idPlace;
 
 	/**
-	 * Kod mista
+	 * Code of place
 	 */
 	@NotNull
 	@Column(name = "CODE", unique = true)
 	private String code;
 
 	/**
-	 * Nazev mista
+	 * Place name
 	 */
 	private String name;
 
+	/**
+	 * Place description
+	 */
 	private String description;
 
 	/**
-	 * Typ mista
+	 * Type of place
 	 */
 	@ManyToOne
 	@JoinColumn(name = "ID_PLACE_TYPE")
@@ -47,25 +50,25 @@ public class Place {
 	private PlaceType placeType;
 
 	/**
-	 * Material, ktery je k dispozici na miste
+	 * Material available on this place. Could be null
 	 */
 	@ManyToOne
 	@JoinColumn(name = "ID_MATERIAL")
 	private Material material;
 
 	/**
-	 * Patro, na kterem se misto nachazi
+	 * Floof that place belongs to
 	 */
 	private Integer floor;
 
 	/**
-	 * Vodorovne souradnice umisteni na mape
+	 * X coordinations on original map
 	 */
 	@Column(name = "X_COORD")
 	private Integer xCoord;
 
 	/**
-	 * Svisle souradnice umisteni na mape
+	 * Y coordinations on original map
 	 */
 	@Column(name = "Y_COORD")
 	private Integer yCoord;

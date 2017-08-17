@@ -36,9 +36,6 @@ public class ItemServiceImpl implements ItemService {
 	private InventoryService inventoryService;
 	private UserService userService;
 
-	/**
-	 * 
-	 */
 	@Autowired
 	public ItemServiceImpl(UserRepository userRepository, ItemTypeRepository itemTypeRepository,
 			ItemRepository itemRepository, InventoryService inventoryService, UserService userService) {

@@ -41,6 +41,9 @@ public class Material implements Serializable {
 	@Column(name = "DEFAULT_AMOUNT")
 	private Integer defaultAmount;
 
+	/**
+	 * Name of material icon (including suffix)
+	 */
 	@NotNull
 	@Column(name = "ICON_NAME")
 	private String iconName;

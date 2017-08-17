@@ -64,18 +64,6 @@ public interface InventoryService {
 	 */
 	public BigDecimal updateGoldAmount(Float amount, AppUser user);
 
-	// /**
-	// * Adds mined material
-	// *
-	// * @param place
-	// * {@link Place} where mining takes place
-	// * @param user
-	// * {@link AppUser} who is mining
-	// * @param workers
-	// * amount of workers mining
-	// */
-	// public void addMining(Place place, AppUser user, float workers);
-
 	/**
 	 * Subtracts material as rent for houses that user has built
 	 * 
@@ -94,18 +82,6 @@ public interface InventoryService {
 	 * @param workers
 	 */
 	void mine(Place place, AppUser user, float workers);
-
-	// /**
-	// * Subtracts food for actually mining workers
-	// *
-	// * @param workers
-	// * number of workers mining
-	// * @param user
-	// * {@link AppUser}
-	// * @return <code>true</code> if user has enough food for workers otherwise
-	// * returns <code>false</code>
-	// */
-	// boolean feedWorkers(float workers, AppUser user);
 
 	/**
 	 * Finds out if user has enough food to feed workers

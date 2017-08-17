@@ -9,19 +9,17 @@ import cz.hanusova.fingerprintgame.model.Inventory;
 public interface UserService {
 
 	/**
-	 * Ulozi noveho uzivatele
+	 * Saves new user to DB
 	 * 
 	 * @param user
-	 *            Instance tridy {@link AppUser} s vyplnenymi hodnotami
-	 * @return <code>false</code>, pokud uz uzivatel se zadanym uzivatelskym
-	 *         jmenem v DB existuje, jinak vraci <code>true</code>
+	 *            Instance of {@link AppUser} with attributes filled
+	 * @return <code>false</code> if and only if user with this username already
+	 *         exists in DB. Otherwise returns <code>true</code>
 	 */
 	public Boolean saveUser(AppUser user);
 
 	/**
-	 * Vyhleda aktualniho uzivatele a jeho inventar
-	 * 
-	 * @return Seznam {@link Inventory} aktuaniho uzivatele
+	 * @return {@link Inventory} list of actual user
 	 */
 	public List<Inventory> getUserInventory();
 
@@ -54,7 +52,5 @@ public interface UserService {
 	 * @return
 	 */
 	UserDTO getUserDTOByUsernameAndPassword(String username, String password);
-
-	// UserDTO loginUser(String auth, String username);
 
 }

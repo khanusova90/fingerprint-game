@@ -8,6 +8,8 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
+ * User info from STAG IS
+ * 
  * @author khanusova
  *
  */

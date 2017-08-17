@@ -14,6 +14,8 @@ import cz.hanusova.fingerprintgame.model.Role;
 import cz.hanusova.fingerprintgame.model.UserActivity;
 
 /**
+ * DTO class for sending user info to clients
+ * 
  * @author khanusova
  *
  */

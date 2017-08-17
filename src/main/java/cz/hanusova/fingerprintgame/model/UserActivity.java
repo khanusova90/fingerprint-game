@@ -14,6 +14,12 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+/**
+ * Currently running activity
+ * 
+ * @author khanusova
+ *
+ */
 @Entity
 @Table(name = "USER_ACTIVITY")
 public class UserActivity {

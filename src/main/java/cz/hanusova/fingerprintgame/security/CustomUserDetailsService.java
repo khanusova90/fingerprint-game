@@ -12,11 +12,17 @@ import org.springframework.transaction.annotation.Transactional;
 import cz.hanusova.fingerprintgame.model.AppUser;
 import cz.hanusova.fingerprintgame.repository.UserRepository;
 
+/**
+ * Service class for loading users for Spring security
+ * 
+ * @author khanusova
+ *
+ */
 @Service("userDetailsService")
 public class CustomUserDetailsService implements UserDetailsService {
-	
+
 	private static final Log logger = LogFactory.getLog(CustomUserDetailsService.class);
-	
+
 	@Autowired
 	private UserRepository userRepository;
 

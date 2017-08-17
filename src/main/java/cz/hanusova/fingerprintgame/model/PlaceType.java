@@ -12,6 +12,12 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Immutable;
 
+/**
+ * Type of place
+ * 
+ * @author khanusova
+ *
+ */
 @Entity
 @Immutable
 @Table(name = "PLACE_TYPE")

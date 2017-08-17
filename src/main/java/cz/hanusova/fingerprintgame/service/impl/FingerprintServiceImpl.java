@@ -71,6 +71,11 @@ public class FingerprintServiceImpl implements FingerprintService {
 		}
 	}
 
+	/**
+	 * Saves fingerprint to couchbase
+	 * 
+	 * @param fingerprint
+	 */
 	private void saveToCouchbase(Fingerprint fingerprint) {
 		CouchbaseCluster cluster = CouchbaseCluster.create();
 		try {

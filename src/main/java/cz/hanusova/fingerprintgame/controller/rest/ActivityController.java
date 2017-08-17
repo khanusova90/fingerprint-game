@@ -22,10 +22,10 @@ import cz.hanusova.fingerprintgame.service.UserService;
 import cz.hanusova.fingerprintgame.utils.UserUtils;
 
 /**
+ * Controller for handling activities from mobile application
+ * 
  * @author khanusova
  * 
- *         Controller for handling activities from mobile application
- *
  */
 @RestController
 @RequestMapping("/android/1.0/activity")
