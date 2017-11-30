@@ -64,11 +64,8 @@
 	<couchbase:cluster>
       <couchbase:node>127.0.0.1</couchbase:node>
     </couchbase:cluster>
-    
-    <couchbase:clusterInfo login="Administrator" password="uhkcouch"/>
-
-    <couchbase:bucket bucketName="beacon" bucketPassword=""/>
-	
+    <couchbase:clusterInfo login="${couchbase.login}" password="${couchbase.password}"/>
+    <couchbase:bucket bucketName="${couchbase.bucket}" bucketPassword=""/>
     <couchbase:env /> 
 	
 </beans>
